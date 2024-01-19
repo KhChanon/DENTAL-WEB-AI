@@ -1,8 +1,46 @@
 import React from 'react'
+import NavBar from '../../components/NavBar'
+import Meow from '../../assets/meow.png'
+import InfoItem from '../../components/InfoItem'
 
 const Patientinfo = () => {
   return (
-    <div>Patientinfo</div>
+    <div className="relative bg-whitesmoke w-full h-screen overflow-hidden flex flex-col items-center justify-start pt-[0rem] px-[0rem] pb-[13.81rem] box-border gap-[2.75rem] tracking-[normal">
+      <NavBar/>
+      <section className="w-[63.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black">
+        <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full">
+          <img
+            className="relative rounded-[50%] w-[9.38rem] h-[9.38rem] object-cover"
+            loading="eager"
+            alt=""
+            src={Meow}
+          />
+          <h1 className="m-0 relative text-inherit font-bold font-inherit flex items-center max-w-full">
+            Meow Moew Sean
+          </h1>
+        </div>
+        <div className="self-stretch flex flex-col items-start justify-start gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200">
+          <h1 className="m-0 relative text-inherit font-bold font-inherit flex items-center w-[25.56rem] h-[2.94rem] shrink-0 max-w-full s:text-[1.19rem] mq950:text-[1.63rem]">
+            ประวัติการรักษา
+          </h1>
+          <div className="self-stretch rounded-xl bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-[0.88rem] text-black">
+            <div className="w-[41.38rem] flex flex-row items-start gap-[6.625rem] max-w-full">
+              <div className="font-extrabold w-[4.375rem]">Record ID</div>
+              <div className="font-extrabold w-[7.313rem]">วันที่</div>
+              <div className="font-extrabold w-[7.313rem]">ศัลยกรรม</div>
+              <div className="font-extrabold">สถานะ</div>
+            </div>
+            <div className="relative box-border w-[57.06rem] h-[0.06rem] max-w-full border-t-[1px] border-solid border-black" />
+              <InfoItem/>
+              <InfoItem/>
+              <InfoItem/>
+              <InfoItem/>
+              <InfoItem/>
+              <InfoItem/>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }
 
