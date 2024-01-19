@@ -1,19 +1,18 @@
 import React from 'react'
+import Logo from '../assets/Logo.svg'
 
 const NavBar = () => {
   return (
-    <div className="absolute top-[0rem] left-[0rem] bg-darkslateblue-200 overflow-hidden flex flex-row items-start justify-start py-[1.25rem] px-[1.88rem]">
-        <div className="flex flex-row items-center justify-start gap-[76.63rem]">
-          <img
-            className="relative w-[5.55rem] h-[3.13rem] object-cover"
-            alt=""
-            src="/output-image1@2x.png"
-          />
-          <div className="w-[4.06rem] flex flex-row items-center justify-between">
-            <div className="relative font-semibold">Login</div>
-          </div>
-        </div>
+    <div className="bg-darkslateblue-200 flex flex-row items-center justify-between w-screen h-20 py-2">
+      <img
+        className="flex h-full ml-5"
+        alt=""
+        src={Logo}
+      />
+      <div className='flex flex-row bg-darkslateblue-200 items-center justify-between h-fit mr-7 text-white border-0 text-2xl font-bold cursor-pointer'>
+        Login
       </div>
+    </div>
   )
 }
 
