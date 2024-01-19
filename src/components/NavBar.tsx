@@ -3,7 +3,7 @@ import Logo from '../assets/Logo.svg'
 
 const NavBar = () => {
   return (
-    <div className="bg-darkslateblue-200 flex flex-row items-center justify-between w-screen h-20 py-2">
+    <div className="bg-darkslateblue-200 flex flex-row items-center justify-between w-screen h-20 py-2 select-none">
       <img
         className="flex h-full ml-5"
         alt=""
