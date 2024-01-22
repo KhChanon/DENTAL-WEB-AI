@@ -2,14 +2,14 @@ import React from 'react'
 import NavBar from '../../components/NavBar'
 import send from '../../assets/send.png'
 import ChatListBox from './components/ChatListBox'
-import ChatMessageBox from './components/ChatMessageBox'
+import ChatMessageBox from '../../components/ChatMessageBox'
 
 const Followup:React.FC = () => {
   return (
     <div className='w-screen h-screen flex flex-col'>
       <NavBar/>
       <div className='flex flex-row w-full h-full'>
-        <div className="flex flex-col items-center justify-center w-1/5 p-5 pl-8 select-none">
+        <div className="flex flex-col items-center justify-center w-1/5 py-5 pl-12 select-none">
           <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center'>
             <ChatListBox FollowUpId={"1"} Title={"wisdom tooth removal"} TimeStamp={new Date()} ChatID={'asd'} ChatResult={"asd"}/>
             <ChatListBox FollowUpId={"1"} Title={"wisdom tooth removal"} TimeStamp={new Date()} ChatID={'asd'} ChatResult={"asd"}/>
@@ -17,8 +17,8 @@ const Followup:React.FC = () => {
             <ChatListBox FollowUpId={"1"} Title={"wisdom tooth removal"} TimeStamp={new Date()} ChatID={'asd'} ChatResult={"asd"}/>
           </div>
         </div>
-        <div className='flex flex-col items-center w-4/5 p-5 pr-12 justify-between'>
-          <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center'>
+        <div className='flex flex-col items-center w-4/5 p-5 px-12 justify-between'>
+          <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center '>
             <div 
               className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center cursor-pointer"
               onClick={() => {window.location.href = '/faq'}}

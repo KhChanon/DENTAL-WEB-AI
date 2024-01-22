@@ -1,5 +1,5 @@
 import React from 'react'
-import { ChatMessegeProp } from '../../../interface/ChatMessegeProp'
+import { ChatMessegeProp } from '../interface/ChatMessegeProp'
 
 const ChatMessageBox: React.FC<ChatMessegeProp> = ({ChatId,UserChat,TimeStamp,Text}) => {
 
