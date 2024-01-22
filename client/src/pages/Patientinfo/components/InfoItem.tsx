@@ -1,14 +1,7 @@
 import React from 'react'
+import { RecordProp } from '../../../interface/RecordProp'
 
-interface InfoItemProps {
-    RecordID: string,
-    TimeStamp: Date,
-    SurgicalProcedure: string,
-    Status: string,
-    FollowUpID: string,
-}
-
-const InfoItem: React.FC<InfoItemProps> = ({ RecordID, TimeStamp, SurgicalProcedure, Status, FollowUpID }) => {
+const InfoItem: React.FC<RecordProp> = ({RecordID,TimeStamp,SurgicalProcedure,Status,ChatMessesge}) => {
 
     const day: number = TimeStamp.getDate();
     const month: number = TimeStamp.getMonth() + 1;

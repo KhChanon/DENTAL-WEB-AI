@@ -1,8 +1,8 @@
 import React from 'react'
-import { FollowUpProp } from '../../../interface/FollowUpProp'
+import { RecordProp } from '../../../interface/RecordProp'
 
 
-const ChatListBox: React.FC<FollowUpProp> = ({FollowUpId,Title,TimeStamp,ChatID,ChatResult}) => {
+const ChatListBox: React.FC<RecordProp> = ({RecordID,TimeStamp,SurgicalProcedure,Status,ChatMessesge}) => {
 
     const day: number = TimeStamp.getDate();
     const month: number = TimeStamp.getMonth()+1;
@@ -13,7 +13,7 @@ const ChatListBox: React.FC<FollowUpProp> = ({FollowUpId,Title,TimeStamp,ChatID,
 
     return (
     <div className="flex flex-col items-center justify-center w-[85%] px-3 h-16 bg-stone-700 rounded-[30px] text-center text-white font-medium text-base">
-        <p className='m-0'>{Title} - {formattedDate}</p>
+        <p className='m-0'>{SurgicalProcedure} - {formattedDate}</p>
     </div>
   )
 }

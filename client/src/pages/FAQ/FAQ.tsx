@@ -21,17 +21,17 @@ const FAQ = () => {
             </div>
           </div>
           <div className='flex flex-col rounded-3xl w-full h-[70%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
-            <ChatMessageBox ChatId={"1"} UserChat={true} TimeStamp={new Date()} Text={"aasdsdffffffdsdffff  fffffffss dfffffffdsfsdfsdffff ffffffsdfsd fsdfffffff233 3333333333 3333333dddddddd ddddddddsdff dfsdfdssfdsfdsfdfs dfsddddddddddddd dddasdsd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={false} TimeStamp={new Date()} Text={"adsasd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={true} TimeStamp={new Date()} Text={"asdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"}/>
-            <ChatMessageBox ChatId={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"aasdsdffffffdsdffff  fffffffss dfffffffdsfsdfsdffff ffffffsdfsd fsdfffffff233 3333333333 3333333dddddddd ddddddddsdff dfsdfdssfdsfdsfdfs dfsddddddddddddd dddasdsd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"adsasd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"asdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
           </div>
           <div className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none'>
             <input className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl' placeholder='Type your message here...'/>
