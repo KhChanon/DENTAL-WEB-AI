@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from '../../components/NavBar'
 import Meow from '../../assets/meow.png'
-import InfoItem from '../Patientinfo/components/InfoItem'
+import InfoItem from './components/InfoItem'
 
 const Patientinfo = () => {
   return (
