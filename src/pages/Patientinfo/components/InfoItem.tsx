@@ -32,7 +32,7 @@ const InfoItem: React.FC<InfoItemProps> = ({ RecordID, TimeStamp, SurgicalProced
                 {Status}
             </div>
             <button className="cursor-pointer [border:none] pt-[0.38rem] px-[0.31rem] pb-[0.31rem] bg-darkslateblue-100 rounded-11xl shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] w-[5.63rem] overflow-hidden shrink-0 flex flex-row items-center justify-center box-border hover:bg-plum-100">
-                <div className="relative text-[0.63rem] font-semibold font-montserrat text-colors-white-white text-center flex items-center justify-center w-[4rem] shrink-0">
+                <div className="relative text-[1.03rem] font-semibold font-montserrat text-colors-white-white text-center flex items-center justify-center w-[4rem] shrink-0">
                     ติดตาม
                 </div>
             </button>
