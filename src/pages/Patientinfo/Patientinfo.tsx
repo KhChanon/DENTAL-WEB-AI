@@ -20,23 +20,22 @@ const Patientinfo = () => {
           </h1>
         </div>
         <div className="self-stretch flex flex-col items-start justify-start gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200">
-          <h1 className="m-0 relative text-inherit font-bold font-inherit flex items-center w-[25.56rem] h-[2.94rem] shrink-0 max-w-full s:text-[1.19rem] mq950:text-[1.63rem]">
+          <h1 className="m-0 relative text-inherit font-bold font-inherit flex items-center w-[25.56rem] h-[2.94rem] shrink-0 max-w-full">
             ประวัติการรักษา
           </h1>
-          <div className="self-stretch rounded-xl bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-[0.88rem] text-black">
-            <div className="w-[41.38rem] flex flex-row items-start gap-[6.625rem] max-w-full">
-              <div className="font-extrabold w-[4.375rem]">Record ID</div>
-              <div className="font-extrabold w-[7.313rem]">วันที่</div>
-              <div className="font-extrabold w-[7.313rem]">ศัลยกรรม</div>
+          <div className="self-stretch rounded-xl bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-lg text-black">
+            <div className="w-[45.38rem] flex flex-row items-start gap-[85px] max-w-full">
+              <div className="font-extrabold w-fit">Record ID</div>
+              <div className="font-extrabold w-[8.613rem]">วันที่</div>
+              <div className="font-extrabold w-[8.613rem]">ศัลยกรรม</div>
               <div className="font-extrabold">สถานะ</div>
             </div>
             <div className="relative box-border w-[57.06rem] h-[0.06rem] max-w-full border-t-[1px] border-solid border-black" />
-              <InfoItem/>
-              <InfoItem/>
-              <InfoItem/>
-              <InfoItem/>
-              <InfoItem/>
-              <InfoItem/>
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
           </div>
         </div>
       </section>
