@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from '../../components/NavBar'
 import Meow from '../../assets/meow.png'
-import InfoItem from '../Patientinfo/components/InfoItem'
+import InfoItem from './components/InfoItem'
 
 const Patientinfo = () => {
   return (
@@ -31,11 +31,11 @@ const Patientinfo = () => {
               <div className="font-extrabold">สถานะ</div>
             </div>
             <div className="relative box-border w-[57.06rem] h-[0.06rem] max-w-full border-t-[1px] border-solid border-black" />
-              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
-              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
-              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
-              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
-              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} FollowUpID={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
+              <InfoItem  RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
           </div>
         </div>
       </section>

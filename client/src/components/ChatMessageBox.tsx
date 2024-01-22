@@ -1,7 +1,7 @@
 import React from 'react'
 import { ChatMessegeProp } from '../interface/ChatMessegeProp'
 
-const ChatMessageBox: React.FC<ChatMessegeProp> = ({ChatId,UserChat,TimeStamp,Text}) => {
+const ChatMessageBox: React.FC<ChatMessegeProp> = ({FollowUpChatID,UserChat,TimeStamp,Text}) => {
 
   const self_align = UserChat ? 'self-end' : 'self-start';
   return (
