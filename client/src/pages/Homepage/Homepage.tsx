@@ -11,7 +11,6 @@ const Homepage = () => {
     const state = Math.random().toString(36).substring(2, 15) +Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 10);
 
     window.location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${config.CLIENT_ID}&redirect_uri=${config.REDIRECT_URL}&state=${state}&scope=${config.SCOPE}`;
-    
   }
 
   const handleLineVerifyIDToken = async (idToken:String) => {
