@@ -1,0 +1,7 @@
+{
+    "API_URL": "http://localhost:8000/api",
+    "CLIENT_ID": "2003210748",
+    "REDIRECT_URL": "https://localhost:3000/",
+    "SCOPE": "profile%20openid%20email",
+    "CLIENT_SECRET": "696c05f0470ec79d6eccff7a5e48c76a"
+}

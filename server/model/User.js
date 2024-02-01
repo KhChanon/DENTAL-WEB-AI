@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-    lineusername: {
+    lineopenid: {
         type: String,
         required: true,
-        unique: [true, "Username already exists"]
+        unique: [true, "Line ID already registered"],
+    },
+    lineusername: {
+        type: String,
+        required: false,
     },
     lineprofilepicture: {
         type: String,
