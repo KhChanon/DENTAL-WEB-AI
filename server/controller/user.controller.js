@@ -8,15 +8,17 @@ const authUser = async (req, res) => {
 
         const user = await User.findOne({ lineopenid });
         if (!user) {
+
+            //make it so that the field can be empty
             const newUser = User.create({
-                lineopenid,
-                lineusername,
-                lineprofilepicture,
-                linestatusmessage,
-                lineemail
+                lineopenid: lineopenid,
+                lineusername: lineusername || "",
+                lineprofilepicture: lineprofilepicture || "",
+                linestatusmessage: linestatusmessage || "",
+                lineemail: lineemail || ""
             });
 
-            return res.status(201).json({sucecess:true,message:"Register success"});
+            return res.status(201).json({sucecess:true,message:"Register success",newUser});
         }
 
         res.status(201).json({sucecess:true,message:"Found user",user});
