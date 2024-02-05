@@ -1,30 +1,30 @@
 const User = require("../model/User");
 
-// // register users
+// // auth users
 // // Page: Home Page, FAQ Page, Follow-Up Page
-
-const registerUser = async (req, res) => {
+const authUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { lineopenid,lineusername,lineprofilepicture,linestatusmessage,lineemail } = req.body;
 
-        const user = await User.findOne({ email: email });
-        if (user) {
-            return res.json({ success: false, message: "Email already exists" });
-        } else if (!password || password.length < 6) {
-            return res.json({ success: false, message: "Password must be at least 6 characters" });
+        const user = await User.findOne({ lineopenid });
+        if (!user) {
+            const newUser = User.create({
+                lineopenid,
+                lineusername,
+                lineprofilepicture,
+                linestatusmessage,
+                lineemail
+            });
+
+            return res.status(201).json({sucecess:true,message:"Register success"});
         }
 
-        const newUser = await User.create({
-            email: email,
-            password: password,
-        });
-
-        res.status(201).json(newUser);
+        res.status(201).json({sucecess:true,message:"Found user",user});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
 module.exports = {
-    registerUser,
+    authUser,
 }

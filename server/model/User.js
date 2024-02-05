@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    lineemail: {
+        type: String,
+        required: false
+    },
     records: [{
         surgicalprocedure: {
             type: String,

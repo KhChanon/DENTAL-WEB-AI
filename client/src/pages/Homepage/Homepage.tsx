@@ -13,8 +13,20 @@ const Homepage = () => {
     window.location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${config.CLIENT_ID}&redirect_uri=${config.REDIRECT_URL}&state=${state}&scope=${config.SCOPE}`;
   }
 
+  const handleAuth = async (userProfile:any) => {
+    const res = await axios.post(config.API_URL + '/users/auth', {
+      lineopenid: userProfile.sub,
+      lineusername: userProfile.name,
+      lineprofilepicture: userProfile.picture,
+      linestatusmessage: userProfile.status_message,
+      lineemail: userProfile.email,
+      })
+    .then(res => {
+      console.log(res.data);
+    })
+  }
+
   const handleLineVerifyIDToken = async (idToken:String) => {
-    console.log(idToken);
     const res = await axios.post('https://api.line.me/oauth2/v2.1/verify', {
       id_token: idToken,
       client_id: config.CLIENT_ID,
@@ -24,7 +36,7 @@ const Homepage = () => {
       },
     })
     .then(res => {
-      console.log(res.data);
+      handleAuth(res.data);
     })
   }
 
@@ -41,7 +53,6 @@ const Homepage = () => {
       },
     })
     .then(res => {
-      console.log(res.data);
       handleLineVerifyIDToken(res.data.id_token);
     })
     .catch(error => {
@@ -53,12 +64,9 @@ const Homepage = () => {
     const codeurl = new URLSearchParams(window.location.search).get('code');
     const stateurl = new URLSearchParams(window.location.search).get('state');
     if (codeurl && stateurl) {
-      console.log(codeurl);
-      console.log(stateurl);
       handleLineLoginAcessCode(codeurl,stateurl);
     }
   }, []);
-
 
   return (
     <div className="bg-cover h-screen" style={{ backgroundImage: `url(${BgImage})` }}>

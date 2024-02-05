@@ -1,5 +1,8 @@
 require('dotenv').config({ path: '../.env' })
 
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
 const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
@@ -27,6 +30,18 @@ app.get('/message', (req, res) => {
 
 app.use('/api/users', require('./routes/user.routes'));
 
-app.listen(8000, () => {
+
+const parentDirectory = path.join(__dirname, "..");
+
+// Read SSL certificate and key files
+const options = {
+    key: fs.readFileSync(path.join(parentDirectory, "certificates", "localhost-key.pem")),
+    cert: fs.readFileSync(path.join(parentDirectory, "certificates", "localhost.pem")),
+  };
+  
+// Create HTTPS server
+const server = https.createServer(options, app);
+
+server.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
   });
