@@ -13,18 +13,14 @@ const UserSchema = new mongoose.Schema({
     lineprofilepicture: {
         type: String,
         required: false,
-        sparse: true,
     },
     linestatusmessage: {
         type: String,
         required: false,
-        sparse: true,
     },
     lineemail: {
         type: String,
         required: false,
-        unique: true,
-        sparse: true,
     },
     records: [{
         surgicalprocedure: {
