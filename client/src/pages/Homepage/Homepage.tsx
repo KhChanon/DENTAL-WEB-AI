@@ -17,9 +17,9 @@ const Homepage = () => {
     const res = await axios.post(config.API_URL + '/users/auth', {
       lineopenid: userProfile.sub,
       lineusername: userProfile.name,
-      lineprofilepicture: userProfile.picture,
-      linestatusmessage: userProfile.status_message,
-      lineemail: userProfile.email,
+      lineprofilepicture: userProfile.picture ?? null,
+      linestatusmessage: userProfile.status_message ?? null,
+      lineemail: userProfile.email ?? null,
       })
     .then(res => {
       console.log(res.data);
@@ -40,7 +40,7 @@ const Homepage = () => {
     })
   }
 
-  const handleLineLoginAcessCode = async (code:String, state:String) => {
+  const handleLineLoginAcessCode = async (code:String) => {
     const res = await axios.post('https://api.line.me/oauth2/v2.1/token', {
       grant_type: 'authorization_code',
       code : code,
@@ -64,7 +64,7 @@ const Homepage = () => {
     const codeurl = new URLSearchParams(window.location.search).get('code');
     const stateurl = new URLSearchParams(window.location.search).get('state');
     if (codeurl && stateurl) {
-      handleLineLoginAcessCode(codeurl,stateurl);
+      handleLineLoginAcessCode(codeurl);
     }
   }, []);
 

@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
     },
     lineusername: {
         type: String,
-        required: false,
+        required: true,
     },
     lineprofilepicture: {
         type: String,

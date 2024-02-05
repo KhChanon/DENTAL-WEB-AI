@@ -12,11 +12,11 @@ const authUser = async (req, res) => {
             //make it so that the field can be empty
             const newUser = User.create({
                 lineopenid: lineopenid,
-                lineusername: lineusername || "",
-                lineprofilepicture: lineprofilepicture || "",
-                linestatusmessage: linestatusmessage || "",
-                lineemail: lineemail || ""
-            });
+                lineusername: lineusername,
+                lineprofilepicture: lineprofilepicture,
+                linestatusmessage: linestatusmessage,
+                lineemail: lineemail
+            })
 
             return res.status(201).json({sucecess:true,message:"Register success",newUser});
         }
