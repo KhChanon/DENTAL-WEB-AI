@@ -4,7 +4,7 @@ const User = require("../model/User");
 // // Page: Home Page, FAQ Page, Follow-Up Page
 const authUser = async (req, res) => {
     try {
-        const { lineopenid,lineusername,lineprofilepicture,linestatusmessage,lineemail } = req.body;
+        const { lineopenid,lineusername,lineprofilepicture,lineemail } = req.body;
 
         const user = await User.findOne({ lineopenid });
         if (!user) {
@@ -14,7 +14,6 @@ const authUser = async (req, res) => {
                 lineopenid: lineopenid,
                 lineusername: lineusername,
                 lineprofilepicture: lineprofilepicture,
-                linestatusmessage: linestatusmessage,
                 lineemail: lineemail
             })
 

@@ -3,6 +3,7 @@ import NavBar from '../../components/NavBar'
 import BgImage from '../../assets/Homepage_Bg.png'
 import axios from 'axios';
 import config from '../../config/config.json'
+import { LineIDToken } from '../../interface/LineIDToken';
 
 
 const Homepage = () => {
@@ -13,12 +14,11 @@ const Homepage = () => {
     window.location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${config.CLIENT_ID}&redirect_uri=${config.REDIRECT_URL}&state=${state}&scope=${config.SCOPE}`;
   }
 
-  const handleAuth = async (userProfile:any) => {
+  const handleAuth = async (userProfile:LineIDToken) => {
     const res = await axios.post(config.API_URL + '/users/auth', {
       lineopenid: userProfile.sub,
       lineusername: userProfile.name,
       lineprofilepicture: userProfile.picture ?? null,
-      linestatusmessage: userProfile.status_message ?? null,
       lineemail: userProfile.email ?? null,
       })
     .then(res => {
