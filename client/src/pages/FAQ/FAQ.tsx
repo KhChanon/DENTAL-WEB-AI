@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/NavBar'
+import NavBarLogin from '../../components/NavBarLogin'
 import ChatMessageBox from '../../components/ChatMessageBox'
 import send from '../../assets/send.png'
+import axios from 'axios';
+import config from '../../config/config.json';
 
 const FAQ = () => {
+  const [auth, setAuth] = useState<boolean>(false);
+  const userID = localStorage.getItem(`userID`);
+  const [user, setUser] = useState<any>();
+  
+  const getUser = () => {
+    axios.get(config.API_URL + '/users/' + userID)
+    .then(res => {
+      setUser(res.data.user);
+      return res.data.user;
+    })
+  }
+  
+  useEffect(() => {
+    if (localStorage.getItem(`userID`)) {
+      getUser();
+      setAuth(true);
+    }
+  }, []);
+  
   return (
     <div className='w-screen h-screen flex flex-col'>
-      <NavBar/>
+      {!auth
+      ?
+      <NavBar />
+      :
+      <NavBarLogin user={user} />
+      }
       <div className='flex flex-row w-full h-full'>
         <div className='flex flex-col items-center w-full p-5 px-12 justify-between'>
           <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center pl-1'>

@@ -1,13 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/NavBar'
+import NavBarLogin from '../../components/NavBarLogin'
 import send from '../../assets/send.png'
 import ChatListBox from './components/ChatListBox'
 import ChatMessageBox from '../../components/ChatMessageBox'
+import axios from 'axios';
+import config from '../../config/config.json';
 
 const Followup:React.FC = () => {
+  const [auth, setAuth] = useState<boolean>(false);
+  const userID = localStorage.getItem(`userID`);
+  const [user, setUser] = useState<any>();
+  
+  const getUser = () => {
+    axios.get(config.API_URL + '/users/' + userID)
+    .then(res => {
+      setUser(res.data.user);
+      return res.data.user;
+    })
+  }
+  
+  useEffect(() => {
+    if (localStorage.getItem(`userID`)) {
+      getUser();
+      setAuth(true);
+    }
+  }, []);
+  
   return (
     <div className='w-screen h-screen flex flex-col'>
-      <NavBar/>
+      {!auth
+      ?
+      <NavBar />
+      :
+      <NavBarLogin user={user} />
+      }
       <div className='flex flex-row w-full h-full'>
         <div className="flex flex-col items-center justify-center w-1/5 py-5 pl-12 select-none">
           <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center'>

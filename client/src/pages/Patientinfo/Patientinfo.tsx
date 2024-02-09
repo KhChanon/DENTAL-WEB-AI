@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/NavBar'
+import NavBarLogin from '../../components/NavBarLogin'
 import Meow from '../../assets/meow.png'
 import InfoItem from './components/InfoItem'
+import axios from 'axios';
+import config from '../../config/config.json';
 
 const Patientinfo = () => {
+  const [auth, setAuth] = useState<boolean>(false);
+  const userID = localStorage.getItem(`userID`);
+  const [user, setUser] = useState<any>();
+
+  const getUser = () => {
+    axios.get(config.API_URL + '/users/' + userID)
+    .then(res => {
+      setUser(res.data.user);
+      return res.data.user;
+    })
+  }
+  
+  useEffect(() => {
+    if (localStorage.getItem(`userID`)) {
+      getUser();
+      setAuth(true);
+    }
+  }, []);
+  
   return (
     <div className="relative bg-whitesmoke w-full h-screen overflow-hidden flex flex-col items-center justify-start pt-[0rem] px-[0rem] pb-[13.81rem] box-border gap-[2.75rem] tracking-[normal">
-      <NavBar/>
+      {!auth
+      ?
+      <NavBar />
+      :
+      <NavBarLogin user={user} />
+      }
       <section className="w-[63.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[2rem] text-black">
         <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full">
           <img
