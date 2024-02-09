@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import ChatMessageBox from '../../components/ChatMessageBox'
@@ -7,6 +8,7 @@ import axios from 'axios';
 import config from '../../config/config.json';
 
 const FAQ = () => {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<any>();
@@ -45,7 +47,7 @@ const FAQ = () => {
             </div>
             <div 
               className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center cursor-pointer"
-              onClick={() => {window.location.href = '/followup'}}
+              onClick={() => {navigate('/followup')}}
             >
               Follow-Up
             </div>
