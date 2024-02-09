@@ -20,6 +20,7 @@ module.exports = {
         black: "#000",
         purple: "#8660A9",
         green: "#57DA36",
+        palevioletred: "#b54272",
       },
       spacing: {},
       fontFamily: {
