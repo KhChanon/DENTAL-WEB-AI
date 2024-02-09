@@ -45,9 +45,9 @@ const Patientinfo = () => {
             alt=""
             src={Meow}
           />
-          <h1 className="m-0 relative text-inherit font-bold font-inherit flex items-center max-w-full">
+          <div className="m-0 relative text-inherit font-bold font-inherit flex items-center max-w-full">
             Meow Moew Sean
-          </h1>
+          </div>
         </div>
         <div className="self-stretch flex flex-col items-start justify-start gap-[1.25rem] max-w-full text-[1.5rem] text-darkslateblue-200">
           <h1 className="m-0 relative text-inherit font-bold font-inherit flex items-center w-[25.56rem] h-[2.94rem] shrink-0 max-w-full">
