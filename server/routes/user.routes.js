@@ -9,6 +9,6 @@ router.route('/auth').post(authUser);
 
 // GET a user by id
 // Endpoint: /api/users/:id
-router.route('/:id').get(getUser);
+router.route('/user/:id').get(getUser);
 
 module.exports = router;

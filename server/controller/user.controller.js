@@ -30,9 +30,10 @@ const authUser = async (req, res) => {
 // Page: Home Page, FAQ Page, Follow-Up Page
 const getUser = async (req, res) => {
     try {
-        const id = req.id;
+        const id = req.params.id;
 
-        const user = await User.findOne({ id });
+        const user = await User.findById(id);
+        
         if (!user) {
             return res.status(201).json({sucecess:false,message:"User not found"});
         }

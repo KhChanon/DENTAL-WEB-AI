@@ -12,10 +12,9 @@ const Homepage = () => {
   const [user, setUser] = useState<any>();
 
   const getUser = () => {
-    axios.get(config.API_URL + '/users/' + userID)
+    axios.get(config.API_URL + '/users/user/' + userID)
     .then(res => {
       setUser(res.data.user);
-      return res.data.user;
     })
     .catch(error => {
         console.error(error);
