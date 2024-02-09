@@ -43,6 +43,9 @@ const Followup:React.FC = () => {
       <div className='flex flex-row w-full h-full'>
         <div className="flex flex-col items-center justify-center w-1/5 py-5 pl-12 select-none">
           <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center'>
+            <div className="flex flex-col items-center justify-center w-[85%] px-3 h-16 bg-[#B54172] rounded-[30px] text-center text-white font-medium text-base cursor-pointer">
+              <p className='m-0'>+</p>
+            </div>
             <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />
             <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />
             <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />

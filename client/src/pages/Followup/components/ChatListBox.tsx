@@ -12,7 +12,7 @@ const ChatListBox: React.FC<RecordProp> = ({RecordID,TimeStamp,SurgicalProcedure
     const formattedDate: string = `${padZero(day)}/${padZero(month)}/${year}`;
 
     return (
-    <div className="flex flex-col items-center justify-center w-[85%] px-3 h-16 bg-stone-700 rounded-[30px] text-center text-white font-medium text-base">
+    <div className="flex flex-col items-center justify-center w-[85%] px-3 h-16 bg-stone-700 rounded-[30px] text-center text-white font-medium text-base cursor-pointer">
         <p className='m-0'>{SurgicalProcedure} - {formattedDate}</p>
     </div>
   )
