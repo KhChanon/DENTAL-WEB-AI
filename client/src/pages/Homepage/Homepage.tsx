@@ -17,6 +17,9 @@ const Homepage = () => {
       setUser(res.data.user);
       return res.data.user;
     })
+    .catch(error => {
+        console.error(error);
+    });
   }
 
   const handleLineLogin = async () => {
@@ -33,10 +36,12 @@ const Homepage = () => {
         lineemail: userProfile.email ?? null,
         })
     .then(res => {
-        console.log(res.data);
         localStorage.setItem(`userID`, res.data.user._id);
         window.location.href = '/';
     })
+    .catch(error => {
+        console.error(error);
+    });
   }
 
   const handleLineVerifyIDToken = async (idToken:string) => {
@@ -51,6 +56,9 @@ const Homepage = () => {
     .then(res => {
         handleAuth(idToken,res.data);
     })
+    .catch(error => {
+        console.error(error);
+    });
   }
 
   const handleLineLoginAcessCode = async (code:string) => {

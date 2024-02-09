@@ -18,6 +18,9 @@ const Followup:React.FC = () => {
       setUser(res.data.user);
       return res.data.user;
     })
+    .catch(error => {
+        console.error(error);
+    });
   }
   
   useEffect(() => {
