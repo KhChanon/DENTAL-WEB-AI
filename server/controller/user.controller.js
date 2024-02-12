@@ -20,6 +20,15 @@ const authUser = async (req, res) => {
             return res.status(201).json({sucecess:true,message:"Register success","user":newUser});
         }
 
+        if(user && (user.lineusername !== lineusername || user.lineprofilepicture !== lineprofilepicture || user.lineemail !== lineemail)){
+            user.lineusername = lineusername;
+            user.lineprofilepicture = lineprofilepicture;
+            user.lineemail = lineemail;
+            user.save();
+
+            return res.status(201).json({sucecess:true,message:"Update success","user":user});
+        }
+
         res.status(201).json({sucecess:true,message:"Found user",user});
     } catch (err) {
         res.status(500).json({ error: err.message });
