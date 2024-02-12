@@ -7,6 +7,7 @@ import Homepage from './pages/Homepage/Homepage';
 import Patientinfo from './pages/Patientinfo/Patientinfo';
 import Followup from './pages/Followup/Followup';
 import FAQ from './pages/FAQ/FAQ';
+import Addcase  from './pages/Addcase/Addcase';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/patientinfo" element={<Patientinfo />} />
         <Route path="/followup" element={<Followup />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/addcase" element={<Addcase />} />
       </Routes>
     </Router>
   );  
