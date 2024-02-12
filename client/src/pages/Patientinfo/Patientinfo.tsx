@@ -5,6 +5,7 @@ import Meow from '../../assets/meow.png'
 import InfoItem from './components/InfoItem'
 import axios from 'axios';
 import config from '../../config/config.json';
+import PlusIcon from './components/PlusIcon.svg';
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
@@ -35,10 +36,10 @@ const Patientinfo = () => {
       :
       <NavBarLogin user={user} />
       }
-      <section className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display">
+      <section className="w-[62.5rem] overflow-hidden flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display">
       <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full mq700:flex-wrap mq700:gap-[1.56rem]">
         <img
-          className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover"
+          className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover select-none"
           loading="eager"
           alt=""
           src={Meow}
@@ -48,15 +49,19 @@ const Patientinfo = () => {
         </div>
       </div>
       <div className="self-stretch flex flex-col items-start justify-start gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200">
-        <div className="self-stretch flex flex-row items-center justify-between py-[0rem] px-[1.25rem]">
+        <div className="self-stretch flex flex-row items-center justify-between py-[0rem] px-[0.5rem]">
           <b className="w-[25.5rem] relative flex items-center h-[2.94rem] shrink-0">
             ประวัติการรักษา
           </b>
-          <div className="w-[4.13rem] relative h-[2.08rem] text-center text-[1.5rem] text-colors-white-white">
+          <div className="w-[4.13rem] relative h-[2.08rem] text-center text-[1.5rem]">
             {/* <div className="absolute top-[0rem] left-[0rem] rounded-[10px] bg-palevioletred w-[4.13rem] h-[2.08rem]" /> */}
-            <div className="absolute top-[0.4rem] rounded-[10px] flex items-center justify-center w-[4rem] h-[2rem] bg-palevioletred">
-              +
-            </div>
+            
+              {/* <PlusIcon className="absolute top-[0.4rem] rounded-[10px] flex items-center justify-center w-[4rem] h-[2rem]"/> */}
+              <img
+                    className="cursor-pointer select-none"
+                    alt=""
+                    src={PlusIcon}
+                  />          
           </div>
         </div>
         <div className="self-stretch rounded-xl bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black mq450:pt-[1.25rem] mq450:pb-[1.25rem] mq450:box-border">
