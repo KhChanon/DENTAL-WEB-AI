@@ -1,12 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import NavBar from '../../components/NavBar'
+import NavBarLogin from '../../components/NavBarLogin'
 import ChatMessageBox from '../../components/ChatMessageBox'
 import send from '../../assets/send.png'
+import axios from 'axios';
+import config from '../../config/config.json';
 
 const FAQ = () => {
+  const navigate = useNavigate();
+  const [auth, setAuth] = useState<boolean>(false);
+  const userID = localStorage.getItem(`userID`);
+  const [user, setUser] = useState<any>();
+  
+  const getUser = async () => {
+    try{
+      const res = await axios.get(config.API_URL + '/users/user/' + userID);
+      setUser(res.data.user);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  useEffect(() => {
+    if (localStorage.getItem(`userID`)) {
+      getUser();
+      setAuth(true);
+    }
+  }, []);
+  
   return (
     <div className='w-screen h-screen flex flex-col'>
-      <NavBar/>
+      {!auth
+      ?
+      <NavBar />
+      :
+      <NavBarLogin user={user} />
+      }
       <div className='flex flex-row w-full h-full'>
         <div className='flex flex-col items-center w-full p-5 px-12 justify-between'>
           <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center pl-1'>
@@ -15,7 +45,7 @@ const FAQ = () => {
             </div>
             <div 
               className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center cursor-pointer"
-              onClick={() => {window.location.href = '/followup'}}
+              onClick={() => {navigate('/followup')}}
             >
               Follow-Up
             </div>

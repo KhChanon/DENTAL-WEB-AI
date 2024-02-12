@@ -7,7 +7,7 @@ const FollowUpChatSchema = new mongoose.Schema({
     },
     chattime: {
         type: Date,
-        required: true,
+        default: Date.now
     },
     chattext: {
         type: String,
