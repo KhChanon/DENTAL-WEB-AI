@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import ChatMessageBox from '../../components/ChatMessageBox'
 import send from '../../assets/send.png'
 import axios from 'axios';
 import config from '../../config/config.json';
+import { ChatMessegeProp } from '../../interface/ChatMessegeProp'
+import { UserProp } from '../../interface/UserProp'
 
 const FAQ = () => {
   const navigate = useNavigate();
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<UserProp>();
+  const [chat, setChat] = useState<string>("");
+  const [allchat, setAllchat] = useState<ChatMessegeProp[]>([]);
   
   const getUser = async () => {
     try{
@@ -19,6 +23,26 @@ const FAQ = () => {
       setUser(res.data.user);
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  const handleKeypress = (e:React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
+    if(chat === ""){
+      console.log("string empty")
+    }
+    else{
+      setChat("");
+      setAllchat([...allchat, {
+        UserChat: true,
+        TimeStamp: new Date(),
+        Text: chat!,
+      }]);
     }
   }
   
@@ -35,9 +59,9 @@ const FAQ = () => {
       ?
       <NavBar />
       :
-      <NavBarLogin user={user} />
+      <NavBarLogin {...user!} />
       }
-      <div className='flex flex-row w-full h-full'>
+      <div className='flex flex-row w-full h-full overflow-hidden'>
         <div className='flex flex-col items-center w-full p-5 px-12 justify-between'>
           <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center pl-1'>
             <div className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center  bg-[#8F8787]">
@@ -51,22 +75,28 @@ const FAQ = () => {
             </div>
           </div>
           <div className='flex flex-col rounded-3xl w-full h-[70%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"aasdsdffffffdsdffff  fffffffss dfffffffdsfsdfsdffff ffffffsdfsd fsdfffffff233 3333333333 3333333dddddddd ddddddddsdff dfsdfdssfdsfdsfdfs dfsddddddddddddd dddasdsd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"adsasd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"asdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            {
+              allchat
+              .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
+              .map((chat:ChatMessegeProp,idx:number) => {
+                return <ChatMessageBox key={idx} {...chat}/>
+              })
+            }
           </div>
-          <div className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none'>
-            <input className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl' placeholder='Type your message here...'/>
-            <img className='w-8 h-8 pr-3' src={send} alt='send'/>
-          </div>
+          <form className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none'>
+            <input 
+              className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl' 
+              placeholder='Type your message here...'
+              value={chat}
+              required
+              onChange={(e) => setChat(e.target.value)}
+              onKeyDown={handleKeypress}
+            />
+            <img 
+              className='w-8 h-8 pr-3' src={send} alt='send'
+              onClick={handleSubmit}
+            />
+          </form>
         </div>
       </div>
     </div>

@@ -5,11 +5,12 @@ import BgImage from '../../assets/Homepage_Bg.png'
 import axios from 'axios';
 import config from '../../config/config.json';
 import { LineIDToken } from '../../interface/LineIDToken';
+import { UserProp } from '../../interface/UserProp'
 
 const Homepage = () => {
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<UserProp>();
 
   const getUser = async () => {
     try{
@@ -94,7 +95,7 @@ const Homepage = () => {
       ?
       <NavBar />
       :
-      <NavBarLogin user={user} />
+      <NavBarLogin {...user!} />
       }
         <div className="absolute top-1/3 flex-col pl-10 w-[28.125rem]">
           <div className="text-4xl font-bold text-white">ORAL AI</div>

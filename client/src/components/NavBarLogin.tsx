@@ -1,7 +1,8 @@
 import React from 'react'
 import Logo from '../assets/Logo.svg'
+import { UserProp } from '../interface/UserProp'
 
-const NavBarLogin = (user:any) => {
+const NavBarLogin: React.FC<UserProp> = ({ _id, lineopenid, lineusername, lineprofilepicture, lineemail }) => {
     
   const handleLogout = () => {
     localStorage.removeItem('userID');
@@ -20,10 +21,10 @@ const NavBarLogin = (user:any) => {
         <img
           className="flex h-12 w-12 rounded-full cursor-pointer select-none"
           alt=""
-          src={user.user?.lineprofilepicture}
+          src={lineprofilepicture}
           onClick={handleLogout}
         />
-        <div>{user.user?.lineusername}</div>
+        <div>{lineusername}</div>
       </div>
     </div>
   )

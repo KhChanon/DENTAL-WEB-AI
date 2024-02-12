@@ -7,12 +7,77 @@ import send from '../../assets/send.png'
 import ChatListBox from './components/ChatListBox'
 import ChatMessageBox from '../../components/ChatMessageBox'
 import config from '../../config/config.json';
+import { ChatMessegeProp } from '../../interface/ChatMessegeProp';
+import { RecordProp } from '../../interface/RecordProp';
+import { UserProp } from '../../interface/UserProp'
 
 const Followup:React.FC = () => {
   const navigate = useNavigate();
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<UserProp>();
+  const [chat, setChat] = useState<string>("");
+  const [allchat, setAllchat] = useState<ChatMessegeProp[]>([]);
+  const [records, setRecords] = useState<RecordProp[]>([]);
+
+  const data:RecordProp[] = [
+    {
+      RecordID: "1",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "sad",
+      Status: "sad",
+      ChatMessesge: "sad"
+    },
+    {
+      RecordID: "2",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery2",
+      Status: "completed",
+      ChatMessesge: "Hello, how are you?"
+    },
+    {
+      RecordID: "3",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery3",
+      Status: "in progress",
+      ChatMessesge: "Hey, how's it going?"
+    },
+    {
+      RecordID: "4",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery4",
+      Status: "completed",
+      ChatMessesge: "Good job!"
+    },
+    {
+      RecordID: "5",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery5",
+      Status: "in progress",
+      ChatMessesge: "Almost done!"
+    },
+    {
+      RecordID: "6",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery6",
+      Status: "completed",
+      ChatMessesge: "Great job!"
+    },
+    {
+      RecordID: "7",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery7",
+      Status: "in progress",
+      ChatMessesge: "Keep up the good work!"
+    },
+    {
+      RecordID: "8",
+      TimeStamp: new Date(),
+      SurgicalProcedure: "surgery8",
+      Status: "completed",
+      ChatMessesge: "You're doing amazing!"
+    }
+  ]
   
   const getUser = async () => {
     try{
@@ -22,10 +87,31 @@ const Followup:React.FC = () => {
       console.error(error);
     }
   }
+
+  const handleKeypress = (e:React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async () => {
+    if(chat === ""){
+      console.log("string empty")
+    }
+    else{
+      setChat("");
+      setAllchat([...allchat, {
+        UserChat: true,
+        TimeStamp: new Date(),
+        Text: chat!,
+      }]);
+    }
+  }
   
   useEffect(() => {
     if (localStorage.getItem(`userID`)) {
       getUser();
+      setRecords(data)
       setAuth(true);
     }
   }, []);
@@ -34,20 +120,23 @@ const Followup:React.FC = () => {
     <div className='w-screen h-screen flex flex-col'>
       {!auth
       ?
-      <NavBar />
+        <NavBar />
       :
-      <NavBarLogin user={user} />
+      <NavBarLogin {...user!} />
       }
-      <div className='flex flex-row w-full h-full'>
+      <div className='flex flex-row w-full h-full overflow-hidden'>
         <div className="flex flex-col items-center justify-center w-1/5 py-5 pl-12 select-none">
-          <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center'>
-            <div className="flex flex-col items-center justify-center w-[85%] px-3 h-16 bg-[#B54172] rounded-[30px] text-center text-white font-medium text-base cursor-pointer">
+          <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto'>
+            <div className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#B54172] rounded-[30px] text-center text-white font-medium text-base cursor-pointer">
               <p className='m-0'>+</p>
             </div>
-            <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />
-            <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />
-            <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />
-            <ChatListBox RecordID={"1"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"asd"} ChatMessesge={'asd'} />
+            {
+            records
+            .sort((a:RecordProp, b:RecordProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
+            .map((record:RecordProp) => {
+                return <ChatListBox key={record.RecordID} {...record} />
+              })
+            }
           </div>
         </div>
         <div className='flex flex-col items-center w-4/5 p-5 px-12 justify-between'>
@@ -63,22 +152,28 @@ const Followup:React.FC = () => {
             </div>
           </div>
           <div className='flex flex-col rounded-3xl w-full h-[70%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"aasdsdffffffdsdffff  fffffffss dfffffffdsfsdfsdffff ffffffsdfsd fsdfffffff233 3333333333 3333333dddddddd ddddddddsdff dfsdfdssfdsfdsfdfs dfsddddddddddddd dddasdsd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"adsasd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"asdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={false} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
-            <ChatMessageBox FollowUpChatID={"1"} UserChat={true} TimeStamp={new Date()} Text={"assdsdd"} RecordID={"1"}/>
+            {
+              allchat
+              .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
+              .map((chat:ChatMessegeProp,idx:number) => {
+                return <ChatMessageBox key={idx} {...chat}/>
+              })
+            }
           </div>
-          <div className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none'>
-            <input className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl' placeholder='Type your message here...'/>
-            <img className='w-8 h-8 pr-3' src={send} alt='send'/>
-          </div>
+          <form className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none'>
+          <input 
+              className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl' 
+              placeholder='Type your message here...'
+              value={chat}
+              required
+              onChange={(e) => setChat(e.target.value)}
+              onKeyDown={handleKeypress}
+            />
+            <img 
+              className='w-8 h-8 pr-3' src={send} alt='send'
+              onClick={handleSubmit}
+            />
+          </form>
         </div>
       </div>
     </div>
