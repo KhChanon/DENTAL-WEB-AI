@@ -5,11 +5,12 @@ import Meow from '../../assets/meow.png'
 import InfoItem from './components/InfoItem'
 import axios from 'axios';
 import config from '../../config/config.json';
+import { UserProp } from '../../interface/UserProp'
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<UserProp>();
 
   const getUser = async () => {
     try{
@@ -33,7 +34,7 @@ const Patientinfo = () => {
       ?
       <NavBar />
       :
-      <NavBarLogin user={user} />
+      <NavBarLogin {...user!} />
       }
       <section className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display">
       <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full mq700:flex-wrap mq700:gap-[1.56rem]">

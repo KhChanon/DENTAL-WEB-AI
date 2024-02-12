@@ -13,6 +13,9 @@ const FAQChatHistorySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    chatreply: {
+        type:String,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
