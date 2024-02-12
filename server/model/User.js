@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
+    lineopenid: {
+        type: String,
+        required: true,
+        unique: [true, "Line ID already registered"],
+    },
     lineusername: {
         type: String,
         required: true,
-        unique: [true, "Username already exists"]
     },
     lineprofilepicture: {
         type: String,
-        required: false
+        required: false,
     },
-    linestatusmessage: {
+    lineemail: {
         type: String,
-        required: false
+        required: false,
     },
     records: [{
         surgicalprocedure: {
