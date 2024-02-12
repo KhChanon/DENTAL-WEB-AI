@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import {useNavigate} from 'react-router-dom'
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import ChatMessageBox from '../../components/ChatMessageBox'
@@ -10,7 +9,6 @@ import { ChatMessegeProp } from '../../interface/ChatMessegeProp'
 import { UserProp } from '../../interface/UserProp'
 
 const FAQ = () => {
-  const navigate = useNavigate();
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
@@ -63,18 +61,7 @@ const FAQ = () => {
       }
       <div className='flex flex-row w-full h-full overflow-hidden'>
         <div className='flex flex-col items-center w-full p-5 px-12 justify-between'>
-          <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center pl-1'>
-            <div className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center  bg-[#8F8787]">
-              FAQ
-            </div>
-            <div 
-              className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center cursor-pointer"
-              onClick={() => {navigate('/followup')}}
-            >
-              Follow-Up
-            </div>
-          </div>
-          <div className='flex flex-col rounded-3xl w-full h-[70%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
+          <div className='flex flex-col rounded-3xl w-full h-[85%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
             {
               allchat
               .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
