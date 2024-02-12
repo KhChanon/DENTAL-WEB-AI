@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
@@ -12,7 +11,6 @@ import { RecordProp } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
 
 const Followup:React.FC = () => {
-  const navigate = useNavigate();
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
@@ -127,7 +125,11 @@ const Followup:React.FC = () => {
       <div className='flex flex-row w-full h-full overflow-hidden'>
         <div className="flex flex-col items-center justify-center w-1/5 py-5 pl-12 select-none">
           <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto'>
-            <div className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#B54172] rounded-[30px] text-center text-white font-medium text-base cursor-pointer">
+            <div 
+              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#B54172] rounded-[30px] text-center text-white font-medium text-base cursor-pointer"
+              onClick={() => {window.location.href = '/addcase'}}
+            >
+              
               <p className='m-0'>+</p>
             </div>
             {
@@ -140,18 +142,7 @@ const Followup:React.FC = () => {
           </div>
         </div>
         <div className='flex flex-col items-center w-4/5 p-5 px-12 justify-between'>
-          <div className='flex rounded-4xl w-1/4 h-16 bg-[#423C3C] select-none text-white font-semibold text-xl items-center '>
-            <div 
-              className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center cursor-pointer"
-              onClick={() => {navigate('/faq')}}
-            >
-              FAQ
-            </div>
-            <div className="flex w-[49.25%] h-[87.5%] rounded-4xl items-center justify-center bg-[#8F8787]">
-              Follow-Up
-            </div>
-          </div>
-          <div className='flex flex-col rounded-3xl w-full h-[70%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
+          <div className='flex flex-col rounded-3xl w-full h-[85%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
             {
               allchat
               .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
