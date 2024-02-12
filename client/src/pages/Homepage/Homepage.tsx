@@ -11,73 +11,69 @@ const Homepage = () => {
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<any>();
 
-  const getUser = () => {
-    axios.get(config.API_URL + '/users/user/' + userID)
-    .then(res => {
+  const getUser = async () => {
+    try{
+      const res = await axios.get(config.API_URL + '/users/user/' + userID);
       setUser(res.data.user);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  const handleLineLogin = async () => {
+  const handleLineLogin = () => {
     const state = Math.random().toString(36).substring(2, 15) +Math.random().toString(36).replace(/[^a-z]+/g, '').substring(0, 10);
 
     window.location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${config.CLIENT_ID}&redirect_uri=${config.REDIRECT_URL}&state=${state}&scope=${config.SCOPE}`;
   }
 
-  const handleAuth = async (idtoken:string,userProfile:LineIDToken) => {
-    const res = await axios.post(config.API_URL + '/users/auth', {
+  const handleAuth = async (userProfile:LineIDToken) => {
+    try{
+      const res = await axios.post(config.API_URL + '/users/auth', {
         lineopenid: userProfile.sub,
         lineusername: userProfile.name,
         lineprofilepicture: userProfile.picture ?? null,
         lineemail: userProfile.email ?? null,
-        })
-    .then(res => {
-        localStorage.setItem(`userID`, res.data.user._id);
-        window.location.href = '/';
-    })
-    .catch(error => {
-        console.error(error);
-    });
+      })
+      localStorage.setItem(`userID`, res.data.user._id);
+      window.location.href = '/';
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const handleLineVerifyIDToken = async (idToken:string) => {
-    const res = await axios.post('https://api.line.me/oauth2/v2.1/verify', {
-        id_token: idToken,
-        client_id: config.CLIENT_ID,
-    }, {
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        },
-    })
-    .then(res => {
-        handleAuth(idToken,res.data);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    try{
+      const res = await axios.post('https://api.line.me/oauth2/v2.1/verify', {
+          id_token: idToken,
+          client_id: config.CLIENT_ID,
+      }, {
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          },
+      })
+      handleAuth(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const handleLineLoginAcessCode = async (code:string) => {
-    const res = await axios.post('https://api.line.me/oauth2/v2.1/token', {
-        grant_type: 'authorization_code',
-        code : code,
-        redirect_uri: config.REDIRECT_URL,
-        client_id: config.CLIENT_ID,
-        client_secret: config.CLIENT_SECRET
-    }, {
-        headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        },
-    })
-    .then(res => {
-        handleLineVerifyIDToken(res.data.id_token);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    try{
+      const res = await axios.post('https://api.line.me/oauth2/v2.1/token', {
+          grant_type: 'authorization_code',
+          code : code,
+          redirect_uri: config.REDIRECT_URL,
+          client_id: config.CLIENT_ID,
+          client_secret: config.CLIENT_SECRET
+      }, {
+          headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          },
+      })
+      handleLineVerifyIDToken(res.data.id_token);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {

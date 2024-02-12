@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Logo from '../assets/Logo.svg'
-import axios from 'axios';
 import config from '../config/config.json';
-import { LineIDToken } from '../interface/LineIDToken';
 
 const NavBar = () => {
 

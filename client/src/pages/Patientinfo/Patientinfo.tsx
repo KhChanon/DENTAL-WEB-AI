@@ -11,14 +11,13 @@ const Patientinfo = () => {
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<any>();
 
-  const getUser = () => {
-    axios.get(config.API_URL + '/users/user/' + userID)
-    .then(res => {
+  const getUser = async () => {
+    try{
+      const res = await axios.get(config.API_URL + '/users/user/' + userID);
       setUser(res.data.user);
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
   
   useEffect(() => {

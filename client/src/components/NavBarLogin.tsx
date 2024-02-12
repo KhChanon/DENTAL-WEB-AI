@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Logo from '../assets/Logo.svg'
 
 const NavBarLogin = (user:any) => {
