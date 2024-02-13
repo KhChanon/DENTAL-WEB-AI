@@ -6,7 +6,7 @@ import InfoItem from './components/InfoItem'
 import axios from 'axios';
 import config from '../../config/config.json';
 import { UserProp } from '../../interface/UserProp'
-import PlusIcon from './components/PlusIcon.svg';
+import PlusIcon from '../../assets/plus-solid.svg';
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
@@ -55,14 +55,19 @@ const Patientinfo = () => {
               ประวัติการรักษา
             </b>
             <div className="w-[4.13rem] relative h-[2.08rem] text-center text-[1.5rem]">
-              {/* <div className="absolute top-[0rem] left-[0rem] rounded-[10px] bg-palevioletred w-[4.13rem] h-[2.08rem]" /> */}
-
-              {/* <PlusIcon className="absolute top-[0.4rem] rounded-[10px] flex items-center justify-center w-[4rem] h-[2rem]"/> */}
-              <img
-                className="cursor-pointer select-none"
+              {/* <div className='bg-[#a12d72] rounded-lg w-[40px] h-[40px] flex items-center'>
+                <img
+                className="cursor-pointer select-none w-[30px] h-[30px] "
                 alt=""
                 src={PlusIcon}
-              />
+                />
+              </div> */}
+              <img
+                className="cursor-pointer select-none w-[20px] h-[20px] bg-[#a12d72] py-[10px] px-[25px] rounded-lg"
+                alt=""
+                src={PlusIcon}
+                />
+              
             </div>
           </div>
           <div className="self-stretch rounded-xl bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black mq450:pt-[1.25rem] mq450:pb-[1.25rem] mq450:box-border">
