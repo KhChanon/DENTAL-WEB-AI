@@ -62,16 +62,17 @@ const addRecord = async (req, res) => {
 
         const user = await User.findById(userID);
 
-        const data = {
+        const record = {
             surgicalprocedure: surgicalprocedure,
             surgicalstatus: surgicalstatus
         }
 
-        const record = user.records.push(data);
+        user.records.push(record);
+        record.recordID = user.records[user.records.length-1]._id;
 
         user.save();
 
-        res.status(201).json({sucecess:true,message:"Record added",record,data});
+        res.status(201).json({sucecess:true,message:"Record added",record});
 
     } catch (err) {
         res.status(500).json({ error: err.message });
