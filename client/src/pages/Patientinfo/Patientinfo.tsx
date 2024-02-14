@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
-import Meow from '../../assets/meow.png'
 import InfoItem from './components/InfoItem'
 import axios from 'axios';
 import config from '../../config/config.json';
