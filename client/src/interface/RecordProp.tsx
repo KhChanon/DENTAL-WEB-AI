@@ -1,7 +1,7 @@
 export interface RecordProp {
-    RecordID: string;
-    TimeStamp: Date;
-    SurgicalProcedure: string;
-    Status: string;
-    ChatMessesge: string;
+    _id: string;
+    surgicalprocedure: string;
+    surgicaldate: Date;
+    surgicalstatus: string;
+    surgicalresult: string;
  }

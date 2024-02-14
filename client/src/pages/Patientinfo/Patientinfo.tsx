@@ -7,11 +7,28 @@ import axios from 'axios';
 import config from '../../config/config.json';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
+import { RecordProp } from '../../interface/RecordProp'
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
+  const [records, setRecords] = useState<RecordProp[]>([]);
+
+  const getRecords = async () => {
+    try {
+      const res = await axios.get(config.API_URL + '/users/' + userID + '/records');
+
+      res.data.records.forEach((record:RecordProp) => {
+        record.surgicaldate = new Date(record.surgicaldate);
+      });
+      setRecords(res.data.records);
+
+      console.log(res.data.records);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const getUser = async () => {
     try {
@@ -25,6 +42,7 @@ const Patientinfo = () => {
   useEffect(() => {
     if (localStorage.getItem(`userID`)) {
       getUser();
+      getRecords();
       setAuth(true);
     }
   }, []);
@@ -43,10 +61,10 @@ const Patientinfo = () => {
             className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover"
             loading="eager"
             alt=""
-            src={Meow}
+            src={user?.lineprofilepicture}
           />
           <div className="m-0 h-[5.31rem] relative text-inherit font-bold font-inherit flex items-center max-w-full mq450:text-[2.38rem] mq950:text-[3.19rem]">
-            Meow Meow Sean
+            {user?.lineusername}
           </div>
         </div>
         <div className="self-stretch flex flex-col items-start justify-start gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200">
@@ -64,21 +82,25 @@ const Patientinfo = () => {
               
             </div>
           </div>
-          <div className="self-stretch rounded-xl bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black mq450:pt-[1.25rem] mq450:pb-[1.25rem] mq450:box-border">
+          <div className="self-stretch rounded-xl max-h-[26.5rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black mq450:pt-[1.25rem] mq450:pb-[1.25rem] mq450:box-border">
             <div className="w-[57.38rem] flex flex-row items-start justify-start gap-[85px] max-w-full mq450:flex-wrap">
-              <div className="relative font-extrabold">Record ID</div>
-              <div className="relative font-extrabold w-[133px]">วันที่</div>
+              <div className="relative font-extrabold w-[157px]">Record ID</div>
+              <div className="relative font-extrabold w-[105px]">วันที่</div>
               <div className="relative font-extrabold w-[140px]">ศัลยกรรม</div>
               <div className="h-[1.19rem] relative font-extrabold flex items-center">
                 สถานะ
               </div>
             </div>
             <div className="w-[57.06rem] h-[0.06rem] relative box-border max-w-full border-t-[1px] border-solid border-black" />
-            <InfoItem RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
-            <InfoItem RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
-            <InfoItem RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
-            <InfoItem RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
-            <InfoItem RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
+            <div className="w-full flex flex-col items-start justify-start gap-[0.94rem] max-w-full overflow-y-auto overscroll-x-none pb-2">
+              {
+              records
+              .sort((a:RecordProp, b:RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
+              .map((record:RecordProp) => {
+                  return <InfoItem key={record._id} {...record} />
+                })
+              }
+            </div>
           </div>
         </div>
       </div>

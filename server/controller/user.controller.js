@@ -54,9 +54,9 @@ const getUser = async (req, res) => {
 }
 
 
-// add followup
+// add record
 // Page: add case page
-const addFollowup = async (req, res) => {
+const addRecord = async (req, res) => {
     try {
         const { surgicalprocedure, surgicalstatus, userID } = req.body;
 
@@ -78,8 +78,26 @@ const addFollowup = async (req, res) => {
     }
 }
 
+// get all record
+// Page: Follow-Up Page
+const getAllRecord = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const user = await User.findById(id);
+
+        const records = user.records;
+
+        res.status(201).json({sucecess:true,message:"Record Found",records});
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     authUser,
     getUser,
-    addFollowup,
+    addRecord,
+    getAllRecord,
 }

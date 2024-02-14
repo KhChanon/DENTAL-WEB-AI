@@ -23,11 +23,12 @@ const Addcase = () => {
 
   const addFollowCase = async () => {
     try {
-      const res = await axios.post(config.API_URL + '/users/addfollowup', {
+      const res = await axios.post(config.API_URL + '/users/addrecord', {
         surgicalprocedure: surgicalprocedure,
         surgicalstatus: 'Follow up',
         userID: userID
       });
+      window.location.href = '/followup';
     } catch (error) {
       console.error(error);
     }

@@ -19,64 +19,20 @@ const Followup:React.FC = () => {
   const [allchat, setAllchat] = useState<ChatMessegeProp[]>([]);
   const [records, setRecords] = useState<RecordProp[]>([]);
 
-  const data:RecordProp[] = [
-    {
-      RecordID: "1",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "sad",
-      Status: "sad",
-      ChatMessesge: "sad"
-    },
-    {
-      RecordID: "2",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery2",
-      Status: "completed",
-      ChatMessesge: "Hello, how are you?"
-    },
-    {
-      RecordID: "3",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery3",
-      Status: "in progress",
-      ChatMessesge: "Hey, how's it going?"
-    },
-    {
-      RecordID: "4",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery4",
-      Status: "completed",
-      ChatMessesge: "Good job!"
-    },
-    {
-      RecordID: "5",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery5",
-      Status: "in progress",
-      ChatMessesge: "Almost done!"
-    },
-    {
-      RecordID: "6",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery6",
-      Status: "completed",
-      ChatMessesge: "Great job!"
-    },
-    {
-      RecordID: "7",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery7",
-      Status: "in progress",
-      ChatMessesge: "Keep up the good work!"
-    },
-    {
-      RecordID: "8",
-      TimeStamp: new Date(),
-      SurgicalProcedure: "surgery8",
-      Status: "completed",
-      ChatMessesge: "You're doing amazing!"
+  const getRecords = async () => {
+    try {
+      const res = await axios.get(config.API_URL + '/users/' + userID + '/records');
+
+      res.data.records.forEach((record:RecordProp) => {
+        record.surgicaldate = new Date(record.surgicaldate);
+      });
+      setRecords(res.data.records);
+
+      console.log(res.data.records);
+    } catch (error) {
+      console.error(error);
     }
-  ]
+  }
   
   const getUser = async () => {
     try{
@@ -110,7 +66,7 @@ const Followup:React.FC = () => {
   useEffect(() => {
     if (localStorage.getItem(`userID`)) {
       getUser();
-      setRecords(data)
+      getRecords()
       setAuth(true);
     }
   }, []);
@@ -138,9 +94,9 @@ const Followup:React.FC = () => {
             </div>
             {
             records
-            .sort((a:RecordProp, b:RecordProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
+            .sort((a:RecordProp, b:RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
             .map((record:RecordProp) => {
-                return <ChatListBox key={record.RecordID} {...record} />
+                return <ChatListBox key={record._id} {...record} />
               })
             }
           </div>
