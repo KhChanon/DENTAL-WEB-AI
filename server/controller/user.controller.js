@@ -53,7 +53,33 @@ const getUser = async (req, res) => {
     }
 }
 
+
+// add followup
+// Page: add case page
+const addFollowup = async (req, res) => {
+    try {
+        const { surgicalprocedure, surgicalstatus, userID } = req.body;
+
+        const user = await User.findById(userID);
+
+        const data = {
+            surgicalprocedure: surgicalprocedure,
+            surgicalstatus: surgicalstatus
+        }
+
+        const record = user.records.push(data);
+
+        user.save();
+
+        res.status(201).json({sucecess:true,message:"Record added",record,data});
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     authUser,
     getUser,
+    addFollowup,
 }

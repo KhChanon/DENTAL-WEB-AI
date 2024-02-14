@@ -26,6 +26,7 @@ app.get('/message', (req, res) => {
 });
 
 app.use('/api/users', require('./routes/user.routes'));
+app.use('/api/faq', require('./routes/faq.routes'));
 
 
 const parentDirectory = path.join(__dirname, "..");

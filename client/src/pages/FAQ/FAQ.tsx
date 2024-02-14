@@ -24,6 +24,27 @@ const FAQ = () => {
     }
   }
 
+  const postChat = async () => {
+    try{
+      if(user === undefined){
+        const res = await axios.post(config.API_URL + '/faq/add', {
+          question: chat,
+          answer : "",
+          userID: "",
+        });
+      }
+      else{
+        const res = await axios.post(config.API_URL + '/faq/add', {
+          question: chat,
+          answer : "",
+          userID: userID,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const handleKeypress = (e:React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSubmit();
@@ -41,6 +62,7 @@ const FAQ = () => {
         TimeStamp: new Date(),
         Text: chat!,
       }]);
+      await postChat();
     }
   }
   

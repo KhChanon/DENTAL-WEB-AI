@@ -15,7 +15,7 @@ const FollowUpChatSchema = new mongoose.Schema({
     },
     record: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User.records'
+        ref: 'user.records'
     },
 });
 
