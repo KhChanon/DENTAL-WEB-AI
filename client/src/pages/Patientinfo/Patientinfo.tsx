@@ -37,7 +37,7 @@ const Patientinfo = () => {
         :
         <NavBarLogin {...user!} />
       }
-      <section className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display">
+      <div className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display">
         <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full mq700:flex-wrap mq700:gap-[1.56rem]">
           <img
             className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover"
@@ -87,7 +87,7 @@ const Patientinfo = () => {
             <InfoItem RecordID={"12345678910"} TimeStamp={new Date()} SurgicalProcedure={"ผ่าฟันคุด"} Status={"Done"} ChatMessesge={"55555555"} />
           </div>
         </div>
-      </section>
+      </div>
     </div>
   )
 }
