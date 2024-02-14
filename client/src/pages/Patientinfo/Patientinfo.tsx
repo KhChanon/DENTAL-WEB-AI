@@ -54,14 +54,8 @@ const Patientinfo = () => {
             <b className="w-[25.5rem] relative flex items-center h-[2.94rem] shrink-0">
               ประวัติการรักษา
             </b>
-            <div className="w-[4.13rem] relative h-[2.08rem] text-center text-[1.5rem]">
-              {/* <div className='bg-[#a12d72] rounded-lg w-[40px] h-[40px] flex items-center'>
-                <img
-                className="cursor-pointer select-none w-[30px] h-[30px] "
-                alt=""
-                src={PlusIcon}
-                />
-              </div> */}
+            <div className="w-[4.13rem] relative h-[2.08rem] text-center text-[1.5rem]"onClick={() => {window.location.href = '/addcase'}}>
+              
               <img
                 className="cursor-pointer select-none w-[20px] h-[20px] bg-[#a12d72] py-[10px] px-[25px] rounded-lg"
                 alt=""

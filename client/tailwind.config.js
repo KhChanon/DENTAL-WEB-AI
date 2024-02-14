@@ -18,6 +18,7 @@ module.exports = {
           "200": "rgba(161, 122, 194, 0.57)",
         },
         black: "#000",
+        lightpurple: "#BAA5CE",
         purple: "#8660A9",
         green: "#57DA36",
         palevioletred: "#b54272",

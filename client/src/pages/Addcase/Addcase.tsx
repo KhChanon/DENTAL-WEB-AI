@@ -5,11 +5,11 @@ import { UserProp } from '../../interface/UserProp';
 import axios from 'axios';
 import config from '../../config/config.json';
 
+
 const Addcase = () => {
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
-  const [selectedTreatment, setSelectedTreatment] = useState<string | null>();
 
   const getUser = async () => {
     try{
@@ -38,27 +38,55 @@ const Addcase = () => {
       <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#D9D9D9]'>
         <div className='flex flex-col box-border h-full w-full rounded-xl justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md'>
           <div className='text-2xl font-bold'>โปรดเลือกการรักษาที่พึ่งได้รับ</div>
-          <button
-            className={`bg-${selectedTreatment === 'ถอนฟัน' ? '[#8660A9]' : '[#BAA5CE]'} text-white cursor-pointer hover:bg-[#8660A9] [border:none] py-[30px] rounded-xl text-xl w-3/4`}
-            onClick={() => setSelectedTreatment('ถอนฟัน')}
-          >ถอนฟัน
-          </button>
-          <button
-            className={`bg-${selectedTreatment === 'ผ่าฟันคุด' ? '[#8660A9]' : '[#BAA5CE]'} text-white cursor-pointer hover:bg-[#8660A9] [border:none] py-[30px] rounded-xl text-xl w-3/4`}
-            onClick={() => setSelectedTreatment('ผ่าฟันคุด')}
-          >ผ่าฟันคุด
-          </button>
-          <button
-            className={`bg-${selectedTreatment === 'ผ่าตัดเหงือก' ? '[#8660A9]' : '[#BAA5CE]'} text-white cursor-pointer hover:bg-[#8660A9] [border:none] py-[30px] rounded-xl text-xl w-3/4`}
-            onClick={() => setSelectedTreatment('ผ่าตัดเหงือก')}
-          >ผ่าตัดเหงือก
-          </button>
-          <button
-            className={`bg-${selectedTreatment === 'ผ่าตัดรากฟันเทียม' ? '[#8660A9]' : '[#BAA5CE]'} text-white cursor-pointer hover:bg-[#8660A9] [border:none] py-[30px] rounded-xl text-xl w-3/4`}
-            onClick={() => setSelectedTreatment('ผ่าตัดรากฟันเทียม')}
-          >ผ่าตัดรากฟันเทียม
-          </button>
-          <button className='bg-palevioletred text-white cursor-pointer [border:none] py-[15px] rounded-xl w-1/3 self-center text-xl'>ยืนยัน</button>
+          <div className='flex w-3/4 justify-center'>
+            <input
+              className='peer hidden'
+              name='การรักษา'
+              type='radio'
+              id='ถอนฟัน'
+            />
+            <label
+              htmlFor='ถอนฟัน'
+              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+            >ถอนฟัน</label>
+          </div>
+          <div className='flex w-3/4 justify-center'>
+            <input
+              className='peer hidden'
+              name='การรักษา'
+              type='radio'
+              id='ผ่าฟันคุด'
+            />
+            <label
+              htmlFor='ผ่าฟันคุด'
+              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+            >ผ่าฟันคุด</label>
+          </div>
+          <div className='flex w-3/4 justify-center'>
+            <input
+              className='peer hidden'
+              name='การรักษา'
+              type='radio'
+              id='ผ่าตัดเหงือก'
+            />
+            <label
+              htmlFor='ผ่าตัดเหงือก'
+              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+            >ผ่าตัดเหงือก</label>
+          </div>
+          <div className='flex w-3/4 justify-center'>
+            <input
+              className='peer hidden'
+              name='การรักษา'
+              type='radio'
+              id='ผ่าตัดรากฟันเทียม'
+            />
+            <label
+              htmlFor='ผ่าตัดรากฟันเทียม'
+              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+            >ผ่าตัดรากฟันเทียม</label>
+          </div>
+          <button className='bg-palevioletred active:bg-[#e875a5] text-white cursor-pointer border-none py-[15px] rounded-xl w-1/3 self-center text-xl select-none'>ยืนยัน</button>
         </div>
       </div>
     </div>
