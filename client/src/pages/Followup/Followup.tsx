@@ -9,6 +9,7 @@ import config from '../../config/config.json';
 import { ChatMessegeProp } from '../../interface/ChatMessegeProp';
 import { RecordProp } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
+import PlusIcon from '../../assets/plus-solid.svg';
 
 const Followup:React.FC = () => {
   const [auth, setAuth] = useState<boolean>(false);
@@ -126,11 +127,14 @@ const Followup:React.FC = () => {
         <div className="flex flex-col items-center justify-center w-1/5 py-5 pl-12 select-none">
           <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto'>
             <div 
-              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#B54172] rounded-[30px] text-center text-white font-medium text-base cursor-pointer"
+              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#A12D72] rounded-[30px] text-center text-white font-medium text-base cursor-pointer"
               onClick={() => {window.location.href = '/addcase'}}
             >
-              
-              <p className='m-0'>+</p>
+                <img
+                className="cursor-pointer select-none w-[25px]"
+                alt=""
+                src={PlusIcon}
+              />
             </div>
             {
             records
