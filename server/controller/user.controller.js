@@ -1,4 +1,5 @@
 const User = require("../model/User");
+const Followup = require("../model/FollowUpChat");
 
 // auth users
 // Page: Home Page, FAQ Page, Follow-Up Page
@@ -69,6 +70,10 @@ const addRecord = async (req, res) => {
 
         user.records.push(record);
         record.recordID = user.records[user.records.length-1]._id;
+
+        await Followup.create({
+            record: record.recordID
+        });
 
         user.save();
 

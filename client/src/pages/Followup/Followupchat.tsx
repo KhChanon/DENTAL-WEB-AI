@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import send from '../../assets/send.png'
@@ -12,12 +13,22 @@ import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 
 const Followupchat:React.FC = () => {
+  const recordID = useParams<{id: string}>().id;
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
   const [chat, setChat] = useState<string>("");
   const [allchat, setAllchat] = useState<ChatMessegeProp[]>([]);
   const [records, setRecords] = useState<RecordProp[]>([]);
+
+  const getChat = async () => {
+    try {
+      const res = await axios.get(config.API_URL + '/followup/'+ recordID);
+      setAllchat(res.data.chat.chat);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const getRecords = async () => {
     try {
@@ -65,6 +76,7 @@ const Followupchat:React.FC = () => {
     if (localStorage.getItem(`userID`)) {
       getUser();
       getRecords()
+      getChat();
       setAuth(true);
     }
   }, []);
