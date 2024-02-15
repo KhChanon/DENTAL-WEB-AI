@@ -1,5 +1,5 @@
 export interface ChatMessegeProp {
-    UserChat: Boolean;
-    TimeStamp: Date;
-    Text: string;
+    userchat: Boolean;
+    chattime: Date;
+    chattext: string;
  }

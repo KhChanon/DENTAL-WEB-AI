@@ -58,9 +58,9 @@ const FAQ = () => {
     else{
       setChat("");
       setAllchat([...allchat, {
-        UserChat: true,
-        TimeStamp: new Date(),
-        Text: chat!,
+        userchat: true,
+        chattime: new Date(),
+        chattext: chat!,
       }]);
       await postChat();
     }
@@ -86,7 +86,7 @@ const FAQ = () => {
           <div className='flex flex-col rounded-3xl w-full h-[85%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
             {
               allchat
-              .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.TimeStamp.getTime() - b.TimeStamp.getTime())
+              .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.chattime.getTime() - b.chattime.getTime())
               .map((chat:ChatMessegeProp,idx:number) => {
                 return <ChatMessageBox key={idx} {...chat}/>
               })
