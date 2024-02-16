@@ -1,4 +1,5 @@
 const User = require("../model/User");
+const Followup = require("../model/FollowUpChat");
 
 // auth users
 // Page: Home Page, FAQ Page, Follow-Up Page
@@ -53,7 +54,56 @@ const getUser = async (req, res) => {
     }
 }
 
+
+// add record
+// Page: add case page
+const addRecord = async (req, res) => {
+    try {
+        const { surgicalprocedure, surgicalstatus, userID } = req.body;
+
+        const user = await User.findById(userID);
+
+        const record = {
+            surgicalprocedure: surgicalprocedure,
+            surgicalstatus: surgicalstatus
+        }
+
+        user.records.push(record);
+        record.recordID = user.records[user.records.length-1]._id;
+
+        await Followup.create({
+            record: record.recordID
+        });
+
+        user.save();
+
+        res.status(201).json({sucecess:true,message:"Record added",record});
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+// get all record
+// Page: Follow-Up Page
+const getAllRecord = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const user = await User.findById(id);
+
+        const records = user.records;
+
+        res.status(201).json({sucecess:true,message:"Record Found",records});
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     authUser,
     getUser,
+    addRecord,
+    getAllRecord,
 }

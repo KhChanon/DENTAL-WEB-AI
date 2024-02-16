@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
         },
         surgicaldate: {
             type: Date,
-            required: true
+            default: Date.now
         },
         surgicalstatus: {
             type: String,

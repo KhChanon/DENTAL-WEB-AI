@@ -10,11 +10,25 @@ const Addcase = () => {
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
+  const [surgicalprocedure, setSurgicalprocedure] = useState<string>('');
 
   const getUser = async () => {
     try{
       const res = await axios.get(config.API_URL + '/users/user/' + userID);
       setUser(res.data.user);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const addFollowCase = async () => {
+    try {
+      const res = await axios.post(config.API_URL + '/users/addrecord', {
+        surgicalprocedure: surgicalprocedure,
+        surgicalstatus: 'Follow up',
+        userID: userID
+      });
+      window.location.href = '/followup';
     } catch (error) {
       console.error(error);
     }
@@ -46,6 +60,7 @@ const Addcase = () => {
               id='ถอนฟัน'
             />
             <label
+              onClick={() => setSurgicalprocedure('ถอนฟัน')}
               htmlFor='ถอนฟัน'
               className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ถอนฟัน</label>
@@ -58,6 +73,7 @@ const Addcase = () => {
               id='ผ่าฟันคุด'
             />
             <label
+              onClick={() => setSurgicalprocedure('ผ่าฟันคุด')}
               htmlFor='ผ่าฟันคุด'
               className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าฟันคุด</label>
@@ -70,6 +86,7 @@ const Addcase = () => {
               id='ผ่าตัดเหงือก'
             />
             <label
+              onClick={() => setSurgicalprocedure('ผ่าฟันฟันคุด')}
               htmlFor='ผ่าตัดเหงือก'
               className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าตัดเหงือก</label>
@@ -82,11 +99,16 @@ const Addcase = () => {
               id='ผ่าตัดรากฟันเทียม'
             />
             <label
+              onClick={() => setSurgicalprocedure('ผ่าตัดรากฟันเทียม')}
               htmlFor='ผ่าตัดรากฟันเทียม'
               className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าตัดรากฟันเทียม</label>
           </div>
-          <button className='bg-palevioletred active:bg-[#e875a5] text-white cursor-pointer border-none py-[15px] rounded-xl w-1/3 self-center text-xl select-none'>ยืนยัน</button>
+          <button 
+            className='disabled bg-palevioletred active:bg-[#e875a5] text-white cursor-pointer border-none py-[15px] rounded-xl w-1/3 self-center text-xl select-none disabled:bg-slate-400 disabled:cursor-default'
+            disabled={surgicalprocedure === '' ? true : false} 
+            onClick={addFollowCase}
+          >ยืนยัน</button>
         </div>
       </div>
     </div>

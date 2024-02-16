@@ -1,19 +1,32 @@
 import React from 'react'
 import { RecordProp } from '../../../interface/RecordProp'
+import { useParams } from 'react-router-dom';
 
 
-const ChatListBox: React.FC<RecordProp> = ({RecordID,TimeStamp,SurgicalProcedure,Status,ChatMessesge}) => {
-
-    const day: number = TimeStamp.getDate();
-    const month: number = TimeStamp.getMonth()+1;
-    const year: number = TimeStamp.getFullYear();
+const ChatListBox: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate, surgicalstatus, surgicalresult}) => {
+    const recordID = useParams<{id: string}>().id;
+    const day: number = surgicaldate.getDate();
+    const month: number = surgicaldate.getMonth()+1;
+    const year: number = surgicaldate.getFullYear();
   
     // Format the date
     const formattedDate: string = `${padZero(day)}/${padZero(month)}/${year}`;
 
     return (
-    <div className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-stone-700 rounded-[30px] text-center text-white font-medium text-base cursor-pointer">
-        <p className='m-0'>{SurgicalProcedure} - {formattedDate}</p>
+    <div 
+        className='flex flex-col items-center justify-center w-full text-center text-white font-medium text-base cursor-pointer'
+        onClick={() => window.location.href = `/followup/${_id}`}
+    >
+        {recordID === _id
+        ?
+        <div className="bg-purple flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px]">
+            <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>
+        </div>
+        :
+        <div className=" bg-stone-700 flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] hover:bg-purple">
+            <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>
+        </div>
+        }
     </div>
   )
 }
