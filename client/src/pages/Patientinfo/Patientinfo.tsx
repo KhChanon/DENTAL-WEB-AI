@@ -23,7 +23,6 @@ const Patientinfo = () => {
       });
       setRecords(res.data.records);
 
-      console.log(res.data.records);
     } catch (error) {
       console.error(error);
     }
