@@ -6,7 +6,7 @@ import NavBarLogin from '../../components/NavBarLogin'
 import send from '../../assets/send.png'
 import ChatListBox from './components/ChatListBox'
 import ChatMessageBox from '../../components/ChatMessageBox'
-import config from '../../config/config.json';
+import config from '../../config/config';
 import { ChatMessegeProp } from '../../interface/ChatMessegeProp';
 import { RecordProp } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'

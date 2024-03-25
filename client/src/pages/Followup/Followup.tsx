@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import config from '../../config/config.json';
+import config from '../../config/config';
 import { RecordProp } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
 import NavBarLogin from '../../components/NavBarLogin';

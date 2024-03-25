@@ -4,7 +4,8 @@ const router = express.Router();
 const { authUser,
         getUser,
         addRecord, 
-        getAllRecord } = require('../controller/user.controller');
+        getAllRecord,
+        lineAuth } = require('../controller/user.controller');
 
 // POST a new user if not exists
 // Endpoint: /api/users/auth
@@ -21,5 +22,9 @@ router.route('/addrecord').post(addRecord);
 // get all record
 // Endpoint: /api/users/records
 router.route('/:id/records').get(getAllRecord);
+
+// line auth
+// Endpoint: /api/users/lineauth
+router.route('/lineauth').post(lineAuth);
 
 module.exports = router;

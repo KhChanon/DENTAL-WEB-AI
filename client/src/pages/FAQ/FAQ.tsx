@@ -4,7 +4,7 @@ import NavBarLogin from '../../components/NavBarLogin'
 import ChatMessageBox from '../../components/ChatMessageBox'
 import send from '../../assets/send.png'
 import axios from 'axios';
-import config from '../../config/config.json';
+import config from '../../config/config';
 import { ChatMessegeProp } from '../../interface/ChatMessegeProp'
 import { UserProp } from '../../interface/UserProp'
 

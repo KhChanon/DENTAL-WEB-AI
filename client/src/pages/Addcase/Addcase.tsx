@@ -3,7 +3,7 @@ import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import { UserProp } from '../../interface/UserProp';
 import axios from 'axios';
-import config from '../../config/config.json';
+import config from '../../config/config';
 
 
 const Addcase = () => {

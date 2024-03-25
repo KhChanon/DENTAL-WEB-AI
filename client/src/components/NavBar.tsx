@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from '../assets/Logo.svg'
-import config from '../config/config.json';
+import config from '../config/config';
 
 const NavBar = () => {
 

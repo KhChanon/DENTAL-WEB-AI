@@ -3,7 +3,7 @@ import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin';
 import BgImage from '../../assets/Homepage_Bg.png'
 import axios from 'axios';
-import config from '../../config/config.json';
+import config from '../../config/config';
 import { LineIDToken } from '../../interface/LineIDToken';
 import { UserProp } from '../../interface/UserProp'
 
@@ -60,18 +60,12 @@ const Homepage = () => {
 
   const handleLineLoginAcessCode = async (code:string) => {
     try{
-      const res = await axios.post('https://api.line.me/oauth2/v2.1/token', {
-          grant_type: 'authorization_code',
-          code : code,
-          redirect_uri: config.REDIRECT_URL,
-          client_id: config.CLIENT_ID,
-          client_secret: config.CLIENT_SECRET
-      }, {
-          headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          },
+      const res = await axios.post(config.API_URL + '/users/lineauth', {
+        code : code,
+        redirect_url: config.REDIRECT_URL,
       })
-      handleLineVerifyIDToken(res.data.id_token);
+      console.log(res.data);
+      handleLineVerifyIDToken(res.data.data.id_token);
     } catch (error) {
       console.error(error);
     }

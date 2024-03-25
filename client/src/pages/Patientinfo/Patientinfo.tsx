@@ -3,7 +3,7 @@ import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import InfoItem from './components/InfoItem'
 import axios from 'axios';
-import config from '../../config/config.json';
+import config from '../../config/config';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import { RecordProp } from '../../interface/RecordProp'

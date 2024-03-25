@@ -1,5 +1,7 @@
 const User = require("../model/User");
 const Followup = require("../model/FollowUpChat");
+const axios = require('axios');
+require('dotenv')
 
 // auth users
 // Page: Home Page, FAQ Page, Follow-Up Page
@@ -101,9 +103,35 @@ const getAllRecord = async (req, res) => {
     }
 }
 
+// line auth
+const lineAuth = async (req, res) => {
+    try{
+        const { code, redirect_url } = req.body;
+        const response = await axios.post('https://api.line.me/oauth2/v2.1/token', {
+            grant_type: 'authorization_code',
+            code : code,
+            redirect_uri: redirect_url,
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET
+        }, {
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+        console.log(response.data);
+        
+        res.status(201).json({sucecess:true,message:"Line Auth success",data:response.data});
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).json({ error: err.message });
+    }
+}
+
 module.exports = {
     authUser,
     getUser,
     addRecord,
     getAllRecord,
+    lineAuth,
 }
