@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, abort
 import joblib
 from sklearn.feature_extraction.text import CountVectorizer
 import dotenv
+import re
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
@@ -14,7 +15,37 @@ handler = WebhookHandler('f515c508206a04f59d7ac7c1088d4484')
 model = joblib.load("./RandomForestClassifier.joblib")
 vectoriser = joblib.load("./count_vec.pkl")
 
-label = {0: "General Health", 1: "Medication Related", 2: "Post-Procedure Care", 3: "Procedure Related", 4: "Risk-Related", 5: "Symptom Related", 6: "Technical"}
+Olabel = {-1: 'NC', 0: 'ถอนฟัน', 1: 'ผ่าฟันคุด', 2: 'ผ่าตัดเหงือก', 3: 'ผ่าตัดรากฟันเทียม'}
+Qlabel = {0: "General Health", 1: "Medication Related", 2: "Post-Procedure Care", 3: "Procedure Related", 4: "Risk-Related", 5: "Symptom Related", 6: "Technical"}
+
+
+def keyword_Search3(question):
+    returnClass = []
+    question = question.lower()
+    question = question.replace('?', '')
+    question = question.replace(' ', '')
+    
+    class_0_regex = r'(?!.*(.).*\1)[ถอนฟัน]{6}|ถ.นฟัน|ถอ.ฟัน|ถอน.น|อนฟัน|ถนฟัน|ถอฟัน|ถอนฟั|ถ.อนฟัน|ถอ.นฟัน|ถอน.ฟัน|ถอนฟั.น|ถน|ถ.อน|ถอ.น|ถอน'
+    class_1_regex = r'(?!.*(.).*\1)[ฟันคุด]{6}|.นคุด|ฟั.คุด|ฟันคุ.|ฟั.นคุด|ฟัน.คุด|ฟันคุ.ด|ฟัคุด|ฟันคด|ฟนคุด|นคุด|ฟันคุ'
+    class_2_regex = r'[เหงือก]{6}|.หงือก|เ.งือก|เห.อก|เหงื.ก|เหงือ.|เ.หงือก|เห.งือก|เหงื.อก|เหงือ.ก|เงือก|เหงอก|เหือก|เหงืก|หงือก|[ปริทันต์]{8}|.ริทันต์|ป.ทันต์|ปริ.นต์|ปริทั.ต์|ปริทัน.|ป.ริทันต์|ปริ.ทันต์|ปริทั.นต์|ปริทัน.ต์|ปรทันต์|ปิทันต์|ปริทนต์|ปริทันต|ปริทัน|ริทันต์'
+    class_3_regex = r'(?!การ|รัก|กัน)(?!.*(.).*\1)[รากฟัน]{6}|รกาฟัน|ราฟกัน|ร.กฟัน|รา.ฟัน|ราก.น|รากฟั.|ร.ากฟัน|รา.กฟัน|ราก.ฟัน|รากฟั.น|รกฟัน|ราฟัน|รากน|รากฟั|[รากเทียม]{8}|.ากเทียม|ร.กเทียม|รา.เทียม|ราก.ทียม|รากเ.ยม|รากเที.ม|รากเทีย.|ร.ากเทียม|รา.กเทียม|ราก.เทียม|รากเ.ทียม|รากเที.ยม|รากเทีย.ม|ากเทียม|รกเทียม|รากทียม|รากเยม|รากเทีม|ากฟันเทียม'
+    
+    if re.search(class_1_regex, question):
+        returnClass.append(1)
+    
+    if re.search(class_0_regex, question) and not re.search(class_1_regex, question):
+        returnClass.append(0)
+    
+    if re.search(class_2_regex, question):
+        returnClass.append(2)
+    
+    if re.search(class_3_regex, question):
+        returnClass.append(3)
+        
+    if len(returnClass) != 1:
+        returnClass = [-1]
+        
+    return returnClass[0]
 
 @app.route("/")
 def home():
@@ -40,13 +71,20 @@ def line():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     """ Here's all the messages will be handled and processed by the program """
+    operation = keyword_Search3(event.message.text)
+    
+    if operation == -1:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."))
+        return
 
     data = vectoriser.transform([event.message.text])
     prediction = model.predict(data)
-
+    
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=label[prediction[0]]))
+        TextSendMessage(text=f'Operation: {Olabel[operation]}\nQuestion Type: {Qlabel[prediction[0]]}'))
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -55,7 +93,7 @@ def predict():
     data = vectoriser.transform([input_text])
     prediction = model.predict(data)
 
-    return {'prediction': label[prediction[0]]}
+    return {'prediction': Qlabel[prediction[0]]}
 
 if __name__ == "__main__":
     context = ('../certificates/localhost.pem', '../certificates/localhost-key.pem')
