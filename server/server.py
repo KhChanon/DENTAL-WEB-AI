@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, abort
+from flask_cors import CORS
 import joblib
 from sklearn.feature_extraction.text import CountVectorizer
 import dotenv
@@ -8,6 +9,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 app = Flask(__name__)
+cors = CORS(app)
 
 line_bot_api = LineBotApi('bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('f515c508206a04f59d7ac7c1088d4484')
@@ -88,12 +90,19 @@ def handle_message(event):
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    input_text = request.form["question"]
+    
+    data = request.json
+    input_text = data['question']
+    
+    operation = keyword_Search3(input_text)
+    
+    if operation == -1:
+        return  {'answer': "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}
 
     data = vectoriser.transform([input_text])
     prediction = model.predict(data)
 
-    return {'prediction': Qlabel[prediction[0]]}
+    return {'Operation': Olabel[operation], 'Question Type': Qlabel[prediction[0]],  'answer':f'Operation: {Olabel[operation]}\nQuestion Type: {Qlabel[prediction[0]]}'}
 
 if __name__ == "__main__":
     context = ('../certificates/localhost.pem', '../certificates/localhost-key.pem')

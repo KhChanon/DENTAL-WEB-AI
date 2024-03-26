@@ -24,22 +24,42 @@ const FAQ = () => {
     }
   }
 
-  const postChat = async () => {
+  const postChat = async (answer:String) => {
     try{
       if(user === undefined){
         const res = await axios.post(config.API_URL + '/faq/add', {
           question: chat,
-          answer : "",
+          answer : answer,
           userID: "",
         });
       }
       else{
         const res = await axios.post(config.API_URL + '/faq/add', {
           question: chat,
-          answer : "",
+          answer : answer,
           userID: userID,
         });
       }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getAnswer = async () => {
+    try{
+      const res = await axios.post(config.MODEL_URL+'/predict', {
+        question: chat,
+      });
+      setAllchat([...allchat,{
+        userchat: true,
+        chattime: new Date(),
+        chattext: chat,
+      },{
+        userchat: false,
+        chattime: new Date(),
+        chattext: res.data.answer,
+      }]);
+      postChat(res.data.answer);
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +82,7 @@ const FAQ = () => {
         chattime: new Date(),
         chattext: chat!,
       }]);
-      await postChat();
+      getAnswer();
     }
   }
   
