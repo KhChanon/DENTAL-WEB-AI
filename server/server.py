@@ -1,18 +1,14 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, abort
 from flask_cors import CORS
 import joblib
-from sklearn.feature_extraction.text import CountVectorizer
 import dotenv
 import re
-from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+import requests
 
 app = Flask(__name__)
 cors = CORS(app)
 
-line_bot_api = LineBotApi('bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('f515c508206a04f59d7ac7c1088d4484')
+channel_access_token = 'bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='
 
 model = joblib.load("./RandomForestClassifier.joblib")
 vectoriser = joblib.load("./count_vec.pkl")
@@ -55,38 +51,40 @@ def home():
 
 @app.route("/line", methods=["POST"])
 def line():
-    # Get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
-
     # Get request body as text
     body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
-
-    # Handle webhook body
+    body_json = request.get_json()
+    app.logger.info(body_json)
+    
     try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
+        handle_message(body_json)
+    except:
         abort(400)
 
     return 'OK'
 
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
+def handle_message(body_json):
     """ Here's all the messages will be handled and processed by the program """
-    operation = keyword_Search3(event.message.text)
+    operation = keyword_Search3(body_json['events'][0]['message']['text'])
     
     if operation == -1:
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."))
+        requests.post('https://api.line.me/v2/bot/message/push', 
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
+                    json = { "to":  body_json['events'][0]['source']['userId'],
+                            "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}] 
+                })
         return
 
-    data = vectoriser.transform([event.message.text])
+    data = vectoriser.transform([body_json['events'][0]['message']['text']])
     prediction = model.predict(data)
+    text = str(f"Operation: {Olabel[operation]}\nQuestion Type: {Qlabel[prediction[0]]}")
     
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=f'Operation: {Olabel[operation]}\nQuestion Type: {Qlabel[prediction[0]]}'))
+    requests.post('https://api.line.me/v2/bot/message/push', 
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
+                    json = { "to":  body_json['events'][0]['source']['userId'],
+                            "messages": [{"type": "text", "text": text}]
+                })
+    return
 
 @app.route("/predict", methods=["POST"])
 def predict():
