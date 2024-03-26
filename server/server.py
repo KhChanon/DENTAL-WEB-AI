@@ -51,8 +51,6 @@ def home():
 
 @app.route("/line", methods=["POST"])
 def line():
-    # Get request body as text
-    body = request.get_data(as_text=True)
     body_json = request.get_json()
     app.logger.info(body_json)
     
@@ -64,7 +62,6 @@ def line():
     return 'OK'
 
 def handle_message(body_json):
-    """ Here's all the messages will be handled and processed by the program """
     operation = keyword_Search3(body_json['events'][0]['message']['text'])
     
     if operation == -1:
