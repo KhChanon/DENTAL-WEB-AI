@@ -63,22 +63,22 @@ def line():
 
 def handle_message(body_json):
     operation = keyword_Search3(body_json['events'][0]['message']['text'])
-    
+
     if operation == -1:
-        requests.post('https://api.line.me/v2/bot/message/push', 
+        requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
-                    json = { "to":  body_json['events'][0]['source']['userId'],
-                            "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}] 
+                    json = { "replyToken":  body_json['events'][0]['replyToken'],
+                            "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
                 })
         return
 
     data = vectoriser.transform([body_json['events'][0]['message']['text']])
     prediction = model.predict(data)
     text = str(f"Operation: {Olabel[operation]}\nQuestion Type: {Qlabel[prediction[0]]}")
-    
-    requests.post('https://api.line.me/v2/bot/message/push', 
+
+    requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
-                    json = { "to":  body_json['events'][0]['source']['userId'],
+                    json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": text}]
                 })
     return
