@@ -1,12 +1,16 @@
+import datetime
 from flask import Flask, request, abort
 from flask_cors import CORS
 import joblib
 import dotenv
-import re
 import requests
+import re
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
+app.config["MONGO_URI"] = dotenv.get_key("../.env", 'MONGO_URI')
 cors = CORS(app)
+mongo = PyMongo(app)
 
 channel_access_token = 'bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='
 
@@ -27,6 +31,7 @@ contexts = {
         "Symptom Related": "กลิ่นปากเหม็นหลังถอนฟันเกิดจากการติดเชื้อและเศษอาหารค้างในรอยถอนฟัน หากไม่ดูแลรักษาความสะอาดอย่างถูกวิธี ทันตแพทย์จะแนะนำให้ถอนฟันเมื่อฟันเสียจนซ่อมแซมไม่ได้แล้ว หรือเป็นภัยต่อฟันอื่นๆเพื่อป้องกันปัญหาเพิ่มมากขึ้น สาเหตุที่ต้องถอนฟันมีหลายประการ เช่น ฟันผุรุนแรง ปริทันต์อักเสบ ฟันคุด ฟันเบียดกันมาก เพื่อรักษาโรคในช่องปาก เพื่อการจัดฟัน หรือเตรียมการใส่ฟันปลอม แผลถอนฟันจะเจ็บประมาณ 3-4 วันแรกจากนั้นความเจ็บปวดจะค่อยๆลดลง แม้จะปวดฟันไม่จำเป็นต้องถอนฟันทักที หากยังรักษาหรือซ่อมฟันได้ควรพยายามรักษาฟันให้คงอยู่ก่อน แผลถอนฟันจะแห้งและหายเป็นแผลเป็นประมาณ 7-10 วัน หากดูแลรักษาความสะอาดเรียบร้อย ต้องถอนฟันเมื่อฟันผุลามไปจนถึงรากฟัน หรือมีการอักเสบที่รุนแรง ซ่อมแซมไม่ได้แล้ว"    
     }
 }
+
 
 def keyword_Search3(question):
     returnClass = []
@@ -80,13 +85,27 @@ def query(payload):
 
 def handle_message(body_json):
     operation = keyword_Search3(body_json['events'][0]['message']['text'])
-
+    
+    user = mongo.db.users.find_one({"lineopenid": body_json['events'][0]['source']['userId']})
+    
+    if user is None:
+        user = mongo.db.users.insert_one({"lineopenid": body_json['events'][0]['source']['userId']})
+        user_id = user.inserted_id
+    else:
+        user_id = user["_id"]
+    
     if operation == -1:
         requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
                 })
+        mongo.db.faqchathistories.insert_one({
+            "user": user_id, 
+            "chattext": body_json['events'][0]['message']['text'], 
+            "chatreply": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question.",
+            "chattime": datetime.datetime.now()
+        })
         return
 
     data = vectoriser.transform([body_json['events'][0]['message']['text']])
@@ -107,6 +126,14 @@ def handle_message(body_json):
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": text}]
                 })
+
+    mongo.db.faqchathistories.insert_one({
+        "user": user_id, 
+        "chattext": body_json['events'][0]['message']['text'], 
+        "chatreply": output['answer'],
+        "chattime": datetime.datetime.now()
+    })
+    
     return
 
 @app.route("/predict", methods=["POST"])
