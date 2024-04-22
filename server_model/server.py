@@ -87,7 +87,7 @@ def send_followup():
                             json = {"to":  user['lineopenid'],
                                     "messages": [{
                                         "type": "flex",
-                                        "altText": "This is a Flex Message",
+                                        "altText": "Follow-up reminder",
                                         "contents": {
                                             "type": "carousel",
                                             "contents": contents
