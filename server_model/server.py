@@ -6,13 +6,15 @@ import dotenv
 import requests
 import re
 from flask_pymongo import PyMongo
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = dotenv.get_key("../.env", 'MONGO_URI')
 cors = CORS(app)
 mongo = PyMongo(app)
 
-channel_access_token = 'bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='
+faq_access_token = 'bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='
+follow_access_token = 'TaiboYa8T+k2nHkAoUY5DvJp0OweJ4Bf/dAH8+c5feiTiAbpr/hMCXCXR+axM2ODJIeT1wM3lqeMnyJ6P6cIJz+KVvD/Fhvs1GFkGa1niMoReuTj3my9X0Z9IwAn/eF5aJJRhfyeGZbYrbpvzdihtAdB04t89/1O/w1cDnyilFU='
 
 model = joblib.load("./RandomForestClassifier.joblib")
 vectoriser = joblib.load("./count_vec.pkl")
@@ -32,6 +34,71 @@ contexts = {
     }
 }
 
+def send_followup():
+    for user in mongo.db.users.find():
+        
+        if 'records' not in user:
+            continue
+        
+        if len(user['records']) == 0:
+            continue
+        else:
+            contents = []
+            for record in user['records']:
+                if record['surgicalstatus'] == 'Follow up':
+                    contents.append({"type" : "bubble",
+                        "size" : "nano",
+                        "body" : {
+                            "type": "box",
+                            "layout": "vertical",
+                            "contents": [{
+                                        "type": "text",
+                                        "text": record['surgicalprocedure'],
+                                        "color": "#8C8C8C",
+                                        "size": "sm",
+                                        "wrap": True
+                                        },
+                                        {
+                                        "type": "text",
+                                        "text": record['surgicaldate'].strftime("%d/%m/%Y"),
+                                        "color": "#8C8C8C",
+                                        "size": "sm",
+                                        "wrap": True
+                                        }
+                                    ],
+                                    "spacing": "md",
+                                    "paddingAll": "12px"
+                        },
+                        "action": {
+                            "type": "message",
+                            "label": "action",
+                            "text": f"Record ID: {record['_id']}"
+                        },
+                        "styles": {
+                            "footer": {
+                                "separator": False
+                            }
+                        }
+                    })
+            
+            if len(contents) > 0:
+                requests.post('https://api.line.me/v2/bot/message/push',
+                        headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {follow_access_token}'},
+                            json = {"to":  user['lineopenid'],
+                                    "messages": [{
+                                        "type": "flex",
+                                        "altText": "This is a Flex Message",
+                                        "contents": {
+                                            "type": "carousel",
+                                            "contents": contents
+                                        }
+                                    }]
+                                })
+                print("Follow-up sent to user", user['lineopenid'], user['lineusername'])
+
+scheduler = BackgroundScheduler()
+job = scheduler.add_job(send_followup, 'interval', minutes=1440)
+scheduler.start()
 
 def keyword_Search3(question):
     returnClass = []
@@ -96,7 +163,7 @@ def handle_message(body_json):
     
     if operation == -1:
         requests.post('https://api.line.me/v2/bot/message/reply',
-                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {faq_access_token}'},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
                 })
@@ -122,7 +189,7 @@ def handle_message(body_json):
         text += f"\nAnswer: {output['answer']}"
 
     requests.post('https://api.line.me/v2/bot/message/reply',
-                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {channel_access_token}'},
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {faq_access_token}'},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": text}]
                 })
