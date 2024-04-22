@@ -7,6 +7,10 @@ module.exports = {
         limegreen: "#57da36",
         gray: "rgba(255, 255, 255, 0.2)",
         "colors-white-white": "#fff",
+        grayer: {
+          "100": "rgba(0, 0, 0, 0.5)",
+          "200": "rgba(255, 255, 255, 0.2)",
+        },
         darkslateblue: {
           "100": "#8660a9",
           "200": "#21294c",
