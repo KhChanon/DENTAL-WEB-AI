@@ -101,6 +101,69 @@ const Followupchat: React.FC = () => {
     }
   }, []);
 
+  const [bleed_choice, setbleed_choice] = useState<number | null>(null);
+  const [pain_level, setpain_level] = useState<number | null>(null);
+  const [taken_medication, settaken_medication] = useState<boolean | null>(null);
+  const [pain_decreased, setpain_decreased] = useState<boolean | null>(null);
+  const [swelling_level, setswelling_level] = useState<number | null>(null);
+  const [days, setdays] = useState<number | null>(null);
+  const [symptoms, setsymptoms] = useState<boolean | null>(null);
+  const [can_eat, setcan_eat] = useState<boolean | null>(null);
+  const [eat_soft_food, seteat_soft_food] = useState<boolean | null>(null);
+  const [can_brush, setcan_brush] = useState<boolean | null>(null);
+
+  const handleBleedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const level = parseInt(event.target.value);
+    setbleed_choice(level);
+  };
+
+  const handlePainChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const level = parseInt(event.target.value);
+    setpain_level(level);
+  };
+
+  const handleMedicationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const taken = event.target.id === 'taken_medication_yes';
+    settaken_medication(taken);
+  };
+
+  const handlePainDecreasedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = event.target.id === 'pain_decreased_yes';
+    setpain_decreased(temp);
+  };
+
+  const handleSwellingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const level = parseInt(event.target.value);
+    setswelling_level(level);
+  };
+
+  const handleDaysChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const level = parseInt(event.target.value);
+    setdays(level);
+  };
+
+  const handleSymptomChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = event.target.id === 'symptoms_yes';
+    setsymptoms(temp);
+  };
+
+  const handleDietChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const diet = event.target.id === 'can_eat_yes';
+    setcan_eat(diet);
+  };
+
+  const handleEatSoftFoodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = event.target.id === 'eat_soft_food_yes';
+    seteat_soft_food(temp);
+  };
+
+  const handleCanBrushChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = event.target.id === 'can_brush_yes';
+    setcan_brush(temp);
+  };
+
+  console.log(can_brush);
+
   return (
 
     <div className='w-screen h-screen flex flex-col'>
@@ -134,7 +197,7 @@ const Followupchat: React.FC = () => {
         </div>
         <div className='flex flex-col items-center py-5 px-12 justify-between'>
           <div className="flex flex-col overflow-y-auto bg-[#D9D9D9] items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl">
-            <div className="w-[20rem] h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
+            <section id='Blood' className="w-[20rem] h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
               <div className="relative">Blood</div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='ไม่มีเลือด'>
@@ -143,7 +206,9 @@ const Followupchat: React.FC = () => {
                     name='blood'
                     type='radio'
                     id='ไม่มีเลือด'
+                    value='0'
                     className='w-[20px] h-[20px]'
+                    onChange={handleBleedChange}
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='เลือดนิดหน่อย'>
@@ -152,7 +217,9 @@ const Followupchat: React.FC = () => {
                     name='blood'
                     type='radio'
                     id='เลือดนิดหน่อย'
+                    value='1'
                     className='w-[20px] h-[20px]'
+                    onChange={handleBleedChange}
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='เลือดกรอกปาก'>
@@ -161,473 +228,177 @@ const Followupchat: React.FC = () => {
                     name='blood'
                     type='radio'
                     id='เลือดกรอกปาก'
+                    value='2'
                     className='w-[20px] h-[20px]'
+                    onChange={handleBleedChange}
                   />
                 </label>
               </div>
-            </div>
-            <div className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
+            </section>
+            <section id='Pain' className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
               <div className="relative">Pain</div>
               <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_0'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_0'>
-                    0
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_1'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_1'>
-                    1
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_2'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_2'>
-                    2
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_3'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_3'>
-                    3
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_4'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_4'>
-                    4
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_5'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_5'>
-                    5
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_6'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_6'>
-                    6
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_7'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_7'>
-                    7
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_8'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_8'>
-                    8
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_9'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_9'>
-                    9
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='pain'
-                    type='radio'
-                    id='pain_10'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='pain_10'>
-                    10
-                  </label>
-                </div>
+                {[...Array(11)].map((_, index) => (
+                  <div key={index}>
+                    <input
+                      name="pain"
+                      type="radio"
+                      id={`pain_${index}`}
+                      value={index}
+                      className="peer hidden"
+                      onChange={handlePainChange}
+                    />
+                    <label
+                      className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
+                      htmlFor={`pain_${index}`}
+                    >
+                      {index}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="w-[51.875rem] flex flex-row items-center justify-between text-grayer-100 text-[12px]">
                 <div className="relative">ไม่เจ็บ</div>
                 <div className="relative">เจ็บปางตาย</div>
               </div>
-            </div>
-            <div className="w-[12.5rem] h-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-              <div className="relative font-red-hat-display text-center">
-                Medication
-              </div>
-              <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='taken_medication_yes'>
-                  <span>ใช่</span>
-                  <input
-                    name='taken_medication'
-                    type='radio'
-                    id='taken_medication_yes'
-                    className='w-[20px] h-[20px]'
-                  />
-                </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='taken_medication_no'>
-                  <span>ไม่</span>
-                  <input
-                    name='taken_medication'
-                    type='radio'
-                    id='taken_medication_no'
-                    className='w-[20px] h-[20px]'
-                  />
-                </label>
-              </div>
-            </div>
-            <div className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-              <div className="relative font-red-hat-display text-center">
-                Better
-              </div>
-              <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='pain_decreased_yes'>
-                  <span>ใช่</span>
-                  <input
-                    name='pain_decreased'
-                    type='radio'
-                    id='pain_decreased_yes'
-                    className='w-[20px] h-[20px]'
-                  />
-                </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='pain_decreased_no'>
-                  <span>ไม่</span>
-                  <input
-                    name='pain_decreased'
-                    type='radio'
-                    id='pain_decreased_no'
-                    className='w-[20px] h-[20px]'
-                  />
-                </label>
-              </div>
-            </div>
-            <div className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
+            </section>
+            {pain_level !== null && pain_level <= 6 && (
+              <section id="Medication" className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display text-center">Medication</div>
+                <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
+                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="taken_medication_yes">
+                    <span>ใช่</span>
+                    <input
+                      name="taken_medication"
+                      type="radio"
+                      id="taken_medication_yes"
+                      className="w-[20px] h-[20px]"
+                      onChange={handleMedicationChange}
+                    />
+                  </label>
+                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="taken_medication_no">
+                    <span>ไม่</span>
+                    <input
+                      name="taken_medication"
+                      type="radio"
+                      id="taken_medication_no"
+                      className="w-[20px] h-[20px]"
+                      onChange={handleMedicationChange}
+                    />
+                  </label>
+                </div>
+              </section>
+            )}
+            {taken_medication !== null && taken_medication && (
+              <section id="Better" className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display text-center">Better</div>
+                <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
+                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="pain_decreased_yes">
+                    <span>ใช่</span>
+                    <input
+                      name="pain_decreased"
+                      type="radio"
+                      id="pain_decreased_yes"
+                      className="w-[20px] h-[20px]"
+                      onChange={handlePainDecreasedChange}
+                    />
+                  </label>
+                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="pain_decreased_no">
+                    <span>ไม่</span>
+                    <input
+                      name="pain_decreased"
+                      type="radio"
+                      id="pain_decreased_no"
+                      className="w-[20px] h-[20px]"
+                      onChange={handlePainDecreasedChange}
+                    />
+                  </label>
+                </div>
+              </section>
+            )}
+            <section id="Swelling" className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
               <div className="relative">Swelling</div>
               <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_0'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_0'>
-                    0
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_1'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_1'>
-                    1
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_2'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_2'>
-                    2
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_3'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_3'>
-                    3
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_4'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_4'>
-                    4
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_5'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_5'>
-                    5
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_6'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_6'>
-                    6
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_7'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_7'>
-                    7
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_8'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_8'>
-                    8
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_9'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_9'>
-                    9
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='swelling'
-                    type='radio'
-                    id='swelling_10'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='swelling_10'>
-                    10
-                  </label>
-                </div>
+                {[...Array(11)].map((_, index) => (
+                  <div key={index}>
+                    <input
+                      name="swelling"
+                      type="radio"
+                      id={`swelling_${index}`}
+                      value={index}
+                      className="peer hidden"
+                      onChange={handleSwellingChange}
+                    />
+                    <label
+                      className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
+                      htmlFor={`swelling_${index}`}
+                    >
+                      {index}
+                    </label>
+                  </div>
+                ))}
               </div>
               <div className="w-[51.875rem] flex flex-row items-center justify-between text-grayer-100 text-[12px]">
                 <div className="relative">ไม่บวม</div>
                 <div className="relative">บวมเหมือนภูเขาไฟที่จะระเบิด</div>
               </div>
-            </div>
-            <div className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
-              <div className="relative">Days</div>
-              <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_0'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_0'>
-                    0
+            </section>
+
+            {swelling_level !== null && swelling_level < 5 && (
+              <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
+                <div className="relative">Days</div>
+                <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
+                  {[...Array(11)].map((_, index) => (
+                    <div key={index}>
+                      <input
+                        name="days"
+                        type="radio"
+                        id={`days_${index}`}
+                        value={index}
+                        className="peer hidden"
+                        onChange={handleDaysChange}
+                      />
+                      <label
+                        className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
+                        htmlFor={`days_${index}`}
+                      >
+                        {index}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+            {days !== null && days > 3 && (
+              <section id='Symptom' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display text-center">
+                  Symptom
+                </div>
+                <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
+                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_yes'>
+                    <span>ใช่</span>
+                    <input
+                      name='symptoms'
+                      type='radio'
+                      id='symptoms_yes'
+                      className='w-[20px] h-[20px]'
+                      onChange={handleSymptomChange}
+                    />
+                  </label>
+                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_no'>
+                    <span>ไม่</span>
+                    <input
+                      name='symptoms'
+                      type='radio'
+                      id='symptoms_no'
+                      className='w-[20px] h-[20px]'
+                      onChange={handleSymptomChange}
+                    />
                   </label>
                 </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_1'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_1'>
-                    1
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_2'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_2'>
-                    2
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_3'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_3'>
-                    3
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_4'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_4'>
-                    4
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_5'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_5'>
-                    5
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_6'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_6'>
-                    6
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_7'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_7'>
-                    7
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_8'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_8'>
-                    8
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_9'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_9'>
-                    9
-                  </label>
-                </div>
-                <div className="">
-                  <input
-                    name='days'
-                    type='radio'
-                    id='days_10'
-                    className='peer hidden'
-                  />
-                  <label className='cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green' htmlFor='days_10'>
-                    10
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-              <div className="relative font-red-hat-display text-center">
-                Symptom
-              </div>
-              <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_yes'>
-                  <span>ใช่</span>
-                  <input
-                    name='symptoms'
-                    type='radio'
-                    id='symptoms_yes'
-                    className='w-[20px] h-[20px]'
-                  />
-                </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_no'>
-                  <span>ไม่</span>
-                  <input
-                    name='symptoms'
-                    type='radio'
-                    id='symptoms_no'
-                    className='w-[20px] h-[20px]'
-                  />
-                </label>
-              </div>
-            </div>
-            <div className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+              </section>
+            )}
+            <section id='Diet' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
               <div className="relative font-red-hat-display text-center">
                 Diet
               </div>
@@ -639,6 +410,7 @@ const Followupchat: React.FC = () => {
                     type='radio'
                     id='can_eat_yes'
                     className='w-[20px] h-[20px]'
+                    onChange={handleDietChange}
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_eat_no'>
@@ -648,11 +420,13 @@ const Followupchat: React.FC = () => {
                     type='radio'
                     id='can_eat_no'
                     className='w-[20px] h-[20px]'
+                    onChange={handleDietChange}
                   />
                 </label>
               </div>
-            </div>
-            <div className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+            </section>
+            {can_eat !== null && !can_eat && (
+            <section id='Soft food' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
               <div className="relative font-red-hat-display text-center">
                 Soft food
               </div>
@@ -662,8 +436,9 @@ const Followupchat: React.FC = () => {
                   <input
                     name='eat_soft_food'
                     type='radio'
-                    id='soft_food_yes'
+                    id='eat_soft_food_yes'
                     className='w-[20px] h-[20px]'
+                    onChange={handleEatSoftFoodChange}
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_no'>
@@ -673,11 +448,13 @@ const Followupchat: React.FC = () => {
                     type='radio'
                     id='eat_soft_food_no'
                     className='w-[20px] h-[20px]'
+                    onChange={handleEatSoftFoodChange}
                   />
                 </label>
               </div>
-            </div>
-            <div className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+            </section>
+            )}
+            <section id='Oral hygeine' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
               <div className="relative font-red-hat-display text-center">
                 Oral hygeine
               </div>
@@ -689,6 +466,7 @@ const Followupchat: React.FC = () => {
                     type='radio'
                     id='can_brush_yes'
                     className='w-[20px] h-[20px]'
+                    onChange={handleCanBrushChange}
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_brush_no'>
@@ -698,10 +476,11 @@ const Followupchat: React.FC = () => {
                     type='radio'
                     id='can_brush_no'
                     className='w-[20px] h-[20px]'
+                    onChange={handleCanBrushChange}
                   />
                 </label>
               </div>
-            </div>
+            </section>
             <button className="cursor-pointer p-[0.625rem] bg-silver w-[7.313rem] self-center rounded-lg box-border h-[3.375rem] flex flex-row items-center justify-center border-[1px] border-solid border-black">
               <div className="relative text-[20px] font-semibold font-red-hat-display text-black text-center">
                 ยืนยัน
