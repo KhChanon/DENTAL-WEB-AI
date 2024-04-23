@@ -11,6 +11,7 @@ import { ChatMessegeProp } from '../../interface/ChatMessegeProp';
 import { RecordProp } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
+import Swal from 'sweetalert2'
 
 const Followupchat: React.FC = () => {
   const recordID = useParams<{ id: string }>().id;
@@ -71,27 +72,6 @@ const Followupchat: React.FC = () => {
     }
   }
 
-  const handleKeypress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSubmit();
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (chat === "") {
-      console.log("string empty")
-    }
-    else {
-      setChat("");
-      setAllchat([...allchat, {
-        userchat: true,
-        chattime: new Date(),
-        chattext: chat!,
-      }]);
-      await postChat();
-    }
-  }
-
   useEffect(() => {
     if (localStorage.getItem(`userID`)) {
       getUser();
@@ -101,20 +81,21 @@ const Followupchat: React.FC = () => {
     }
   }, []);
 
-  const [bleed_choice, setbleed_choice] = useState<number | null>(null);
+  const [bleedChoice, setbleedChoice] = useState<number | null>(null);
   const [pain_level, setpain_level] = useState<number | null>(null);
   const [taken_medication, settaken_medication] = useState<boolean | null>(null);
   const [pain_decreased, setpain_decreased] = useState<boolean | null>(null);
   const [swelling_level, setswelling_level] = useState<number | null>(null);
-  const [days, setdays] = useState<number | null>(null);
+  const [days, setdays] = useState<number>(-1);
   const [symptoms, setsymptoms] = useState<boolean | null>(null);
   const [can_eat, setcan_eat] = useState<boolean | null>(null);
   const [eat_soft_food, seteat_soft_food] = useState<boolean | null>(null);
   const [can_brush, setcan_brush] = useState<boolean | null>(null);
+  const [followAgain, setfollowAgain] = useState<boolean | null>(false);
 
   const handleBleedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
-    setbleed_choice(level);
+    setbleedChoice(level);
   };
 
   const handlePainChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,6 +160,85 @@ const Followupchat: React.FC = () => {
     setcan_brush(temp);
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    let updatedRecommendations = [];  
+    if (bleedChoice === 2) {
+      updatedRecommendations.push("คุณยังมีเลือกซึมจากแผลอยู่บ้างเป็นเลือกปนน้ำลาย ควรกัดผ้าก๊อซต่ออีก30นาที และไม่บ้วนน้ำลายบ่อย")
+
+    } else if (bleedChoice === 3) {
+      updatedRecommendations.push("คุณยังมีเลือดซึมจากแผลเป็นสีแดงสดและ/หรือมีลิ่มเลือกปนอยู่ด้วย ควรกัดผ้าก๊อซ และพบแพทย์ผู้ดูแล")
+    }
+
+    if (pain_level! > 7) {
+      if (taken_medication === true) {
+        if (pain_decreased === false) {
+          updatedRecommendations.push("คุณได้ทานยาแก้ปวดแล้วแต่อาการปวดไม่ดีขึ้น ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+          setfollowAgain(true)
+        }
+        else {
+          updatedRecommendations.push("คุณได้ทานยาแก้ปวดแล้วและอาการปวดดีขึ้น จะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+          setfollowAgain(true)
+        }
+      } else {
+        updatedRecommendations.push("อาการปวดมากกว่าระดับ7 แนะนำให้ทานยาแก้ปวดเพื่อระงับความปวดเบื้องต้น และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        setfollowAgain(true)
+      }
+    }
+
+    if (swelling_level! >= 1 && swelling_level! < 2) {
+      updatedRecommendations.push("ใบหน้าบริเวณแผลของคุณไม่มีอาการบวมหรือบวมเล็กน้อย ควรประคบเย็นที่ใบหน้าบริเวณแผลลดอาการบวม")
+    } else if (swelling_level! >= 2) {
+      if (days <= 3) {
+        updatedRecommendations.push("ใบหน้าของคุณยังมีอาการบวมแบบเห็นได้ชัด แต่ยังอยู่ในช่วง3วันหลังผ่าตัด ควรประคบเย็นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        setfollowAgain(true)
+      } else {
+        if (symptoms === true) {
+          updatedRecommendations.push("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและไม่น้อยลงหรือมีอาการปวดร่วมด้วย ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+          setfollowAgain(true)
+        }
+        else {
+          updatedRecommendations.push("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและแค่อาการบวมน้อยลงและไม่มีอาการปวดร่วมด้วย ควรประคบอุ่นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+          setfollowAgain(true)
+        }
+      }
+    }
+
+    if (can_eat === false) {
+      if (eat_soft_food === true) {
+        updatedRecommendations.push("ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการของแผล")
+      } else {
+        updatedRecommendations.push("ควรทานอาหารอ่อน และอาหหารที่ไม่มีรสชาติจัด และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        setfollowAgain(true)
+      }
+    }
+
+    if (can_brush === false) {
+      updatedRecommendations.push("ควรหลีกเลี่ยงการแปรงฟันบริเวณจุดที่ทำการผ่าตัด")
+    } else {
+      updatedRecommendations.push("คุณสามารถแปรงฟันได้ตามปกติ")
+    }
+
+    showRecommendationsAlert(updatedRecommendations);
+  }
+
+  const showRecommendationsAlert = (updatedRecommendations: string[]) => {
+    const uniqueRecommendations = Array.from(new Set(updatedRecommendations));
+    // Construct the message to display
+    const message = uniqueRecommendations.length === 0 
+      ? 'No recommendations available.' 
+      : uniqueRecommendations.map((recommendation, index) => `${index + 1}. ${recommendation}`).join('<br><br>'); // Use <br> for line breaks and add index
+    
+    // Show SweetAlert2 alert with HTML content and left-aligned text
+    Swal.fire({
+      title: 'Recommendations',
+      html: `<div style="text-align: left;">${message}</div>`,
+      confirmButtonText: 'OK'
+    }).then((result) => {
+      window.location.href = '/followup';
+    });
+  };
+
   return (
 
     <div className='w-screen h-screen flex flex-col'>
@@ -211,7 +271,7 @@ const Followupchat: React.FC = () => {
           </div>
         </div>
         <div className='flex flex-col items-center py-5 px-12 justify-between'>
-          <div className="flex flex-col overflow-y-auto bg-[#D9D9D9] items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl">
+          <form onSubmit={handleSubmit} className="flex flex-col overflow-y-auto bg-[#D9D9D9] items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl">
             <section id='Blood' className="w-[20rem] h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
               <div className="relative">Blood</div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
@@ -224,6 +284,7 @@ const Followupchat: React.FC = () => {
                     value='0'
                     className='w-[20px] h-[20px]'
                     onChange={handleBleedChange}
+                    required
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='เลือดนิดหน่อย'>
@@ -262,6 +323,7 @@ const Followupchat: React.FC = () => {
                       value={index}
                       className="peer hidden"
                       onChange={handlePainChange}
+                      required
                     />
                     <label
                       className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
@@ -276,6 +338,9 @@ const Followupchat: React.FC = () => {
                 <div className="relative">ไม่เจ็บ</div>
                 <div className="relative">เจ็บปางตาย</div>
               </div>
+              {pain_level === null && (
+                <p className="text-red-500 text-sm">Please select one of these options</p>
+              )}
             </section>
             {pain_level !== null && pain_level > 6 && (
               <section id="Medication" className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
@@ -289,6 +354,7 @@ const Followupchat: React.FC = () => {
                       id="taken_medication_yes"
                       className="w-[20px] h-[20px]"
                       onChange={handleMedicationChange}
+                      required
                     />
                   </label>
                   <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="taken_medication_no">
@@ -316,6 +382,7 @@ const Followupchat: React.FC = () => {
                       id="pain_decreased_yes"
                       className="w-[20px] h-[20px]"
                       onChange={handlePainDecreasedChange}
+                      required
                     />
                   </label>
                   <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="pain_decreased_no">
@@ -357,6 +424,9 @@ const Followupchat: React.FC = () => {
                 <div className="relative">ไม่บวม</div>
                 <div className="relative">บวมเหมือนภูเขาไฟที่จะระเบิด</div>
               </div>
+              {swelling_level === null && (
+                <p className="text-red-500 text-sm">Please select one of these options</p>
+              )}
             </section>
 
             {swelling_level !== null && swelling_level >= 5 && (
@@ -372,6 +442,7 @@ const Followupchat: React.FC = () => {
                         value={index}
                         className="peer hidden"
                         onChange={handleDaysChange}
+                        required
                       />
                       <label
                         className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
@@ -382,6 +453,9 @@ const Followupchat: React.FC = () => {
                     </div>
                   ))}
                 </div>
+                {days === -1 && (
+                  <p className="text-red-500 text-sm">Please select one of these options</p>
+                )}
               </section>
             )}
             {days !== null && days > 3 && (
@@ -398,6 +472,7 @@ const Followupchat: React.FC = () => {
                       id='symptoms_yes'
                       className='w-[20px] h-[20px]'
                       onChange={handleSymptomChange}
+                      required
                     />
                   </label>
                   <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_no'>
@@ -426,6 +501,7 @@ const Followupchat: React.FC = () => {
                     id='can_eat_yes'
                     className='w-[20px] h-[20px]'
                     onChange={handleDietChange}
+                    required
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_eat_no'>
@@ -441,33 +517,34 @@ const Followupchat: React.FC = () => {
               </div>
             </section>
             {can_eat !== null && !can_eat && (
-            <section id='Soft food' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-              <div className="relative font-red-hat-display text-center">
-                Soft food
-              </div>
-              <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_yes'>
-                  <span>ใช่</span>
-                  <input
-                    name='eat_soft_food'
-                    type='radio'
-                    id='eat_soft_food_yes'
-                    className='w-[20px] h-[20px]'
-                    onChange={handleEatSoftFoodChange}
-                  />
-                </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_no'>
-                  <span>ไม่</span>
-                  <input
-                    name='eat_soft_food'
-                    type='radio'
-                    id='eat_soft_food_no'
-                    className='w-[20px] h-[20px]'
-                    onChange={handleEatSoftFoodChange}
-                  />
-                </label>
-              </div>
-            </section>
+              <section id='Soft food' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display text-center">
+                  Soft food
+                </div>
+                <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
+                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_yes'>
+                    <span>ใช่</span>
+                    <input
+                      name='eat_soft_food'
+                      type='radio'
+                      id='eat_soft_food_yes'
+                      className='w-[20px] h-[20px]'
+                      onChange={handleEatSoftFoodChange}
+                      required
+                    />
+                  </label>
+                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_no'>
+                    <span>ไม่</span>
+                    <input
+                      name='eat_soft_food'
+                      type='radio'
+                      id='eat_soft_food_no'
+                      className='w-[20px] h-[20px]'
+                      onChange={handleEatSoftFoodChange}
+                    />
+                  </label>
+                </div>
+              </section>
             )}
             <section id='Oral hygeine' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
               <div className="relative font-red-hat-display text-center">
@@ -482,6 +559,7 @@ const Followupchat: React.FC = () => {
                     id='can_brush_yes'
                     className='w-[20px] h-[20px]'
                     onChange={handleCanBrushChange}
+                    required
                   />
                 </label>
                 <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_brush_no'>
@@ -496,12 +574,13 @@ const Followupchat: React.FC = () => {
                 </label>
               </div>
             </section>
-            <button className="cursor-pointer p-[0.625rem] bg-silver w-[7.313rem] self-center rounded-lg box-border h-[3.375rem] flex flex-row items-center justify-center border-[1px] border-solid border-black">
+            <button className="cursor-pointer p-[0.625rem] bg-silver w-[7.313rem] self-center rounded-lg box-border h-[3.375rem] flex flex-row items-center justify-center border-[1px] border-solid border-black"
+              type='submit'>
               <div className="relative text-[20px] font-semibold font-red-hat-display text-black text-center">
                 ยืนยัน
               </div>
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>
