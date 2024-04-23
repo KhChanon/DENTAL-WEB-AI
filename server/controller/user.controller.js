@@ -1,5 +1,5 @@
 const User = require("../model/User");
-const Followup = require("../model/FollowUpChat");
+const Followup = require("../model/FollowUpRecords");
 const axios = require('axios');
 require('dotenv')
 

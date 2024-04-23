@@ -15,15 +15,16 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
   const formattedDate: string = `${padZero(day)}/${padZero(month)}/${year}`;
 
   return (
-    <div 
-      className="flex flex-col w-56 h-48 rounded-xl bg-purple p-5 cursor-pointer items-start" 
+    <button 
+      className="flex flex-col w-56 h-48 rounded-xl bg-purple p-5 cursor-pointer items-start border-none disabled:opacity-50 disabled:cursor-not-allowed" 
+      disabled={surgicalstatus === "Done" ? true : false}
       onClick={() => window.location.href = `/followup/${_id}`}
     >
       <div className="text-xl text-white font-bold mb-1">{surgicalprocedure}</div>
       <div className="text-sm text-white font-bold mb-5">{formattedDate}</div>
       <div className="text-base text-white font-bold mb-5">Status: {surgicalstatus}</div>
       <div className="text-base text-white font-bold">{surgicalresult ? surgicalresult :"This surgery is still being Follow Up" }</div>
-    </div>
+    </button>
   )
 }
 
@@ -78,13 +79,13 @@ const Followup = () => {
       }
       <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#D9D9D9]'>
         <div className='grid grid-cols-5 box-border rounded-xl p-2 h-full w-full justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md overflow-auto'>
-          <div className='flex flex-col gap-5 w-56 h-48 rounded-xl bg-[#a12d72] p-5 cursor-pointer select-none items-center justify-center' onClick={() => {window.location.href='/addcase'}}>
+          <button className='flex flex-col gap-5 w-56 h-48 rounded-xl bg-[#a12d72] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={() => {window.location.href='/addcase'}}>
             <img
               className="=w-[50px] h-[50px] bg-[#a12d72]"
               alt=""
               src={PlusIcon}
             />    
-          </div>
+          </button>
           {records
           .sort((a:RecordProp, b:RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
           .map((record: RecordProp) => {
