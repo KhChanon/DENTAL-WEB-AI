@@ -120,11 +120,18 @@ const Followupchat: React.FC = () => {
   const handlePainChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
     setpain_level(level);
+    if (level <= 6) {
+      settaken_medication(null);
+      setpain_decreased(null)
+    }
   };
 
   const handleMedicationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const taken = event.target.id === 'taken_medication_yes';
     settaken_medication(taken);
+    if (taken === false) {
+      setpain_decreased(null);
+    }
   };
 
   const handlePainDecreasedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,11 +142,18 @@ const Followupchat: React.FC = () => {
   const handleSwellingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
     setswelling_level(level);
+    if (level < 5) {
+      setdays(-1)
+      setsymptoms(null)
+    }
   };
 
   const handleDaysChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
     setdays(level);
+    if (level < 4) {
+      setsymptoms(null)
+    }
   };
 
   const handleSymptomChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,6 +164,9 @@ const Followupchat: React.FC = () => {
   const handleDietChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const diet = event.target.id === 'can_eat_yes';
     setcan_eat(diet);
+    if (diet === true) {
+      seteat_soft_food(null)
+    }
   };
 
   const handleEatSoftFoodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,8 +178,6 @@ const Followupchat: React.FC = () => {
     const temp = event.target.id === 'can_brush_yes';
     setcan_brush(temp);
   };
-
-  console.log(can_brush);
 
   return (
 
@@ -262,7 +277,7 @@ const Followupchat: React.FC = () => {
                 <div className="relative">เจ็บปางตาย</div>
               </div>
             </section>
-            {pain_level !== null && pain_level <= 6 && (
+            {pain_level !== null && pain_level > 6 && (
               <section id="Medication" className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
                 <div className="relative font-red-hat-display text-center">Medication</div>
                 <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
@@ -344,7 +359,7 @@ const Followupchat: React.FC = () => {
               </div>
             </section>
 
-            {swelling_level !== null && swelling_level < 5 && (
+            {swelling_level !== null && swelling_level >= 5 && (
               <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
                 <div className="relative">Days</div>
                 <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
