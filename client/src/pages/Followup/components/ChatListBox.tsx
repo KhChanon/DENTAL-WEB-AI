@@ -19,13 +19,16 @@ const ChatListBox: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate
     >
         {recordID === _id
         ?
-        <div className="bg-purple flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px]">
+        <button className="bg-purple flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] border-none text-center text-white text-base">
             <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>
-        </div>
+        </button>
         :
-        <div className=" bg-stone-700 flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] hover:bg-purple">
+        <button 
+            className=" bg-stone-700 flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] hover:bg-purple  border-none text-center text-white text-base disabled:opacity-50 disabled:hover:bg-stone-700 cursor-pointer disabled:cursor-not-allowed" 
+            disabled={surgicalstatus === "Done" ? true : false}
+        >
             <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>
-        </div>
+        </button>
         }
     </div>
   )

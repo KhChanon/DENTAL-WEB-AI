@@ -3,38 +3,19 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
-import send from '../../assets/send.png'
 import ChatListBox from './components/ChatListBox'
-import ChatMessageBox from '../../components/ChatMessageBox'
 import config from '../../config/config';
-import { ChatMessegeProp } from '../../interface/ChatMessegeProp';
 import { RecordProp } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import Swal from 'sweetalert2'
 
-const Followupchat: React.FC = () => {
+const Followuprecord: React.FC = () => {
   const recordID = useParams<{ id: string }>().id;
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
-  const [chat, setChat] = useState<string>("");
-  const [allchat, setAllchat] = useState<ChatMessegeProp[]>([]);
   const [records, setRecords] = useState<RecordProp[]>([]);
-
-  const getChat = async () => {
-    try {
-      const res = await axios.get(config.API_URL + '/followup/' + recordID);
-
-      res.data.chat.chat.forEach((chat: ChatMessegeProp) => {
-        chat.chattime = new Date(chat.chattime);
-      });
-
-      setAllchat(res.data.chat.chat);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   const getRecords = async () => {
     try {
@@ -58,14 +39,21 @@ const Followupchat: React.FC = () => {
     }
   }
 
-  const postChat = async () => {
+  const postRecord = async () => {
     try {
       await axios.post(config.API_URL + '/followup/add', {
-        chat: {
-          userchat: true,
-          chattext: chat!,
-        },
-        followupid: recordID,
+        recordID: recordID,
+        bleedChoice: bleedChoice,
+        pain_level: pain_level,
+        taken_medication: taken_medication,
+        pain_decreased: pain_decreased,
+        swelling_level: swelling_level,
+        days: days,
+        symptoms: symptoms,
+        can_eat: can_eat,
+        eat_soft_food: eat_soft_food,
+        can_brush: can_brush,
+        followAgain: followAgain
       });
     } catch (error) {
       console.error(error);
@@ -76,7 +64,6 @@ const Followupchat: React.FC = () => {
     if (localStorage.getItem(`userID`)) {
       getUser();
       getRecords()
-      getChat();
       setAuth(true);
     }
   }, []);
@@ -235,6 +222,7 @@ const Followupchat: React.FC = () => {
       html: `<div style="text-align: left;">${message}</div>`,
       confirmButtonText: 'OK'
     }).then((result) => {
+      postRecord();
       window.location.href = '/followup';
     });
   };
@@ -251,8 +239,8 @@ const Followupchat: React.FC = () => {
       <div className='flex flex-row w-full h-full overflow-hidden'>
         <div className="flex flex-col items-center justify-center w-1/5 p-5 pl-12 select-none">
           <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto'>
-            <div
-              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#A12D72] rounded-[30px] text-center text-white font-medium text-base cursor-pointer"
+            <button
+              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#A12D72] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
               onClick={() => { window.location.href = '/addcase' }}
             >
               <img
@@ -260,7 +248,7 @@ const Followupchat: React.FC = () => {
                 alt=""
                 src={PlusIcon}
               />
-            </div>
+            </button>
             {
               records
                 .sort((a: RecordProp, b: RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
@@ -587,4 +575,4 @@ const Followupchat: React.FC = () => {
   )
 }
 
-export default Followupchat
+export default Followuprecord
