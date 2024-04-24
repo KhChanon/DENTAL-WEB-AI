@@ -45,7 +45,10 @@ def send_followup():
         else:
             contents = []
             for record in user['records']:
-                if record['surgicalstatus'] == 'Follow up':
+                if record['surgicalstatus'] == 'Follow Up':
+                    
+                    mongo.db.users.update_one({ "records._id":  record['_id'] }, { '$set': { "records.$.surgicalstatus": "Pending" } })
+                    
                     contents.append({"type" : "bubble",
                         "size" : "nano",
                         "body" : {
@@ -97,7 +100,7 @@ def send_followup():
                 print("Follow-up sent to user", user['lineopenid'], user['lineusername'])
 
 scheduler = BackgroundScheduler()
-job = scheduler.add_job(send_followup, 'interval', minutes=1440)
+job = scheduler.add_job(send_followup, 'interval', minutes=1)
 scheduler.start()
 
 def keyword_Search3(question):

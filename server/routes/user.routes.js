@@ -5,6 +5,7 @@ const { authUser,
         getUser,
         addRecord, 
         getAllRecord,
+        getRecordNotDone,
         lineAuth } = require('../controller/user.controller');
 
 // POST a new user if not exists
@@ -22,6 +23,10 @@ router.route('/addrecord').post(addRecord);
 // get all record
 // Endpoint: /api/users/records
 router.route('/:id/records').get(getAllRecord);
+
+// get record not done
+// Endpoint: /api/users/:id/records/notdone
+router.route('/:id/records/notdone').get(getRecordNotDone);
 
 // line auth
 // Endpoint: /api/users/lineauth

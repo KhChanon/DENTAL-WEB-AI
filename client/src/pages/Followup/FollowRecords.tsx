@@ -19,7 +19,7 @@ const Followuprecord: React.FC = () => {
 
   const getRecords = async () => {
     try {
-      const res = await axios.get(config.API_URL + '/users/' + userID + '/records');
+      const res = await axios.get(config.API_URL + '/users/' + userID + '/records/notdone');
 
       res.data.records.forEach((record: RecordProp) => {
         record.surgicaldate = new Date(record.surgicaldate);
@@ -398,6 +398,7 @@ const Followuprecord: React.FC = () => {
                       value={index}
                       className="peer hidden"
                       onChange={handleSwellingChange}
+                      required
                     />
                     <label
                       className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"

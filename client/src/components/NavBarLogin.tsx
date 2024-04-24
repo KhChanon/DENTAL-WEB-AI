@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import Logo from '../assets/Logo.svg'
+import Default_PP from '../assets/Default_PP.png'
 import { UserProp } from '../interface/UserProp'
 
 const NavBarLogin: React.FC<UserProp> = ({ _id, lineopenid, lineusername, lineprofilepicture, lineemail }) => {
@@ -37,7 +38,7 @@ const NavBarLogin: React.FC<UserProp> = ({ _id, lineopenid, lineusername, linepr
         <img
           className="flex h-12 w-12 rounded-full cursor-pointer select-none"
           alt=""
-          src={lineprofilepicture}
+          src={lineprofilepicture ? lineprofilepicture : Default_PP}
           
         />
         <div>{lineusername}</div>

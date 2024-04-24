@@ -25,7 +25,7 @@ const ChatListBox: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate
         :
         <button 
             className=" bg-stone-700 flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] hover:bg-purple  border-none text-center text-white text-base disabled:opacity-50 disabled:hover:bg-stone-700 cursor-pointer disabled:cursor-not-allowed" 
-            disabled={surgicalstatus === "Done" ? true : false}
+            disabled={surgicalstatus === "Follow Up" ? true : false}
         >
             <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>
         </button>

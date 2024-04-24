@@ -9,18 +9,22 @@ const postFollowupRecord = async (req, res) => {
 
         const followup = await Followup.findOne({ "record" : recordID })
 
-        if(!followAgain){
-            const user = await User.findOne({ "records._id":  recordID })
+        const user = await User.findOne({ "records._id":  recordID })
 
-            for (let i = 0; i < user.records.length; i++) {
-                if (user.records[i]._id == recordID) {
+        for (let i = 0; i < user.records.length; i++) {
+            if (user.records[i]._id == recordID) {
+                
+                if(!followAgain){
                     user.records[i].surgicalstatus = "Done";
-                    break;
                 }
+                else{
+                    user.records[i].surgicalstatus = "Follow Up";
+                }
+                break;
             }
-
-            user.save();
         }
+
+        user.save();
 
         let record = {
             bleedChoice: bleedChoice,

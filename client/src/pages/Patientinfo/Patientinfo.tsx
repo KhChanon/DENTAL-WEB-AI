@@ -6,6 +6,7 @@ import axios from 'axios';
 import config from '../../config/config';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
+import DefaultPP from '../../assets/Default_PP.png'
 import { RecordProp } from '../../interface/RecordProp'
 
 const Patientinfo = () => {
@@ -59,7 +60,7 @@ const Patientinfo = () => {
             className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover"
             loading="eager"
             alt=""
-            src={user?.lineprofilepicture}
+            src={user?.lineprofilepicture ? user?.lineprofilepicture : DefaultPP}
           />
           <div className="m-0 h-[5.31rem] relative text-inherit font-bold font-inherit flex items-center max-w-full mq450:text-[2.38rem] mq950:text-[3.19rem]">
             {user?.lineusername}
