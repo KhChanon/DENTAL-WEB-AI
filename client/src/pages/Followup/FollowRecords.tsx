@@ -110,7 +110,7 @@ const Followuprecord: React.FC = () => {
   const handleSwellingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
     setswelling_level(level);
-    if (level < 5) {
+    if (level < 3) {
       setdays(-1)
       setsymptoms(null)
     }
@@ -389,27 +389,27 @@ const Followuprecord: React.FC = () => {
             <section id="Swelling" className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
               <div className="relative">Swelling</div>
               <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
-                {[...Array(11)].map((_, index) => (
+                {[...Array(4)].map((_, index) => (
                   <div key={index}>
                     <input
                       name="swelling"
                       type="radio"
-                      id={`swelling_${index}`}
-                      value={index}
+                      id={`swelling_${index + 1}`}
+                      value={index + 1}
                       className="peer hidden"
                       onChange={handleSwellingChange}
                       required
                     />
                     <label
                       className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
-                      htmlFor={`swelling_${index}`}
+                      htmlFor={`swelling_${index + 1}`}
                     >
-                      {index}
+                      {index + 1}
                     </label>
                   </div>
                 ))}
               </div>
-              <div className="w-[51.875rem] flex flex-row items-center justify-between text-grayer-100 text-[12px]">
+              <div className="w-full flex flex-row items-center justify-between text-grayer-100 text-[12px]">
                 <div className="relative">ไม่บวม</div>
                 <div className="relative">บวมเหมือนภูเขาไฟที่จะระเบิด</div>
               </div>
