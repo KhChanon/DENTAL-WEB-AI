@@ -17,7 +17,7 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
   return (
     <button 
       className="flex flex-col w-56 h-48 rounded-xl bg-purple p-5 cursor-pointer items-start border-none disabled:opacity-50 disabled:cursor-not-allowed" 
-      disabled={surgicalstatus === "Done" ? true : false}
+      disabled={surgicalstatus === "Follow Up" ? true : false}
       onClick={() => window.location.href = `/followup/${_id}`}
     >
       <div className="text-xl text-white font-bold mb-1">{surgicalprocedure}</div>
@@ -41,7 +41,7 @@ const Followup = () => {
 
   const getRecords = async () => {
     try {
-        const res = await axios.get(config.API_URL + '/users/' + userID + '/records');
+        const res = await axios.get(config.API_URL + '/users/' + userID + '/records/notdone');
 
         res.data.records.forEach((record:RecordProp) => {
         record.surgicaldate = new Date(record.surgicaldate);

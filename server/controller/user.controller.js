@@ -103,6 +103,30 @@ const getAllRecord = async (req, res) => {
     }
 }
 
+// get not Done records
+// Page: Follow-Up Page
+const getRecordNotDone = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const user = await User.findById(id);
+
+        const records = user.records;
+
+        console.log(records);
+
+        const notDoneRecords = records.filter(record => record.surgicalstatus !== "Done");
+        
+        console.log(notDoneRecords);
+
+        res.status(201).json({sucecess:true,message:"Record Found",records:notDoneRecords});
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+
+
 // line auth
 const lineAuth = async (req, res) => {
     try{
@@ -133,5 +157,6 @@ module.exports = {
     getUser,
     addRecord,
     getAllRecord,
+    getRecordNotDone,
     lineAuth,
 }
