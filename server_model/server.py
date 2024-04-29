@@ -2,14 +2,13 @@ import datetime
 from flask import Flask, request, abort
 from flask_cors import CORS
 import joblib
-import dotenv
 import requests
 import re
 from flask_pymongo import PyMongo
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = dotenv.get_key(dotenv.find_dotenv(), 'MONGO_URI')
+app.config["MONGO_URI"] = "mongodb+srv://Admin:Admin123@dental-web.1iwmx1e.mongodb.net/Dental-Web"
 cors = CORS(app)
 mongo = PyMongo(app)
 
@@ -110,7 +109,7 @@ def send_followup():
             
             if len(contents) > 0:
                 requests.post('https://api.line.me/v2/bot/message/push',
-                        headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key(dotenv.find_dotenv(),"CHANNEL_ACCESS_TOKEN")}'},
+                        headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='},
                             json = {"to":  user['lineopenid'],
                                     "messages": [{
                                         "type": "flex",
@@ -202,7 +201,7 @@ def handle_message(body_json):
     
     if operation == -1:
         requests.post('https://api.line.me/v2/bot/message/reply',
-                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key(dotenv.find_dotenv(),"CHANNEL_ACCESS_TOKEN")}'},
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
                 })
@@ -225,7 +224,7 @@ def handle_message(body_json):
     })
 
     requests.post('https://api.line.me/v2/bot/message/reply',
-                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key(dotenv.find_dotenv(),"CHANNEL_ACCESS_TOKEN")}'},
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": output['answer']}]
                 })
@@ -263,4 +262,4 @@ def predict():
     return {'question': input_text, 'operation': Olabel[operation], 'question_type': Qlabel[prediction[0]], 'answer': output['answer'], 'score': output['score']}
 
 if __name__ == "__main__":
-    app.run(port=dotenv.get_key(dotenv.find_dotenv(),"MODEL_PORT"))
+    app.run(port=5000)
