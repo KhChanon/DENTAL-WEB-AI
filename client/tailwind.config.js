@@ -75,7 +75,7 @@ module.exports = {
       mq700: {
         raw: "screen and (max-width: 700px)",
       },
-      s: {
+      iphone: {
         raw: "screen and (max-width: 450px)",
       },
     },

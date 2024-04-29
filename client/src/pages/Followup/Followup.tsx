@@ -16,14 +16,14 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
 
   return (
     <button 
-      className="flex flex-col w-56 h-48 rounded-xl bg-purple p-5 cursor-pointer items-start border-none disabled:opacity-50 disabled:cursor-not-allowed" 
+      className="flex flex-col w-full h-full rounded-xl bg-[#499896] p-5 cursor-pointer items-start border-none disabled:opacity-50 disabled:cursor-not-allowed iphone:max-h-48" 
       disabled={surgicalstatus === "Follow Up" ? true : false}
       onClick={() => window.location.href = `/followup/${_id}`}
     >
       <div className="text-xl text-white font-bold mb-1">{surgicalprocedure}</div>
       <div className="text-sm text-white font-bold mb-5">{formattedDate}</div>
       <div className="text-base text-white font-bold mb-5">Status: {surgicalstatus}</div>
-      <div className="text-base text-white font-bold">{surgicalresult ? surgicalresult :"This surgery is still being Follow Up" }</div>
+      <div className="text-base text-white font-bold text-left">{surgicalresult ? surgicalresult :"This surgery is still being Follow Up" }</div>
     </button>
   )
 }
@@ -70,7 +70,7 @@ const Followup = () => {
     }, []);
 
   return (
-    <div className='w-screen h-screen flex flex-col'>
+    <div className='w-screen h-screen flex flex-col overflow-hidden'>
       {!auth
       ?
         <NavBar />
@@ -78,10 +78,10 @@ const Followup = () => {
       <NavBarLogin {...user!} />
       }
       <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#D9D9D9]'>
-        <div className='grid grid-cols-5 box-border rounded-xl p-2 h-full w-full justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md overflow-auto'>
-          <button className='flex flex-col gap-5 w-56 h-48 rounded-xl bg-[#a12d72] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={() => {window.location.href='/addcase'}}>
+        <div className='grid grid-cols-5 grid-rows-3 box-border rounded-xl p-2 h-full w-full justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md overflow-auto iphone:flex iphone:flex-col iphone:items-start iphone:justify-start'>
+          <button className='flex flex-col gap-5 w-full h-full iphone:max-h-32 rounded-xl bg-[#25597e] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={() => {window.location.href='/addcase'}}>
             <img
-              className="=w-[50px] h-[50px] bg-[#a12d72]"
+              className="=w-[50px] h-[50px] bg-[#25597e] iphone:w-[25px] iphone:h-[25px]"
               alt=""
               src={PlusIcon}
             />    

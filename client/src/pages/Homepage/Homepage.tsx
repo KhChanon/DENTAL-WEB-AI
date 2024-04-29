@@ -84,31 +84,31 @@ const Homepage = () => {
   }, []);
   
   return (
-    <div className="bg-cover h-screen" style={{ backgroundImage: `url(${BgImage})` }}>
+    <div className="bg-cover h-screen w-screen" style={{ backgroundImage: `url(${BgImage})` }}>
       {!auth
       ?
       <NavBar />
       :
       <NavBarLogin {...user!} />
       }
-        <div className="absolute top-1/3 flex-col pl-10 w-[28.125rem]">
+        <div className="absolute top-1/3 flex-col pl-10 w-full iphone:top-[100px] iphone:pl-5">
           <div className="text-4xl font-bold text-white">ORAL AI</div>
-          <div className="text-xl text-white">lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet</div>
+          <div className="relative text-xl text-white iphone:w-[330px]">lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet</div>
           {!auth
           ?
-          <div className = "flex flex-row gap-8 item-start"> 
+          <div className = "flex flex-row gap-8 item-start iphone:flex-col iphone:gap-2"> 
             <button 
-              className="bg-purple text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md"
+              className="bg-[#25597e] text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl iphone:text-base"
               onClick={() => {window.location.href = '/faq'}}
             >เริ่มสนทนา</button> 
             <button 
-              className="bg-green text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md"
+              className="bg-green text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl  iphone:text-base"
               onClick={() => { handleLineLogin() } }
             >เข้าสู่ระบบผ่าน LINE</button>
           </div>
           :
           <button 
-            className="bg-purple text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md"
+            className="bg-[#25597e] text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl iphone:w-[10.5rem]"
             onClick={() => {window.location.href = '/faq'}}
           >เริ่มสนทนา</button> 
           }
