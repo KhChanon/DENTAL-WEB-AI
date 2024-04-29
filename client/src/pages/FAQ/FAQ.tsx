@@ -94,7 +94,7 @@ const FAQ = () => {
   }, []);
   
   return (
-    <div className='w-screen h-screen flex flex-col'>
+    <div className='w-screen h-screen flex flex-col overflow-hidden'>
       {!auth
       ?
       <NavBar />
@@ -102,8 +102,8 @@ const FAQ = () => {
       <NavBarLogin {...user!} />
       }
       <div className='flex flex-row w-full h-full overflow-hidden'>
-        <div className='flex flex-col items-center w-full p-5 px-12 justify-between'>
-          <div className='flex flex-col rounded-3xl w-full h-[85%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2'>
+        <div className='flex flex-col items-center w-full p-5 px-12 justify-between iphone:px-6'>
+          <div className='flex flex-col rounded-3xl w-full h-[85%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2 iphone:h-[89%]'>
             {
               allchat
               .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.chattime.getTime() - b.chattime.getTime())
@@ -112,9 +112,9 @@ const FAQ = () => {
               })
             }
           </div>
-          <form className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none'>
+          <form className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none iphone:h-[6%]'>
             <input 
-              className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl' 
+              className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl iphone:text-base' 
               placeholder='Type your message here...'
               value={chat}
               required
@@ -122,7 +122,7 @@ const FAQ = () => {
               onKeyDown={handleKeypress}
             />
             <img 
-              className='w-8 h-8 pr-3' src={send} alt='send'
+              className='w-8 h-8 pr-3 iphone:w-5 iphone:h-5' src={send} alt='send'
               onClick={handleSubmit}
             />
           </form>

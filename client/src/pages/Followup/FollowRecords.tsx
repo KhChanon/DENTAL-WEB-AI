@@ -229,7 +229,7 @@ const Followuprecord: React.FC = () => {
 
   return (
 
-    <div className='w-screen h-screen flex flex-col'>
+    <div className='w-screen h-screen flex flex-col overflow-hidden'>
       {!auth
         ?
         <NavBar />
@@ -237,10 +237,10 @@ const Followuprecord: React.FC = () => {
         <NavBarLogin {...user!} />
       }
       <div className='flex flex-row w-full h-full overflow-hidden'>
-        <div className="flex flex-col items-center justify-center w-1/5 p-5 pl-12 select-none">
-          <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto'>
+        <div className="flex flex-col items-center justify-center w-1/5 p-5 pl-12 select-none iphone:pl-0">
+          <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto iphone:hidden'>
             <button
-              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#A12D72] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
+              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#25597e] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
               onClick={() => { window.location.href = '/addcase' }}
             >
               <img
@@ -258,8 +258,8 @@ const Followuprecord: React.FC = () => {
             }
           </div>
         </div>
-        <div className='flex flex-col items-center py-5 px-12 justify-between'>
-          <form onSubmit={handleSubmit} className="flex flex-col overflow-y-auto bg-[#D9D9D9] items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl">
+        <div className='flex flex-col items-center py-5 px-12 justify-between iphone:px-2'>
+          <form onSubmit={handleSubmit} className="flex flex-col overflow-y-auto bg-[#D9D9D9] items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl h-full w-full">
             <section id='Blood' className="w-[20rem] h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
               <div className="relative">Blood</div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
