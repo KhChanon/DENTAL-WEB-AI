@@ -25,7 +25,7 @@ const Addcase = () => {
     try {
       const res = await axios.post(config.API_URL + '/users/addrecord', {
         surgicalprocedure: surgicalprocedure,
-        surgicalstatus: 'Follow Up',
+        surgicalstatus: 'Pending',
         userID: userID
       });
       window.location.href = '/followup';

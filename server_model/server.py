@@ -13,9 +13,6 @@ app.config["MONGO_URI"] = dotenv.get_key("../.env", 'MONGO_URI')
 cors = CORS(app)
 mongo = PyMongo(app)
 
-faq_access_token = 'bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='
-follow_access_token = 'TaiboYa8T+k2nHkAoUY5DvJp0OweJ4Bf/dAH8+c5feiTiAbpr/hMCXCXR+axM2ODJIeT1wM3lqeMnyJ6P6cIJz+KVvD/Fhvs1GFkGa1niMoReuTj3my9X0Z9IwAn/eF5aJJRhfyeGZbYrbpvzdihtAdB04t89/1O/w1cDnyilFU='
-
 model = joblib.load("./RandomForestClassifier.joblib")
 vectoriser = joblib.load("./count_vec.pkl")
 
@@ -113,7 +110,7 @@ def send_followup():
             
             if len(contents) > 0:
                 requests.post('https://api.line.me/v2/bot/message/push',
-                        headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {follow_access_token}'},
+                        headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key("../.env","CHANNEL_ACCESS_TOKEN")}'},
                             json = {"to":  user['lineopenid'],
                                     "messages": [{
                                         "type": "flex",
@@ -127,7 +124,7 @@ def send_followup():
                 print("Follow-up sent to user", user['lineopenid'], user['lineusername'])
 
 scheduler = BackgroundScheduler()
-job = scheduler.add_job(send_followup, 'interval', minutes=1)
+job = scheduler.add_job(send_followup, 'interval', minutes=1440)
 scheduler.start()
 
 def keyword_Search3(question):
@@ -205,7 +202,7 @@ def handle_message(body_json):
     
     if operation == -1:
         requests.post('https://api.line.me/v2/bot/message/reply',
-                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {faq_access_token}'},
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key("../.env","CHANNEL_ACCESS_TOKEN")}'},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
                 })
@@ -228,7 +225,7 @@ def handle_message(body_json):
     })
 
     requests.post('https://api.line.me/v2/bot/message/reply',
-                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {faq_access_token}'},
+                  headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key("../.env","CHANNEL_ACCESS_TOKEN")}'},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
                             "messages": [{"type": "text", "text": output['answer']}]
                 })

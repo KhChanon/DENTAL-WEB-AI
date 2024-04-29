@@ -78,7 +78,7 @@ const Followuprecord: React.FC = () => {
   const [can_eat, setcan_eat] = useState<boolean | null>(null);
   const [eat_soft_food, seteat_soft_food] = useState<boolean | null>(null);
   const [can_brush, setcan_brush] = useState<boolean | null>(null);
-  const [followAgain, setfollowAgain] = useState<boolean | null>(false);
+  let followAgain = false;
 
   const handleBleedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
@@ -161,15 +161,15 @@ const Followuprecord: React.FC = () => {
       if (taken_medication === true) {
         if (pain_decreased === false) {
           updatedRecommendations.push("คุณได้ทานยาแก้ปวดแล้วแต่อาการปวดไม่ดีขึ้น ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-          setfollowAgain(true)
+          followAgain = true;
         }
         else {
           updatedRecommendations.push("คุณได้ทานยาแก้ปวดแล้วและอาการปวดดีขึ้น จะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-          setfollowAgain(true)
+          followAgain = true;
         }
       } else {
         updatedRecommendations.push("อาการปวดมากกว่าระดับ7 แนะนำให้ทานยาแก้ปวดเพื่อระงับความปวดเบื้องต้น และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-        setfollowAgain(true)
+        followAgain = true;
       }
     }
 
@@ -178,15 +178,15 @@ const Followuprecord: React.FC = () => {
     } else if (swelling_level! >= 2) {
       if (days <= 3) {
         updatedRecommendations.push("ใบหน้าของคุณยังมีอาการบวมแบบเห็นได้ชัด แต่ยังอยู่ในช่วง3วันหลังผ่าตัด ควรประคบเย็นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-        setfollowAgain(true)
+        followAgain = true;
       } else {
         if (symptoms === true) {
           updatedRecommendations.push("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและไม่น้อยลงหรือมีอาการปวดร่วมด้วย ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-          setfollowAgain(true)
+          followAgain = true;
         }
         else {
           updatedRecommendations.push("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและแค่อาการบวมน้อยลงและไม่มีอาการปวดร่วมด้วย ควรประคบอุ่นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-          setfollowAgain(true)
+          followAgain = true;
         }
       }
     }
@@ -196,7 +196,7 @@ const Followuprecord: React.FC = () => {
         updatedRecommendations.push("ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการของแผล")
       } else {
         updatedRecommendations.push("ควรทานอาหารอ่อน และอาหหารที่ไม่มีรสชาติจัด และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
-        setfollowAgain(true)
+        followAgain = true;
       }
     }
 
