@@ -263,5 +263,4 @@ def predict():
     return {'question': input_text, 'operation': Olabel[operation], 'question_type': Qlabel[prediction[0]], 'answer': output['answer'], 'score': output['score']}
 
 if __name__ == "__main__":
-    context = ('../certificates/localhost.pem', '../certificates/localhost-key.pem')
-    app.run(host=dotenv.get_key("../.env","REACT_APP_DNS_NAME"), port=dotenv.get_key("../.env","MODEL_PORT"),debug = True,ssl_context=context)
+    app.run(port=dotenv.get_key("../.env","MODEL_PORT"))
