@@ -14,17 +14,18 @@ const ChatListBox: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate
 
     return (
     <div 
-        className='flex flex-col items-center justify-center w-full text-center text-white font-medium text-base cursor-pointer'
-        onClick={() => window.location.href = `/followup/${_id}`}
+        className='flex flex-col items-center justify-center w-full text-center text-white font-medium text-base'
+        
     >
         {recordID === _id
         ?
-        <button className="bg-purple flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] border-none text-center text-white text-base">
+        <button onClick={() => window.location.href = `/followup/${_id}`} className="cursor-pointer bg-[#1d435f] flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] border-none text-center text-white text-base">
             <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>
         </button>
         :
         <button 
-            className=" bg-stone-700 flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] hover:bg-purple  border-none text-center text-white text-base disabled:opacity-50 disabled:hover:bg-stone-700 cursor-pointer disabled:cursor-not-allowed" 
+            onClick={() => window.location.href = `/followup/${_id}`}
+            className="bg-[#499896] flex flex-col items-center justify-center w-[85%] px-3 min-h-16 rounded-[30px] hover:bg-[#1d435f]  border-none text-center text-white text-base disabled:bg-[#f90000] disabled:opacity-50 disabled:hover:bg-[#f90000] disabled:hover:opacity-50 cursor-pointer disabled:cursor-not-allowed" 
             disabled={surgicalstatus === "Follow Up" ? true : false}
         >
             <p className='m-0'>{surgicalprocedure} - {formattedDate}</p>

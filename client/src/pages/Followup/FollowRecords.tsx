@@ -5,7 +5,7 @@ import NavBar from '../../components/NavBar'
 import NavBarLogin from '../../components/NavBarLogin'
 import ChatListBox from './components/ChatListBox'
 import config from '../../config/config';
-import { RecordProp } from '../../interface/RecordProp';
+import { RecordProp, StatusOrder } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import Swal from 'sweetalert2'
@@ -16,6 +16,8 @@ const Followuprecord: React.FC = () => {
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
   const [records, setRecords] = useState<RecordProp[]>([]);
+  const [record, setRecord] = useState<RecordProp | null>(null);
+  const screenX = window.innerWidth
 
   const getRecords = async () => {
     try {
@@ -25,6 +27,7 @@ const Followuprecord: React.FC = () => {
         record.surgicaldate = new Date(record.surgicaldate);
       });
       setRecords(res.data.records);
+      setRecord(res.data.records.find((record: RecordProp) => record._id === recordID));
     } catch (error) {
       console.error(error);
     }
@@ -85,8 +88,8 @@ const Followuprecord: React.FC = () => {
     setbleedChoice(level);
   };
 
-  const handlePainChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const level = parseInt(event.target.value);
+  const handlePainChange = (string:string) => {
+    const level = parseInt(string);
     setpain_level(level);
     if (level <= 6) {
       settaken_medication(null);
@@ -116,8 +119,8 @@ const Followuprecord: React.FC = () => {
     }
   };
 
-  const handleDaysChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const level = parseInt(event.target.value);
+  const handleDaysChange = (string:string) => {
+    const level = parseInt(string);
     setdays(level);
     if (level < 4) {
       setsymptoms(null)
@@ -149,7 +152,7 @@ const Followuprecord: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let updatedRecommendations = [];  
+    let updatedRecommendations = [];
     if (bleedChoice === 2) {
       updatedRecommendations.push("คุณยังมีเลือกซึมจากแผลอยู่บ้างเป็นเลือกปนน้ำลาย ควรกัดผ้าก๊อซต่ออีก30นาที และไม่บ้วนน้ำลายบ่อย")
 
@@ -212,10 +215,10 @@ const Followuprecord: React.FC = () => {
   const showRecommendationsAlert = (updatedRecommendations: string[]) => {
     const uniqueRecommendations = Array.from(new Set(updatedRecommendations));
     // Construct the message to display
-    const message = uniqueRecommendations.length === 0 
-      ? 'No recommendations available.' 
+    const message = uniqueRecommendations.length === 0
+      ? 'No recommendations available.'
       : uniqueRecommendations.map((recommendation, index) => `${index + 1}. ${recommendation}`).join('<br><br>'); // Use <br> for line breaks and add index
-    
+
     // Show SweetAlert2 alert with HTML content and left-aligned text
     Swal.fire({
       title: 'Recommendations',
@@ -229,18 +232,18 @@ const Followuprecord: React.FC = () => {
 
   return (
 
-    <div className='w-screen h-screen flex flex-col'>
+    <div className='w-screen h-screen flex flex-col overflow-hidden'>
       {!auth
         ?
         <NavBar />
         :
         <NavBarLogin {...user!} />
       }
-      <div className='flex flex-row w-full h-full overflow-hidden'>
-        <div className="flex flex-col items-center justify-center w-1/5 p-5 pl-12 select-none">
-          <div className='flex flex-col rounded-3xl h-full w-full bg-[#D9D9D9] py-3 gap-2 justify-start items-center overflow-auto'>
+      <div className='flex flex-row w-full h-full overflow-hidden bg-[#efefef]'>
+        <div className="flex flex-col items-center justify-center w-1/5 p-5 pl-12 select-none iphone:hidden">
+          <div className='flex flex-col rounded-3xl h-full w-full bg-white py-3 gap-2 justify-start items-center overflow-auto'>
             <button
-              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#A12D72] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
+              className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#25597e] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
               onClick={() => { window.location.href = '/addcase' }}
             >
               <img
@@ -250,20 +253,37 @@ const Followuprecord: React.FC = () => {
               />
             </button>
             {
-              records
-                .sort((a: RecordProp, b: RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
+              records.sort((a: RecordProp, b: RecordProp) => {
+                const statusOrder: StatusOrder = {
+                  'Pending': 1,
+                  'Follow Up': 2,
+                  'Done': 3,
+                };
+
+                const orderA = statusOrder[a.surgicalstatus];
+                const orderB = statusOrder[b.surgicalstatus];
+
+                if (orderA !== orderB) {
+                  return orderA - orderB;
+                } else {
+                  return b.surgicaldate.getTime() - a.surgicaldate.getTime();
+                }
+              })
                 .map((record: RecordProp) => {
-                  return <ChatListBox key={record._id} {...record} />
+                  return <ChatListBox key={record._id} {...record} />;
                 })
             }
           </div>
         </div>
-        <div className='flex flex-col items-center py-5 px-12 justify-between'>
-          <form onSubmit={handleSubmit} className="flex flex-col overflow-y-auto bg-[#D9D9D9] items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl">
-            <section id='Blood' className="w-[20rem] h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
-              <div className="relative">Blood</div>
+        <div className='flex flex-col items-center py-5 justify-between px-12 iphone:mx-3 '>
+          <div className='flex w-full text-darkslateblue-200 font-bold text-3xl text-border text-left mb-3 iphone:text-base iphone:justify-center'>
+            {record?.surgicalprocedure} {record?.surgicaldate?.toLocaleDateString('en-GB')}
+          </div>
+          <form onSubmit={handleSubmit} className="flex flex-col overflow-y-auto bg-white items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl h-full w-full ml-12 iphone:px-10 iphone:ml-0">
+            <section id='Blood' className="w-full h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-left">
+              <div className="relative font-medium text-xl">1. แผลคุณมีเลือดซึมอยู่ระดับไหน</div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='ไม่มีเลือด'>
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='ไม่มีเลือด'>
                   <span>ไม่มีเลือด</span>
                   <input
                     name='blood'
@@ -275,7 +295,7 @@ const Followuprecord: React.FC = () => {
                     required
                   />
                 </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='เลือดนิดหน่อย'>
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='เลือดนิดหน่อย'>
                   <span>เลือดนิดหน่อย</span>
                   <input
                     name='blood'
@@ -286,7 +306,7 @@ const Followuprecord: React.FC = () => {
                     onChange={handleBleedChange}
                   />
                 </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='เลือดกรอกปาก'>
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='เลือดกรอกปาก'>
                   <span>เลือดกรอกปาก</span>
                   <input
                     name='blood'
@@ -299,42 +319,57 @@ const Followuprecord: React.FC = () => {
                 </label>
               </div>
             </section>
-            <section id='Pain' className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
-              <div className="relative">Pain</div>
-              <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
+            {screenX > 450
+              ?
+              <section id='Pain' className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display w-full">
+                <div className="relative font-medium text-xl">2. คุณมีความปวดระดับไหน</div>
+                <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
+                  {[...Array(11)].map((_, index) => (
+                    <div key={index}>
+                      <input
+                        name="pain"
+                        type="radio"
+                        id={`pain_${index}`}
+                        value={index}
+                        className="peer hidden"
+                        onChange={(e) => handlePainChange(e.target.value)}
+                        required
+                      />
+                      <label
+                        className="cursor-pointer select-none w-[3.75rem] aspect-square box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-[#52B9D0] rounded-full peer-checked:text-white peer-checked:border-none"
+                        htmlFor={`pain_${index}`}
+                      >
+                        {index}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                <div className="w-[51.875rem] flex flex-row items-center justify-between text-grayer-100 text-[12px]">
+                  <div className="relative">ไม่เจ็บ</div>
+                  <div className="relative">เจ็บปางตาย</div>
+                </div>
+                {pain_level === null && (
+                  <p className="text-red-500 text-sm">Please select one of these options</p>
+                )}
+              </section>
+              :
+              <div id='Pain' className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display w-full">
+                <div className="relative font-medium text-xl">2. คุณมีความปวดระดับไหน</div>
+                <select className='w-1/2 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
+                onChange={(e) => handlePainChange(e.target.value)}>
                 {[...Array(11)].map((_, index) => (
-                  <div key={index}>
-                    <input
-                      name="pain"
-                      type="radio"
-                      id={`pain_${index}`}
-                      value={index}
-                      className="peer hidden"
-                      onChange={handlePainChange}
-                      required
-                    />
-                    <label
-                      className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
-                      htmlFor={`pain_${index}`}
-                    >
+                    <option value={index}>
                       {index}
-                    </label>
-                  </div>
-                ))}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="w-[51.875rem] flex flex-row items-center justify-between text-grayer-100 text-[12px]">
-                <div className="relative">ไม่เจ็บ</div>
-                <div className="relative">เจ็บปางตาย</div>
-              </div>
-              {pain_level === null && (
-                <p className="text-red-500 text-sm">Please select one of these options</p>
-              )}
-            </section>
+            }
             {pain_level !== null && pain_level > 6 && (
-              <section id="Medication" className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-                <div className="relative font-red-hat-display text-center">Medication</div>
+              <section id="Medication" className="w-full flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display font-medium text-xl">3. คุณได้ทานยาแก้ปวดหรือไม่</div>
                 <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="taken_medication_yes">
+                  <label className="flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5" htmlFor="taken_medication_yes">
                     <span>ใช่</span>
                     <input
                       name="taken_medication"
@@ -345,7 +380,7 @@ const Followuprecord: React.FC = () => {
                       required
                     />
                   </label>
-                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="taken_medication_no">
+                  <label className="flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5" htmlFor="taken_medication_no">
                     <span>ไม่</span>
                     <input
                       name="taken_medication"
@@ -359,10 +394,10 @@ const Followuprecord: React.FC = () => {
               </section>
             )}
             {taken_medication !== null && taken_medication && (
-              <section id="Better" className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-                <div className="relative font-red-hat-display text-center">Better</div>
+              <section id="Better" className="w-full flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display font-medium text-xl">4. หลังจากทานยาแก้ปวด อาการปวดของคุณดีขึ้นไหม</div>
                 <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="pain_decreased_yes">
+                  <label className="flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5" htmlFor="pain_decreased_yes">
                     <span>ใช่</span>
                     <input
                       name="pain_decreased"
@@ -373,7 +408,7 @@ const Followuprecord: React.FC = () => {
                       required
                     />
                   </label>
-                  <label className="flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none" htmlFor="pain_decreased_no">
+                  <label className="flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5" htmlFor="pain_decreased_no">
                     <span>ไม่</span>
                     <input
                       name="pain_decreased"
@@ -386,42 +421,68 @@ const Followuprecord: React.FC = () => {
                 </div>
               </section>
             )}
-            <section id="Swelling" className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
-              <div className="relative">Swelling</div>
-              <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
-                {[...Array(4)].map((_, index) => (
-                  <div key={index}>
-                    <input
-                      name="swelling"
-                      type="radio"
-                      id={`swelling_${index + 1}`}
-                      value={index + 1}
-                      className="peer hidden"
-                      onChange={handleSwellingChange}
-                      required
-                    />
-                    <label
-                      className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
-                      htmlFor={`swelling_${index + 1}`}
-                    >
-                      {index + 1}
-                    </label>
-                  </div>
-                ))}
+            <section id="Swelling" className="flex flex-col w-full items-start justify-start gap-[1.187rem] font-red-hat-display">
+              <div className="relative font-red-hat-display font-medium text-xl">{3 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. ใบหน้าบริเวณแผลของคุณมีอาการบวมแบบไหน</div>
+              <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='swelling_1'>
+                  <span>ไม่บวม</span>
+                  <input
+                    name='swelling'
+                    type='radio'
+                    id='swelling_1'
+                    value='0'
+                    className='w-[20px] h-[20px]'
+                    onChange={handleSwellingChange}
+                    required
+                  />
+                </label>
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5'  htmlFor='swelling_2'>
+                  <span>บวมนิดหน่อย</span>
+                  <input
+                    name='swelling'
+                    type='radio'
+                    id='swelling_2'
+                    value='1'
+                    className='w-[20px] h-[20px]'
+                    onChange={handleSwellingChange}
+                  />
+                </label>
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='swelling_3'>
+                  <span>บวมเห็นภายนอกชัดเจน</span>
+                  <input
+                    name='swelling'
+                    type='radio'
+                    id='swelling_3'
+                    value='2'
+                    className='w-[20px] h-[20px]'
+                    onChange={handleSwellingChange}
+                  />
+                </label>
+                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='swelling_4'>
+                  <span>บวมมากและมีอาการอื่นด้วย</span>
+                  <input
+                    name='swelling'
+                    type='radio'
+                    id='swelling_4'
+                    value='3'
+                    className='w-[20px] h-[20px]'
+                    onChange={handleSwellingChange}
+                  />
+                </label>
               </div>
-              <div className="w-full flex flex-row items-center justify-between text-grayer-100 text-[12px]">
-                <div className="relative">ไม่บวม</div>
-                <div className="relative">บวมเหมือนภูเขาไฟที่จะระเบิด</div>
-              </div>
+
               {swelling_level === null && (
                 <p className="text-red-500 text-sm">Please select one of these options</p>
               )}
             </section>
 
-            {swelling_level !== null && swelling_level >= 5 && (
-              <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display">
-                <div className="relative">Days</div>
-                <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter">
+            {swelling_level !== null && swelling_level >= 2 && (
+              <div className='w-full'>
+              {screenX > 450
+                ?
+              <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-left font-red-hat-display w-full">
+                <div className="relative font-red-hat-display font-medium text-xl">{4 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. คุณผ่าตัดไปแล้วกี่วัน</div>
+                <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter iphone:gap-[0.5rem]">
                   {[...Array(11)].map((_, index) => (
                     <div key={index}>
                       <input
@@ -430,11 +491,11 @@ const Followuprecord: React.FC = () => {
                         id={`days_${index}`}
                         value={index}
                         className="peer hidden"
-                        onChange={handleDaysChange}
+                        onChange={(e) => handleDaysChange(e.target.value)}
                         required
                       />
                       <label
-                        className="cursor-pointer select-none w-[3.75rem] h-[3.75rem] box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-green"
+                        className="cursor-pointer select-none w-[3.75rem] aspect-square box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-[#52B9D0] rounded-full peer-checked:text-white peer-checked:border-none"
                         htmlFor={`days_${index}`}
                       >
                         {index}
@@ -446,14 +507,28 @@ const Followuprecord: React.FC = () => {
                   <p className="text-red-500 text-sm">Please select one of these options</p>
                 )}
               </section>
+              :
+              <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-left font-red-hat-display w-full">
+                <div className="relative font-red-hat-display font-medium text-xl">{4 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. คุณผ่าตัดไปแล้วกี่วัน</div>
+                <select className='w-1/2 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
+                  onChange={(e) => handleDaysChange(e.target.value)}>
+                  {[...Array(16)].map((_, index) => (
+                      <option value={index}>
+                        {index}
+                      </option>
+                    ))}
+                </select>
+              </section>
+              }
+              </div>
             )}
             {days !== null && days > 3 && (
-              <section id='Symptom' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-                <div className="relative font-red-hat-display text-center">
-                  Symptom
+              <section id='Symptom' className="w-full flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display font-medium text-xl">
+                {5 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. ตอนนี้บริเวณแผลบวมมากขึ้นหรือมีอาการปวดร่วมด้วยไหม
                 </div>
                 <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_yes'>
+                  <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='symptoms_yes'>
                     <span>ใช่</span>
                     <input
                       name='symptoms'
@@ -464,7 +539,7 @@ const Followuprecord: React.FC = () => {
                       required
                     />
                   </label>
-                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='symptoms_no'>
+                  <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='symptoms_no'>
                     <span>ไม่</span>
                     <input
                       name='symptoms'
@@ -477,12 +552,12 @@ const Followuprecord: React.FC = () => {
                 </div>
               </section>
             )}
-            <section id='Diet' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-              <div className="relative font-red-hat-display text-center">
-                Diet
+            <section id='Diet' className="w-full flex flex-col items-start justify-start gap-[1.187rem]">
+              <div className="relative font-red-hat-display font-medium text-xl">
+              {4 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0) + (swelling_level !== null && swelling_level >= 2 ? 1 : 0) + (days !== null && days > 3 ? 1 : 0)}. คุณสามารถทานอาหารได้ปกติไหม
               </div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_eat_yes'>
+                <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='can_eat_yes'>
                   <span>ใช่</span>
                   <input
                     name='can_eat'
@@ -493,7 +568,7 @@ const Followuprecord: React.FC = () => {
                     required
                   />
                 </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_eat_no'>
+                <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='can_eat_no'>
                   <span>ไม่</span>
                   <input
                     name='can_eat'
@@ -506,12 +581,12 @@ const Followuprecord: React.FC = () => {
               </div>
             </section>
             {can_eat !== null && !can_eat && (
-              <section id='Soft food' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-                <div className="relative font-red-hat-display text-center">
-                  Soft food
+              <section id='Soft food' className="w-full flex flex-col items-start justify-start gap-[1.187rem]">
+                <div className="relative font-red-hat-display font-medium text-xl">
+                {5 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0) + (swelling_level !== null && swelling_level >= 2 ? 1 : 0) + (days > 3 ? 1 : 0)}.   คุณทานอาหารอ่อนอยู่ไหม
                 </div>
                 <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_yes'>
+                  <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='eat_soft_food_yes'>
                     <span>ใช่</span>
                     <input
                       name='eat_soft_food'
@@ -522,7 +597,7 @@ const Followuprecord: React.FC = () => {
                       required
                     />
                   </label>
-                  <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='eat_soft_food_no'>
+                  <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='eat_soft_food_no'>
                     <span>ไม่</span>
                     <input
                       name='eat_soft_food'
@@ -535,12 +610,12 @@ const Followuprecord: React.FC = () => {
                 </div>
               </section>
             )}
-            <section id='Oral hygeine' className="w-[12.5rem] flex flex-col items-start justify-start gap-[1.187rem]">
-              <div className="relative font-red-hat-display text-center">
-                Oral hygeine
+            <section id='Oral hygeine' className="w-full flex flex-col items-start justify-start gap-[1.187rem]">
+              <div className="relative font-red-hat-display font-medium text-xl">
+              {5 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0) + (swelling_level !== null && swelling_level >= 2 ? 1 : 0) + (days > 3 ? 1 : 0) + (can_eat !== null && !can_eat ? 1 : 0)}.  คุณสามารถแปรงฟันหรือบ้วนปากได้ปกติไหม
               </div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_brush_yes'>
+                <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='can_brush_yes'>
                   <span>ใช่</span>
                   <input
                     name='can_brush'
@@ -551,7 +626,7 @@ const Followuprecord: React.FC = () => {
                     required
                   />
                 </label>
-                <label className='flex w-3/4 justify-between border-[1px] border-solid border-black px-5 py-3 cursor-pointer select-none' htmlFor='can_brush_no'>
+                <label className='flex w-[12.5%] justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='can_brush_no'>
                   <span>ไม่</span>
                   <input
                     name='can_brush'
@@ -563,9 +638,9 @@ const Followuprecord: React.FC = () => {
                 </label>
               </div>
             </section>
-            <button className="cursor-pointer p-[0.625rem] bg-silver w-[7.313rem] self-center rounded-lg box-border h-[3.375rem] flex flex-row items-center justify-center border-[1px] border-solid border-black"
+            <button className="cursor-pointer p-[0.625rem] bg-silver w-[7.313rem] self-center rounded-xl box-border h-[3.375rem] flex flex-row items-center justify-center bg-[#25597e] border-none"
               type='submit'>
-              <div className="relative text-[20px] font-semibold font-red-hat-display text-black text-center">
+              <div className="relative text-[20px] font-semibold font-red-hat-display text-white text-center">
                 ยืนยัน
               </div>
             </button>
@@ -576,4 +651,4 @@ const Followuprecord: React.FC = () => {
   )
 }
 
-export default Followuprecord
+export default Followuprecord;

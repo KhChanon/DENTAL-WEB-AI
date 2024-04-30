@@ -42,17 +42,17 @@ const Addcase = () => {
   }, []);
 
   return (
-    <div className='w-screen h-screen flex flex-col'>
+    <div className='w-screen h-screen flex flex-col overflow-hidden'>
       {!auth
       ?
         <NavBar />
       :
       <NavBarLogin {...user!} />
       }
-      <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#D9D9D9]'>
-        <div className='flex flex-col box-border h-full w-full rounded-xl justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md'>
-          <div className='text-2xl font-bold'>โปรดเลือกการรักษาที่พึ่งได้รับ</div>
-          <div className='flex w-3/4 justify-center'>
+      <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#EFEFEF]'>
+        <div className='flex flex-col box-border h-full w-full rounded-xl justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md iphone:gap-[40px] iphone:px-[10px]'>
+          <div className='text-2xl font-bold iphone:text-xl'>โปรดเลือกการรักษาที่พึ่งได้รับ</div>
+          <div className='flex w-3/4 justify-center iphone:w-full'>
             <input
               className='peer hidden'
               name='การรักษา'
@@ -62,10 +62,10 @@ const Addcase = () => {
             <label
               onClick={() => setSurgicalprocedure('ถอนฟัน')}
               htmlFor='ถอนฟัน'
-              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+              className={`bg-[#25597e] opacity-50 peer-checked:opacity-100 text-white text-center cursor-pointer hover:opacity-100 border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ถอนฟัน</label>
           </div>
-          <div className='flex w-3/4 justify-center'>
+          <div className='flex w-3/4 justify-center iphone:w-full'>
             <input
               className='peer hidden'
               name='การรักษา'
@@ -75,10 +75,10 @@ const Addcase = () => {
             <label
               onClick={() => setSurgicalprocedure('ผ่าฟันคุด')}
               htmlFor='ผ่าฟันคุด'
-              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+              className={`bg-[#25597e] opacity-50 peer-checked:opacity-100 text-white text-center cursor-pointer hover:opacity-100 border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าฟันคุด</label>
           </div>
-          <div className='flex w-3/4 justify-center'>
+          <div className='flex w-3/4 justify-center iphone:w-full'>
             <input
               className='peer hidden'
               name='การรักษา'
@@ -88,10 +88,10 @@ const Addcase = () => {
             <label
               onClick={() => setSurgicalprocedure('ผ่าฟันฟันคุด')}
               htmlFor='ผ่าตัดเหงือก'
-              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+              className={`bg-[#25597e] opacity-50 peer-checked:opacity-100 text-white text-center cursor-pointer hover:opacity-100 border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าตัดเหงือก</label>
           </div>
-          <div className='flex w-3/4 justify-center'>
+          <div className='flex w-3/4 justify-center iphone:w-full'>
             <input
               className='peer hidden'
               name='การรักษา'
@@ -101,11 +101,11 @@ const Addcase = () => {
             <label
               onClick={() => setSurgicalprocedure('ผ่าตัดรากฟันเทียม')}
               htmlFor='ผ่าตัดรากฟันเทียม'
-              className={`bg-lightpurple peer-checked:bg-purple text-white text-center cursor-pointer hover:bg-purple border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
+              className={`bg-[#25597e] opacity-50 peer-checked:opacity-100  text-white text-center cursor-pointer hover:opacity-100 border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าตัดรากฟันเทียม</label>
           </div>
           <button 
-            className='disabled bg-palevioletred active:bg-[#e875a5] text-white cursor-pointer border-none py-[15px] rounded-xl w-1/3 self-center text-xl select-none disabled:bg-slate-400 disabled:cursor-default'
+            className='disabled bg-[#1d435f] active:bg-[#153449] text-white cursor-pointer border-none py-[15px] rounded-xl w-1/3 self-center text-xl select-none disabled:bg-slate-400 disabled:cursor-default iphone:w-1/2'
             disabled={surgicalprocedure === '' ? true : false} 
             onClick={addFollowCase}
           >ยืนยัน</button>

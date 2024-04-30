@@ -7,7 +7,7 @@ import config from '../../config/config';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import DefaultPP from '../../assets/Default_PP.png'
-import { RecordProp } from '../../interface/RecordProp'
+import { RecordProp, StatusOrder } from '../../interface/RecordProp'
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
@@ -47,43 +47,42 @@ const Patientinfo = () => {
   }, []);
 
   return (
-    <div className="relative bg-whitesmoke w-full h-screen overflow-hidden flex flex-col items-center justify-start pt-[0rem] px-[0rem] pb-[13.81rem] box-border gap-[2.75rem] tracking-[normal">
+    <div className="relative bg-whitesmoke w-screen h-screen overflow-hidden flex flex-col items-center justify-start pt-[0rem] px-[0rem] pb-[13.81rem] box-border gap-[2.75rem] tracking-[normal">
       {!auth
         ?
         <NavBar />
         :
         <NavBarLogin {...user!} />
       }
-      <div className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display">
-        <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full mq700:flex-wrap mq700:gap-[1.56rem]">
+      <div className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display iphone:items-center iphone:justify-center iphone:gap-[0.88rem]">
+        <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full mq700:flex-wrap mq700:gap-[1.56rem] iphone:items-center iphone:justify-center iphone:gap-[0.1rem] iphone:flex-col">
           <img
-            className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover"
+            className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover iphone:h-[6rem] iphone:w-[6rem]"
             loading="eager"
             alt=""
             src={user?.lineprofilepicture ? user?.lineprofilepicture : DefaultPP}
           />
-          <div className="m-0 h-[5.31rem] relative text-inherit font-bold font-inherit flex items-center max-w-full mq450:text-[2.38rem] mq950:text-[3.19rem]">
+          <div className="m-0 h-[5.31rem] relative text-inherit font-bold font-inherit flex items-center max-w-full mq450:text-[2.38rem] mq950:text-[3.19rem] iphone:text-[30px] iphone:h-[4.31rem]">
             {user?.lineusername}
           </div>
         </div>
-        <div className="self-stretch flex flex-col items-start justify-start gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200">
-          <div className="self-stretch flex flex-row items-center justify-between py-[0rem] px-[1.25rem]">
-            <b className="w-[25.5rem] relative flex items-center h-[2.94rem] shrink-0">
+        <div className="self-stretch flex flex-col items-start justify-between gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200 iphone:text-[20px]">
+          <div className="self-stretch flex flex-row items-center justify-between py-[0rem] px-[1.25rem] iphone:w-full iphone:px-[0.5rem] iphone:">
+            <b className="w-[25.5rem] flex items-center h-[2.94rem] shrink-0 iphone:w-[10rem]">
               ประวัติการรักษา
             </b>
-            <div className="w-[4.13rem] relative h-[2.08rem] text-center text-[1.5rem]"onClick={() => {window.location.href = '/addcase'}}>
-              
+            <div className="flex w-[4.13rem] h-[2.08rem] text-center text-[1.5rem] iphone:w-[4.5rem]"onClick={() => {window.location.href = '/addcase'}}>
               <img
-                className="cursor-pointer select-none w-[20px] h-[20px] bg-[#a12d72] py-[10px] px-[25px] rounded-lg"
+                className="cursor-pointer select-none w-[20px] h-[20px] bg-[#25597e] py-[10px] px-[25px] rounded-lg iphone:py-[7px] iphone:px-[20px]"
                 alt=""
                 src={PlusIcon}
                 />
               
             </div>
           </div>
-          <div className="self-stretch rounded-xl max-h-[26.5rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black mq450:pt-[1.25rem] mq450:pb-[1.25rem] mq450:box-border">
-            <div className="w-[57.38rem] flex flex-row items-start justify-start gap-[85px] max-w-full mq450:flex-wrap">
-              <div className="relative font-extrabold w-[157px]">Record ID</div>
+          <div className="self-stretch rounded-xl max-h-[26.5rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black iphone:text-sm overflow-hidden">
+            <div className="w-[57.38rem] flex flex-row items-start justify-start gap-[85px] max-w-full iphone:gap-[0.94rem]">
+              <div className="relative font-extrabold w-[157px] iphone:w-[100px]">ID</div>
               <div className="relative font-extrabold w-[105px]">วันที่</div>
               <div className="relative font-extrabold w-[140px]">ศัลยกรรม</div>
               <div className="h-[1.19rem] relative font-extrabold flex items-center">
@@ -91,10 +90,24 @@ const Patientinfo = () => {
               </div>
             </div>
             <div className="w-[57.06rem] h-[0.06rem] relative box-border max-w-full border-t-[1px] border-solid border-black" />
-            <div className="w-full flex flex-col items-start justify-start gap-[0.94rem] max-w-full overflow-y-auto overscroll-x-none pb-2">
+            <div className="w-full flex flex-col items-start justify-start gap-[0.94rem] max-w-full overflow-y-auto overscroll-x-hidden pb-2 iphone:">
               {
-              records
-              .sort((a:RecordProp, b:RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
+              records.sort((a: RecordProp, b: RecordProp) => {
+                const statusOrder:StatusOrder = {
+                  'Pending': 1,
+                  'Follow Up': 2,
+                  'Done': 3,
+                };
+            
+                const orderA = statusOrder[a.surgicalstatus];
+                const orderB = statusOrder[b.surgicalstatus];
+            
+                if (orderA !== orderB) {
+                  return orderA - orderB;
+                } else {
+                  return b.surgicaldate.getTime() - a.surgicaldate.getTime();
+                }
+              })
               .map((record:RecordProp) => {
                   return <InfoItem key={record._id} {...record} />
                 })
