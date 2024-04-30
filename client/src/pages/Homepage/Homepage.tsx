@@ -84,16 +84,16 @@ const Homepage = () => {
   }, []);
   
   return (
-    <div className="bg-cover h-screen w-screen" style={{ backgroundImage: `url(${BgImage})` }}>
+    <div className="bg-cover h-screen w-screen overflow-hidden" style={{ backgroundImage: `url(${BgImage})` }}>
       {!auth
       ?
       <NavBar />
       :
       <NavBarLogin {...user!} />
       }
-        <div className="absolute top-1/3 flex-col pl-10 w-full iphone:top-[100px] iphone:pl-5">
+        <div className="flex pt-32 gap-6 flex-col pl-10 w-full iphone:pl-5">
           <div className="text-4xl font-bold text-white">ORAL AI</div>
-          <div className="text-xl text-white w-[550px] iphone:w-[330px]">lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet</div>
+          <div className="text-xl text-white w-[550px] iphone:w-[330px]">OralAI แชทบอทที่จะช่วยตอบคำถามของผู้ป่วยและให้การติดตามอาการหลังผ่าตัด ซึ่งพวกเรามุ่งมั่นที่จะทำให้ผู้ป่วยได้รับความช่วยเหลือเกี่ยวกับข้อสงสัยด้านสุขภาพทางช่องปากในทันทีและแม่นยำ</div>
           {!auth
           ?
           <div className = "flex flex-row gap-8 item-start iphone:flex-col iphone:gap-2"> 

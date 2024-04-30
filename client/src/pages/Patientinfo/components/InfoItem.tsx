@@ -27,10 +27,10 @@ const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, 
                         <div className="relative font-light whitespace-pre-wrap flex items-center w-[75px] h-[2.31rem] shrink-0">
                             {formattedDate}
                         </div>
-                        <div className="relative font-light flex items-center w-[80px] h-[2.31rem] shrink-0 ">
+                        <div className="relative font-light flex items-center w-[80px] h-[2.31rem] shrink-0 text-left">
                             {surgicalprocedure}
                         </div>
-                        <div className="relative font-light flex items-center w-[3rem] h-[2.31rem] shrink-0">
+                        <div className="relative font-light flex items-center w-[3rem] h-[2.31rem] shrink-0 text-sm">
                             {surgicalstatus}
                         </div>
                     </button>
@@ -43,10 +43,10 @@ const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, 
                         <div className="relative font-light whitespace-pre-wrap flex items-center w-[9.25rem] h-[2.31rem] shrink-0 iphone:w-[75px]">
                             {formattedDate}
                         </div>
-                        <div className="relative font-light flex items-center w-[11.25rem] h-[2.31rem] shrink-0 iphone:w-[80px]">
+                        <div className="relative font-light flex items-center w-[11.25rem] h-[2.31rem] shrink-0 iphone:w-[80px] text-left">
                             {surgicalprocedure}
                         </div>
-                        <div className="relative font-light flex items-center w-[5.75rem] h-[2.31rem] shrink-0">
+                        <div className="relative font-light flex items-center w-[5.75rem] h-[2.31rem] shrink-0 text-base">
                             {surgicalstatus}
                         </div>
                         <button
