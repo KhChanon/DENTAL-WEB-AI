@@ -6,6 +6,8 @@ import { UserProp } from '../../interface/UserProp'
 import NavBarLogin from '../../components/NavBarLogin';
 import NavBar from '../../components/NavBar';
 import PlusIcon from '../../assets/plus-solid.svg';
+import { MdOutlinePendingActions } from "react-icons/md";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
 
 const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate, surgicalstatus, surgicalresult}) => {
   const day: number = surgicaldate.getDate();
@@ -20,10 +22,10 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
       disabled={surgicalstatus === "Follow Up" ? true : false}
       onClick={() => window.location.href = `/followup/${_id}`}
     >
-      <div className="text-xl text-white font-bold mb-1">{surgicalprocedure}</div>
-      <div className="text-sm text-white font-bold mb-5">{formattedDate}</div>
-      <div className="text-base text-white font-bold mb-5">Status: {surgicalstatus}</div>
-      <div className="text-base text-white font-bold text-left">{surgicalresult ? surgicalresult :"This surgery is still being Follow Up" }</div>
+      <div className="w-full flex flex-row text-xl text-white font-bold mb-1 text-left justify-between iphone:text-base">{surgicalprocedure} {surgicalstatus == "Pending" ? <MdOutlinePendingActions/>:<IoCheckmarkCircleOutline/>}</div>
+      <div className="text-sm text-white font-bold mb-5 iphone:font-medium">{formattedDate}</div>
+      <div className="text-left text-base text-white font-bold mb-5 iphone:text-sm">สถานะ: {surgicalstatus}</div>
+      <div className="text-base text-white font-bold text-left iphone:text-sm">{surgicalstatus == "Pending" ? "กรุณาทำฟอร์มนี้" :"คุณทำฟอร์มนี้ไปแล้ว ค่อยกลับมาทำในวันถัดไป" }</div>
     </button>
   )
 }

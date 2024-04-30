@@ -114,7 +114,7 @@ const FAQ = () => {
           </div>
           <form className='flex rounded-3xl w-full h-[8%] bg-[#21294C] items-center select-none iphone:h-[6%]'>
             <input 
-              className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl iphone:text-base' 
+              className='w-full h-full bg-[transparent] text-white text-xl pl-5 border-none rounded-4xl iphone:text-base iphone:outline-none' 
               placeholder='Type your message here...'
               value={chat}
               required
