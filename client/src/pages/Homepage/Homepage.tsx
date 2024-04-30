@@ -93,7 +93,7 @@ const Homepage = () => {
       }
         <div className="absolute top-1/3 flex-col pl-10 w-full iphone:top-[100px] iphone:pl-5">
           <div className="text-4xl font-bold text-white">ORAL AI</div>
-          <div className="relative text-xl text-white iphone:w-[330px]">lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet</div>
+          <div className="text-xl text-white w-[550px] iphone:w-[330px]">lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet</div>
           {!auth
           ?
           <div className = "flex flex-row gap-8 item-start iphone:flex-col iphone:gap-2"> 
