@@ -7,7 +7,7 @@ import config from '../../config/config';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import DefaultPP from '../../assets/Default_PP.png'
-import { RecordProp } from '../../interface/RecordProp'
+import { RecordProp, StatusOrder } from '../../interface/RecordProp'
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
@@ -92,8 +92,22 @@ const Patientinfo = () => {
             <div className="w-[57.06rem] h-[0.06rem] relative box-border max-w-full border-t-[1px] border-solid border-black" />
             <div className="w-full flex flex-col items-start justify-start gap-[0.94rem] max-w-full overflow-y-auto overscroll-x-hidden pb-2 iphone:">
               {
-              records
-              .sort((a:RecordProp, b:RecordProp) => b.surgicaldate.getTime() - a.surgicaldate.getTime())
+              records.sort((a: RecordProp, b: RecordProp) => {
+                const statusOrder:StatusOrder = {
+                  'Pending': 1,
+                  'Follow Up': 2,
+                  'Done': 3,
+                };
+            
+                const orderA = statusOrder[a.surgicalstatus];
+                const orderB = statusOrder[b.surgicalstatus];
+            
+                if (orderA !== orderB) {
+                  return orderA - orderB;
+                } else {
+                  return b.surgicaldate.getTime() - a.surgicaldate.getTime();
+                }
+              })
               .map((record:RecordProp) => {
                   return <InfoItem key={record._id} {...record} />
                 })

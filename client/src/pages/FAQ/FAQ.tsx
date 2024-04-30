@@ -101,9 +101,9 @@ const FAQ = () => {
       :
       <NavBarLogin {...user!} />
       }
-      <div className='flex flex-row w-full h-full overflow-hidden'>
+      <div className='flex flex-row w-full h-full overflow-hidden bg-[#EFEFEF]'>
         <div className='flex flex-col items-center w-full p-5 px-12 justify-between iphone:px-6'>
-          <div className='flex flex-col rounded-3xl w-full h-[85%] bg-[#D9D9D9] select-none overflow-auto py-3 gap-2 iphone:h-[89%]'>
+          <div className='flex flex-col rounded-3xl w-full h-[85%] bg-white select-none overflow-auto py-3 gap-2 iphone:h-[89%]'>
             {
               allchat
               .sort((a:ChatMessegeProp, b:ChatMessegeProp) => a.chattime.getTime() - b.chattime.getTime())

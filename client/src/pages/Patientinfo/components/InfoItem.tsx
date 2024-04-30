@@ -35,7 +35,7 @@ const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, 
                         </div>
                     </button>
                     :
-                    <div className="flex flex-row items-center justify-start gap-[2.69rem] max-w-full iphone:gap-[0.94rem]" onClick={goToFollowUp}>
+                    <div className="flex flex-row items-center justify-start gap-[2.69rem] max-w-full iphone:gap-[0.94rem]">
 
                         <div className="relative font-light flex items-center w-[12.44rem] h-[2.31rem] shrink-0 text-base iphone:text-sm">
                             {_id}

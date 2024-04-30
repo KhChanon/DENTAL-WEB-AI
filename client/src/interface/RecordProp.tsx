@@ -5,3 +5,7 @@ export interface RecordProp {
     surgicalstatus: string;
     surgicalresult: string;
  }
+
+export interface StatusOrder {
+    [key: string]: number;
+  }
