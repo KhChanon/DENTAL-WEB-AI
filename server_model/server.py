@@ -101,7 +101,7 @@ def send_followup():
                         "action": {
                             "type": "message",
                             "label": "action",
-                            "text": f"Record ID: {record['_id']}"
+                            "text": f"/followup Record ID: {record['_id']}"
                         },
                         "styles": {
                             "footer": {
