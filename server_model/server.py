@@ -100,7 +100,7 @@ def send_followup():
                         "action": {
                             "type": "message",
                             "label": "action",
-                            "text": f"/followup Record ID: {record['_id']}"
+                            "text": f"Record ID: {record['_id']}"
                         },
                         "styles": {
                             "footer": {
@@ -171,7 +171,7 @@ def line():
     
     try: 
         if 'message' in body_json['events'][0]:
-            if body_json['events'][0]['message']['text'][0:9] == '/followup':
+            if body_json['events'][0]['message']['text'][0:10] == 'Record ID:' or body_json['events'][0]['message']['text'] == 'ไม่' or body_json['events'][0]['message']['text'] == 'ใช่' or body_json['events'][0]['message']['text'] == '0' or body_json['events'][0]['message']['text'] == '1' or body_json['events'][0]['message']['text'] == '2' or body_json['events'][0]['message']['text'] == '3' or body_json['events'][0]['message']['text'] == '4' or body_json['events'][0]['message']['text'] == '5' or body_json['events'][0]['message']['text'] == '6' or body_json['events'][0]['message']['text'] == '7' or body_json['events'][0]['message']['text'] == '8' or body_json['events'][0]['message']['text'] == '9' or body_json['events'][0]['message']['text'] == '10' or body_json['events'][0]['message']['text'] == '11' or body_json['events'][0]['message']['text'] == '12' or body_json['events'][0]['message']['text'] == '13' or body_json['events'][0]['message']['text'] == '14' or body_json['events'][0]['message']['text'] == '15' or body_json['events'][0]['message']['text'] == '16' or body_json['events'][0]['message']['text'] == '17' or body_json['events'][0]['message']['text'] == '18' or body_json['events'][0]['message']['text'] == '19' or body_json['events'][0]['message']['text'] == '20' or body_json['events'][0]['message']['text'] == '21' or body_json['events'][0]['message']['text'] == '22' or body_json['events'][0]['message']['text'] == '23' or body_json['events'][0]['message']['text'] == '24' or body_json['events'][0]['message']['text'] == '25' or body_json['events'][0]['message']['text'] == '26' or body_json['events'][0]['message']['text'] == '27' or body_json['events'][0]['message']['text'] == '28' or body_json['events'][0]['message']['text'] == '29' or body_json['events'][0]['message']['text'] == '30' or body_json['events'][0]['message']['text'] == '31':
                 requests.post('https://bots.dialogflow.com/line/f3211ca9-d9fb-4baf-a4d8-b97b22a11ab9/webhook',
                     headers={'Host': 'bots.dialogflow.com','Content-Type': 'application/json'}, 
                     json = body_json)
