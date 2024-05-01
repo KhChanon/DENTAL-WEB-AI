@@ -138,15 +138,20 @@ const PostRecommendation = async (req, res) => {
         
         user = await User.findOne({ "records._id": record_id })
 
+        if (!user) {
+            agent.add("ไม่พบข้อมูลผู้ใช้งาน");
+            return;
+        }
+
         record = user.records.find(record => record._id == record_id);
 
         if (record.surgicalstatus === "Done") {
-            agent.add("Done leaw");
+            agent.add("คุณทำฟอร์มนี้ไปแล้ว");
 
             agent.context.delete("oralbot-followup");
         }
         else if (record.surgicalstatus === "Follow Up") {
-            agent.add("Today Done leaw");
+            agent.add("เดี่ยวจะมีการติดตามอีกครั้งพรุ่งนี้");
 
             followup = await Followup.findOne({ "record": record_id });
 
@@ -221,7 +226,7 @@ const PostRecommendation = async (req, res) => {
                     "items": [
                       {
                         "action": {
-                          "text": "/followup 1",
+                          "text": "1",
                           "label": "1",
                           "type": "message"
                         },
@@ -231,14 +236,14 @@ const PostRecommendation = async (req, res) => {
                         "type": "action",
                         "action": {
                           "type": "message",
-                          "text": "/followup 2",
+                          "text": "2",
                           "label": "2"
                         }
                       },
                       {
                         "action": {
                           "type": "message",
-                          "text": "/followup 3",
+                          "text": "3",
                           "label": "3"
                         },
                         "type": "action"
