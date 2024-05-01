@@ -59,6 +59,7 @@ contexts = {
 }
 
 def send_followup():
+    print("Sending follow-up")
     for user in mongo.db.users.find():
         
         if 'records' not in user:
@@ -69,9 +70,9 @@ def send_followup():
         else:
             contents = []
             for record in user['records']:
-                if record['surgicalstatus'] == 'Follow Up':
-                    
-                    mongo.db.users.update_one({ "records._id":  record['_id'] }, { '$set': { "records.$.surgicalstatus": "Pending" } })
+                if record['surgicalstatus'] != 'Done':
+                    if record['surgicalstatus'] == 'Follow Up':
+                        mongo.db.users.update_one({ "records._id":  record['_id'] }, { '$set': { "records.$.surgicalstatus": "Pending" } })
                     
                     contents.append({"type" : "bubble",
                         "size" : "nano",
