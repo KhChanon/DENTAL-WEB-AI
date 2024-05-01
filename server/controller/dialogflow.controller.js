@@ -221,7 +221,7 @@ const PostRecommendation = async (req, res) => {
                     "items": [
                       {
                         "action": {
-                          "text": "1",
+                          "text": "/followup 1",
                           "label": "1",
                           "type": "message"
                         },
@@ -231,14 +231,14 @@ const PostRecommendation = async (req, res) => {
                         "type": "action",
                         "action": {
                           "type": "message",
-                          "text": "2",
+                          "text": "/followup 2",
                           "label": "2"
                         }
                       },
                       {
                         "action": {
                           "type": "message",
-                          "text": "3",
+                          "text": "/followup 3",
                           "label": "3"
                         },
                         "type": "action"
