@@ -50,7 +50,7 @@ const Addcase = () => {
       <NavBarLogin {...user!} />
       }
       <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#EFEFEF]'>
-        <div className='flex flex-col box-border h-full w-full rounded-xl justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md iphone:gap-[40px] iphone:px-[10px]'>
+        <div className='flex flex-col box-border h-full w-full rounded-xl justify-between items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md iphone:px-[10px] iphone:text-sm'>
           <div className='text-2xl font-bold iphone:text-xl'>โปรดเลือกการรักษาที่พึ่งได้รับ</div>
           <div className='flex w-3/4 justify-center iphone:w-full'>
             <input
