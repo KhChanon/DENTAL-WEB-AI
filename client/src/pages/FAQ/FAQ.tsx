@@ -87,10 +87,14 @@ const FAQ = () => {
   }
   
   useEffect(() => {
-    if (localStorage.getItem(`userID`)) {
+    if (localStorage.getItem('userID')) {
       getUser();
       setAuth(true);
     }
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+    });
   }, []);
   
   return (

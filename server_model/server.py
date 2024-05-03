@@ -79,7 +79,7 @@ def send_followup():
                     elif record['surgicalprocedure'] == "ผ่าฟันคุด":
                         url = "https://www.smiledelightclinic.com/wp-content/uploads/2023/08/wisdom-tooth-768x553.jpg"
                     elif record['surgicalprocedure'] == "ผ่าตัดเหงือก":
-                        url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQks023twY_3AIXoA-EZmBVLPqenROwtrSpKqzoCmkISRksX6PNJMpDHvGxyvYGquLtnKw&usqp=CAU"
+                        url = "https://media.istockphoto.com/id/998246150/fi/vektori/s%C3%B6p%C3%B6-sarjakuvahammashahmo-jolla-on-purukumiongelma.jpg?s=612x612&w=0&k=20&c=zfJMQm8-ZB3Prw2eE4AijftQyRHXQbmm8_7_hW8SXG0="
                     elif record['surgicalprocedure'] == "ผ่าตัดรากฟันเทียม":
                         url = "https://www.si.mahidol.ac.th/sidoctor/sirirajonline2021/Article_images/1482_0.jpg"
                     
