@@ -16,17 +16,33 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
  // Format the date
   const formattedDate: string = `${padZero(day)}/${padZero(month)}/${year}`;
 
+  
+
   return (
-    <button 
-      className="flex flex-col w-full h-full rounded-xl bg-[#499896] p-5 cursor-pointer items-start border-none disabled:bg-[#f90000] disabled:opacity-50 disabled:hover:bg-[#f90000] disabled:hover:opacity-50 disabled:cursor-not-allowed iphone:max-h-48" 
+    <button className='flex flex-col w-full h-full bg-white outline-none border-none iphone:max-h-48  disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
+      id={`RecordCard${_id}`}
       disabled={surgicalstatus === "Follow Up" ? true : false}
       onClick={() => window.location.href = `/followup/${_id}`}
     >
-      <div className="w-full flex flex-row text-xl text-white font-bold mb-1 text-left justify-between iphone:text-base">{surgicalprocedure} {surgicalstatus == "Pending" ? <MdOutlinePendingActions/>:<IoCheckmarkCircleOutline/>}</div>
-      <div className="text-sm text-white font-bold mb-5 iphone:font-medium">{formattedDate}</div>
-      <div className="text-left text-base text-white font-bold mb-5 iphone:text-sm">สถานะ: {surgicalstatus}</div>
-      <div className="text-base text-white font-bold text-left iphone:text-sm">{surgicalstatus == "Pending" ? "กรุณาทำฟอร์มนี้" :"คุณทำฟอร์มนี้ไปแล้ว ค่อยกลับมาทำในวันถัดไป" }</div>
-    </button>
+      <img src={surgicalprocedure === "ถอนฟัน" ? "https://tu.ac.th/uploads/news-tu/news/2566/oct/66-1349r.jpg" :
+        (surgicalprocedure === "ผ่าฟันคุด" ? "https://www.smiledelightclinic.com/wp-content/uploads/2023/08/wisdom-tooth-768x553.jpg" :
+          (surgicalprocedure === "ผ่าตัดเหงือก" ? "https://media.istockphoto.com/id/998246150/fi/vektori/s%C3%B6p%C3%B6-sarjakuvahammashahmo-jolla-on-purukumiongelma.jpg?s=612x612&w=0&k=20&c=zfJMQm8-ZB3Prw2eE4AijftQyRHXQbmm8_7_hW8SXG0=" :
+            "https://www.si.mahidol.ac.th/sidoctor/sirirajonline2021/Article_images/1482_0.jpg" 
+          ) 
+        )
+      } 
+        alt="plus" 
+        className='object-cover w-full h-2/3 rounded-t-xl'/>
+      <div className={`flex flex-row w-full h-1/3 rounded-b-xl ${surgicalstatus === "Follow Up" ? "bg-[#f90000]" : "bg-[#5cc9c6]"} cursor-pointer items-start justify-between`} >
+        <div className='flex flex-col w-3/4 h-full rounded-b-xl cursor-pointer items-start justify-between'>
+          <div className="w-full flex flex-row text-base text-white font-bold mb-1 text-left justify-between iphone:text-base pt-2 px-5">{surgicalprocedure}</div>
+          <div className="text-sm text-white font-bold mb-5 iphone:font-medium px-5">{formattedDate}</div>
+        </div>
+        <div className='flex text-white w-1/4 h-full text-3xl justify-center items-center'>
+          {surgicalstatus == "Pending" ? <MdOutlinePendingActions/>:<IoCheckmarkCircleOutline/>}
+        </div>
+      </div>
+    </button> 
   )
 }
 
@@ -68,6 +84,10 @@ const Followup = () => {
         getUser();
         getRecords()
         setAuth(true);
+      }
+      else{
+        setAuth(false);
+        window.location.href = '/';
       }
     }, []);
 
