@@ -57,7 +57,10 @@ const Followuprecord: React.FC = () => {
         eat_soft_food: eat_soft_food,
         can_brush: can_brush,
         followAgain: followAgain
-      });
+      }
+    );
+
+    window.location.href = '/followup';
     } catch (error) {
       console.error(error);
     }
@@ -226,7 +229,6 @@ const Followuprecord: React.FC = () => {
       confirmButtonText: 'OK'
     }).then((result) => {
       postRecord();
-      window.location.href = '/followup';
     });
   };
 
