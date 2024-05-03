@@ -19,7 +19,7 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
   
 
   return (
-    <button className='flex flex-col w-full h-full bg-white outline-none border-none iphone:max-h-48  disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
+    <button className='px-0 flex flex-col w-full h-full bg-white outline-none border-none iphone:max-h-48  disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
       id={`RecordCard${_id}`}
       disabled={surgicalstatus === "Follow Up" ? true : false}
       onClick={() => window.location.href = `/followup/${_id}`}
