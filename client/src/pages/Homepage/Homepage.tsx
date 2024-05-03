@@ -6,6 +6,7 @@ import axios from 'axios';
 import config from '../../config/config';
 import { LineIDToken } from '../../interface/LineIDToken';
 import { UserProp } from '../../interface/UserProp'
+import { IoPersonAdd } from "react-icons/io5";
 
 const Homepage = () => {
   const [auth, setAuth] = useState<boolean>(false);
@@ -96,21 +97,33 @@ const Homepage = () => {
           <div className="text-xl text-white w-[550px] iphone:w-[330px]">OralAI แชทบอทที่จะช่วยตอบคำถามของผู้ป่วยและให้การติดตามอาการหลังผ่าตัด ซึ่งพวกเรามุ่งมั่นที่จะทำให้ผู้ป่วยได้รับความช่วยเหลือเกี่ยวกับข้อสงสัยด้านสุขภาพทางช่องปากในทันทีและแม่นยำ</div>
           {!auth
           ?
-          <div className = "flex flex-row gap-8 item-start iphone:flex-col iphone:gap-2"> 
+          <div className = "flex flex-row gap-6 item-start iphone:flex-col iphone:gap-2"> 
             <button 
-              className="bg-[#25597e] text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl iphone:text-base"
+              className="bg-[#25597e] text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl iphone:text-base iphone:w-[17rem]"
               onClick={() => {window.location.href = '/faq'}}
             >เริ่มสนทนา</button> 
+            <div className='flex flex-row justify-between gap-6 w-[18rem] iphone:w-[17rem] iphone:gap-3'>
             <button 
-              className="bg-green text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl  iphone:text-base"
+              className="bg-green text-white text-xl py-3 [border:none] rounded-full mt-3 w-9/12 cursor-pointer select-none shadow-md iphone:rounded-xl  iphone:text-base"
               onClick={() => { handleLineLogin() } }
             >เข้าสู่ระบบผ่าน LINE</button>
+            <button className="bg-green text-white text-xl py-3 [border:none] rounded-full mt-3 w-3/12  cursor-pointer select-none shadow-md iphone:rounded-xl  iphone:text-base"
+              onClick={() => {window.location.href = "https://lin.ee/PSFSCnB"}}>
+              <IoPersonAdd/>
+            </button>
+            </div>
           </div>
           :
-          <button 
-            className="bg-[#25597e] text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl iphone:w-[10.5rem]"
-            onClick={() => {window.location.href = '/faq'}}
-          >เริ่มสนทนา</button> 
+          <div className = "flex flex-row gap-8 item-start iphone:flex-col iphone:gap-2"> 
+            <button 
+              className="bg-[#25597e] text-white text-xl py-3 [border:none] rounded-full mt-3 w-[12.5rem] cursor-pointer select-none shadow-md iphone:rounded-xl iphone:w-[17rem] iphone:h-[3rem]"
+              onClick={() => {window.location.href = '/faq'}}
+            >เริ่มสนทนา</button>
+            <button className="flex text-xl text-white bg-green py-3 [border:none] rounded-full mt-3 w-[12.5rem] items-center justify-center cursor-pointer select-none shadow-md iphone:rounded-xl iphone:text-base iphone:w-[17rem] iphone:h-[3rem]"
+            onClick={() => {window.location.href = "https://lin.ee/PSFSCnB"}}>
+              เพิ่มเพื่อนใน Line
+            </button> 
+          </div>
           }
         </div>
     </div>
