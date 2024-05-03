@@ -58,6 +58,7 @@ const Followuprecord: React.FC = () => {
         can_brush: can_brush,
         followAgain: followAgain
       });
+      window.location.href = '/followup';
     } catch (error) {
       console.error(error);
     }
@@ -226,7 +227,6 @@ const Followuprecord: React.FC = () => {
       confirmButtonText: 'OK'
     }).then((result) => {
       postRecord();
-      window.location.href = '/followup';
     });
   };
 
