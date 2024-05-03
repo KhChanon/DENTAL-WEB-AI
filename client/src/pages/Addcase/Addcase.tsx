@@ -86,7 +86,7 @@ const Addcase = () => {
               id='ผ่าตัดเหงือก'
             />
             <label
-              onClick={() => setSurgicalprocedure('ผ่าฟันฟันคุด')}
+              onClick={() => setSurgicalprocedure('ผ่าตัดเหงือก')}
               htmlFor='ผ่าตัดเหงือก'
               className={`bg-[#25597e] opacity-50 peer-checked:opacity-100 text-white text-center cursor-pointer hover:opacity-100 border-none py-[30px] rounded-xl text-xl w-3/4 select-none`}
             >ผ่าตัดเหงือก</label>

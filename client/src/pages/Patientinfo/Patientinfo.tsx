@@ -44,6 +44,10 @@ const Patientinfo = () => {
       getRecords();
       setAuth(true);
     }
+    else{
+      setAuth(false);
+      window.location.href = '/';
+    }
   }, []);
 
   return (
