@@ -57,8 +57,10 @@ const Followuprecord: React.FC = () => {
         eat_soft_food: eat_soft_food,
         can_brush: can_brush,
         followAgain: followAgain
-      });
-      window.location.href = '/followup';
+      }
+    );
+
+    window.location.href = '/followup';
     } catch (error) {
       console.error(error);
     }
@@ -483,22 +485,22 @@ const Followuprecord: React.FC = () => {
               <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-left font-red-hat-display w-full">
                 <div className="relative font-red-hat-display font-medium text-xl">{4 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. คุณผ่าตัดไปแล้วกี่วัน</div>
                 <div className="flex flex-row items-start justify-start gap-[1.062rem] text-right font-inter iphone:gap-[0.5rem]">
-                  {[...Array(11)].map((_, index) => (
+                  {[...Array(7)].map((_, index) => (
                     <div key={index}>
                       <input
                         name="days"
                         type="radio"
-                        id={`days_${index}`}
-                        value={index}
+                        id={`days_${index + 1}`}
+                        value={index + 1}
                         className="peer hidden"
                         onChange={(e) => handleDaysChange(e.target.value)}
                         required
                       />
                       <label
                         className="cursor-pointer select-none w-[3.75rem] aspect-square box-border flex items-center justify-center relative border-[1px] border-solid border-black peer-checked:bg-[#52B9D0] rounded-full peer-checked:text-white peer-checked:border-none"
-                        htmlFor={`days_${index}`}
+                        htmlFor={`days_${index + 1}`}
                       >
-                        {index}
+                        {index + 1}
                       </label>
                     </div>
                   ))}
@@ -512,9 +514,9 @@ const Followuprecord: React.FC = () => {
                 <div className="relative font-red-hat-display font-medium text-xl">{4 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. คุณผ่าตัดไปแล้วกี่วัน</div>
                 <select className='w-1/2 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
                   onChange={(e) => handleDaysChange(e.target.value)}>
-                  {[...Array(16)].map((_, index) => (
-                      <option value={index}>
-                        {index}
+                  {[...Array(7)].map((_, index) => (
+                      <option value={index + 1}>
+                        {index + 1}
                       </option>
                     ))}
                 </select>
