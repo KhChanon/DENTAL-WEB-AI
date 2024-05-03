@@ -80,17 +80,17 @@ const Patientinfo = () => {
               
             </div>
           </div>
-          <div className="self-stretch rounded-xl max-h-[26.5rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black iphone:text-sm overflow-hidden">
-            <div className="w-[57.38rem] flex flex-row items-start justify-start gap-[85px] max-w-full iphone:gap-[0.94rem]">
-              <div className="relative font-extrabold w-[157px] iphone:w-[100px]">ID</div>
-              <div className="relative font-extrabold w-[105px]">วันที่</div>
-              <div className="relative font-extrabold w-[140px]">ศัลยกรรม</div>
-              <div className="h-[1.19rem] relative font-extrabold flex items-center">
+          <div className="self-stretch rounded-xl max-h-[26.5rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black iphone:text-sm overflow-hidden ">
+            <div className="w-[57.38rem] flex flex-row items-start justify-start gap-[85px] max-w-full iphone:gap-[0.94rem] iphone:justify-between">
+              <div className="relative font-extrabold w-[157px] iphone:w-[42.7px]">ID</div>
+              <div className="relative font-extrabold w-[105px] iphone:w-[67px]">วันที่</div>
+              <div className="relative font-extrabold w-[140px] iphone:w-1/3">ศัลยกรรม</div>
+              <div className="h-[1.19rem] relative font-extrabold flex items-center iphone:w-[50px]">
                 สถานะ
               </div>
             </div>
             <div className="w-[57.06rem] h-[0.06rem] relative box-border max-w-full border-t-[1px] border-solid border-black" />
-            <div className="w-full flex flex-col items-start justify-start gap-[0.94rem] max-w-full overflow-y-auto overscroll-x-hidden pb-2 iphone:">
+            <div className="w-full flex flex-col items-start justify-start gap-[0.94rem] overflow-y-auto overscroll-x-hidden pb-2">
               {
               records.sort((a: RecordProp, b: RecordProp) => {
                 const statusOrder:StatusOrder = {
