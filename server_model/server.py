@@ -241,12 +241,12 @@ def handle_message(body_json):
         requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key("../.env","CHANNEL_ACCESS_TOKEN")}'},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
-                            "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
+                            "messages": [{"type": "text", "text": "ขออภัย โปรดระบุศัลยกรรมในคำถาม(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม)"}]
                 })
         mongo.db.faqchathistories.insert_one({
             "user": user_id, 
             "chattext": body_json['events'][0]['message']['text'], 
-            "chatreply": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question.",
+            "chatreply": "ขออภัย โปรดระบุศัลยกรรมในคำถาม(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม)",
             "chattime": datetime.datetime.now()
         })
         return
@@ -288,7 +288,7 @@ def predict():
     operation = keyword_Search3(input_text)
     
     if operation == -1:
-        return  {'answer': "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}
+        return  {'answer': "ขออภัย โปรดระบุศัลยกรรมในคำถาม(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม)"}
 
     data = vectoriser.transform([input_text])
     prediction = model.predict(data)
