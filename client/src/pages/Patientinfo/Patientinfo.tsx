@@ -8,12 +8,33 @@ import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import DefaultPP from '../../assets/Default_PP.png'
 import { RecordProp, StatusOrder } from '../../interface/RecordProp'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Patientinfo = () => {
   const [auth, setAuth] = useState<boolean>(false);
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
   const [records, setRecords] = useState<RecordProp[]>([]);
+  const [data, setData] = useState({
+    labels: ['Pending', 'Follow Up', 'Done'],
+    datasets: [
+      {
+        label: '# of Records',
+        data: [0,0,0],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+        ],
+        hoverOffset: 1,
+        spacing: 5,
+        radius: '50%',
+      },
+    ],
+  });
 
   const getRecords = async () => {
     try {
@@ -23,7 +44,27 @@ const Patientinfo = () => {
         record.surgicaldate = new Date(record.surgicaldate);
       });
       setRecords(res.data.records);
-
+      setData({
+        labels: ['Pending', 'Follow Up', 'Done'],
+        datasets: [
+          {
+            label: '# of Records',
+            data: [
+              res.data.records.filter((record:RecordProp) => record.surgicalstatus === "Pending").length,
+              res.data.records.filter((record:RecordProp) => record.surgicalstatus === "Follow Up").length,
+              res.data.records.filter((record:RecordProp) => record.surgicalstatus === "Done").length
+            ],
+            backgroundColor: [
+              'rgb(92 201 198)',
+              'rgb(255 149 146)',
+              'rgb(227 211 110)'
+            ],
+            hoverOffset: 40,
+            spacing: 5,
+            radius: '90%',
+          },
+        ],
+      });
     } catch (error) {
       console.error(error);
     }
@@ -59,15 +100,32 @@ const Patientinfo = () => {
         <NavBarLogin {...user!} />
       }
       <div className="w-[62.5rem] flex flex-col items-start justify-start py-[0rem] px-[1.25rem] box-border gap-[1.88rem] max-w-full text-left text-[4rem] text-black font-red-hat-display iphone:items-center iphone:justify-center iphone:gap-[0.88rem]">
-        <div className="flex flex-row items-center justify-start gap-[3.13rem] max-w-full mq700:flex-wrap mq700:gap-[1.56rem] iphone:items-center iphone:justify-center iphone:gap-[0.1rem] iphone:flex-col">
-          <img
-            className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover iphone:h-[6rem] iphone:w-[6rem]"
-            loading="eager"
-            alt=""
-            src={user?.lineprofilepicture ? user?.lineprofilepicture : DefaultPP}
-          />
-          <div className="m-0 h-[5.31rem] relative text-inherit font-bold font-inherit flex items-center max-w-full mq450:text-[2.38rem] mq950:text-[3.19rem] iphone:text-[30px] iphone:h-[4.31rem]">
-            {user?.lineusername}
+        <div className="flex flex-row items-center justify-between gap-[3.13rem] w-full max-w-full mq700:flex-wrap mq700:gap-[1.56rem] iphone:items-center iphone:justify-center iphone:gap-[0.1rem] ">
+          <div className='flex flex-row justify-start gap-[3.13rem] items-center ml-6 iphone:flex-col iphone:ml-0 mq700:flex-wrap mq700:gap-[1.56rem] iphone:items-center iphone:justify-center iphone:gap-[0.1rem] '>
+            <img
+              className="h-[9.38rem] w-[9.38rem] relative rounded-[50%] object-cover iphone:h-[6rem] iphone:w-[6rem]"
+              loading="eager"
+              alt=""
+              src={user?.lineprofilepicture ? user?.lineprofilepicture : DefaultPP}
+            />
+            <div className="m-0 h-[5.31rem] relative text-inherit font-bold font-inherit flex items-center max-w-full mq450:text-[2.38rem] mq950:text-[3.19rem] iphone:text-[30px] iphone:h-[4.31rem]">
+              {user?.lineusername}
+            </div>
+          </div>
+          <div className='flex justify-self-end items-end self-end mr-6 iphone:hidden overflow-visible'>
+            <Doughnut data={data} width={450} height={300} options={
+              {
+                responsive: true,
+                maintainAspectRatio: false,
+                devicePixelRatio: 3,
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'right',
+                  },
+                },
+              }
+            }/>
           </div>
         </div>
         <div className="self-stretch flex flex-col items-start justify-between gap-[1.25rem] max-w-full text-[2rem] text-darkslateblue-200 iphone:text-[20px]">
