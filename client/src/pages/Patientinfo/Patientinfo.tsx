@@ -142,7 +142,7 @@ const Patientinfo = () => {
               
             </div>
           </div>
-          <div className="self-stretch rounded-xl max-h-[19.5rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black iphone:text-sm overflow-hidden ">
+          <div className="self-stretch rounded-xl max-h-[20rem] bg-colors-white-white flex flex-col items-start justify-start p-[1.88rem] box-border gap-[0.94rem] max-w-full text-xl text-black iphone:text-sm overflow-hidden ">
             <div className="w-[57.38rem] flex flex-row items-start justify-start gap-[85px] max-w-full iphone:gap-[0.94rem] iphone:justify-between">
               <div className="relative font-extrabold w-[157px] iphone:w-[42.7px]">ID</div>
               <div className="relative font-extrabold w-[105px] iphone:w-[67px]">วันที่</div>
