@@ -260,6 +260,9 @@ def handle_message(body_json):
             "context":  contexts[Olabel[operation]][Qlabel[prediction[0]]],
         },
     })
+    
+    if output['answer'][0] == ' ':
+        output['answer'] = output['answer'][1:]
 
     requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer {dotenv.get_key("../.env","CHANNEL_ACCESS_TOKEN")}'},
@@ -296,6 +299,9 @@ def predict():
             "context":  contexts[Olabel[operation]][Qlabel[prediction[0]]],
         },
     })
+    
+    if output['answer'][0] == ' ':
+        output['answer'] = output['answer'][1:]
 
     return {'question': input_text, 'operation': Olabel[operation], 'question_type': Qlabel[prediction[0]], 'answer': output['answer'], 'score': output['score']}
 
