@@ -240,12 +240,12 @@ def handle_message(body_json):
         requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='},
                     json = { "replyToken":  body_json['events'][0]['replyToken'],
-                            "messages": [{"type": "text", "text": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}]
+                            "messages": [{"type": "text", "text": "ขออภัย โปรดระบุศัลยกรรมในคำถาม(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม)"}]
                 })
         mongo.db.faqchathistories.insert_one({
             "user": user_id, 
             "chattext": body_json['events'][0]['message']['text'], 
-            "chatreply": "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question.",
+            "chatreply": "ขออภัย โปรดระบุศัลยกรรมในคำถาม(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม)",
             "chattime": datetime.datetime.now()
         })
         return
@@ -259,6 +259,9 @@ def handle_message(body_json):
             "context":  contexts[Olabel[operation]][Qlabel[prediction[0]]],
         },
     })
+    
+    if output['answer'][0] == ' ':
+        output['answer'] = output['answer'][1:]
 
     requests.post('https://api.line.me/v2/bot/message/reply',
                   headers={'Content-Type': 'application/json', 'Authorization' : f'Bearer bnuW8Pa848Dfhp37AA0II+V8EYcHNGjc5IwlNhvoxLzUmMW1FoKA/xWjaLpRibuRCemzQSXWKLeMTS02UXXViLX/7Fpj1iZiqpPZyOpZowrLMpCgvT6s1Dt04b9eRR7MbZEKSiMHNJEIARLEfYTx4QdB04t89/1O/w1cDnyilFU='},
@@ -284,7 +287,7 @@ def predict():
     operation = keyword_Search3(input_text)
     
     if operation == -1:
-        return  {'answer': "Sorry, Please specify the operation(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม) in the question."}
+        return  {'answer': "ขออภัย โปรดระบุศัลยกรรมในคำถาม(ถอนฟัน, ผ่าฟันคุด, ผ่าตัดเหงือก, ผ่าตัดรากฟันเทียม)"}
 
     data = vectoriser.transform([input_text])
     prediction = model.predict(data)
@@ -295,6 +298,9 @@ def predict():
             "context":  contexts[Olabel[operation]][Qlabel[prediction[0]]],
         },
     })
+    
+    if output['answer'][0] == ' ':
+        output['answer'] = output['answer'][1:]
 
     return {'question': input_text, 'operation': Olabel[operation], 'question_type': Qlabel[prediction[0]], 'answer': output['answer'], 'score': output['score']}
 
