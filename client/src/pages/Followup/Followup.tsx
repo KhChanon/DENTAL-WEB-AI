@@ -100,7 +100,7 @@ const Followup = () => {
       }
       <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#EFEFEF]'>
         <div className='grid grid-cols-5 grid-rows-3 box-border rounded-xl p-2 h-full w-full justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md overflow-auto iphone:flex iphone:flex-col iphone:items-start iphone:justify-start'>
-          <button className='flex flex-col gap-5 w-full h-full iphone:max-h-32 rounded-xl bg-[#25597e] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={() => {window.location.href='/addcase'}}>
+          <button className='flex flex-col gap-5 w-full h-full iphone:max-h-32 rounded-xl bg-[#25597e] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={() => {window.location.href='/qrscanner'}}>
             <img
               className="=w-[50px] h-[50px] bg-[#25597e] iphone:w-[25px] iphone:h-[25px]"
               alt=""

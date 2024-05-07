@@ -133,7 +133,7 @@ const Patientinfo = () => {
             <b className="w-[25.5rem] flex items-center h-[2.94rem] shrink-0 iphone:w-[10rem]">
               ประวัติการรักษา
             </b>
-            <div className="flex w-[4.13rem] h-[2.08rem] text-center text-[1.5rem] iphone:w-[4.5rem]"onClick={() => {window.location.href = '/addcase'}}>
+            <div className="flex w-[4.13rem] h-[2.08rem] text-center text-[1.5rem] iphone:w-[4.5rem]"onClick={() => {window.location.href = '/qrscanner'}}>
               <img
                 className="cursor-pointer select-none w-[20px] h-[20px] bg-[#25597e] py-[10px] px-[25px] rounded-lg iphone:py-[7px] iphone:px-[20px]"
                 alt=""

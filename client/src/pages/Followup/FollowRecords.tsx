@@ -246,7 +246,7 @@ const Followuprecord: React.FC = () => {
           <div className='flex flex-col rounded-3xl h-full w-full bg-white py-3 gap-2 justify-start items-center overflow-auto'>
             <button
               className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#25597e] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
-              onClick={() => { window.location.href = '/addcase' }}
+              onClick={() => { window.location.href = '/qrscanner' }}
             >
               <img
                 className="cursor-pointer select-none w-[25px]"
