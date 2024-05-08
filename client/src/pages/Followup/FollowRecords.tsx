@@ -9,6 +9,7 @@ import { RecordProp, StatusOrder } from '../../interface/RecordProp';
 import { UserProp } from '../../interface/UserProp'
 import PlusIcon from '../../assets/plus-solid.svg';
 import Swal from 'sweetalert2'
+import Qrcodescanner from '../../components/Qrcodescanner';
 
 const Followuprecord: React.FC = () => {
   const recordID = useParams<{ id: string }>().id;
@@ -85,6 +86,7 @@ const Followuprecord: React.FC = () => {
   const [eat_soft_food, seteat_soft_food] = useState<boolean | null>(null);
   const [can_brush, setcan_brush] = useState<boolean | null>(null);
   let followAgain = false;
+  const [showScannerPopup, setShowScannerPopup] = useState(false);
 
   const handleBleedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const level = parseInt(event.target.value);
@@ -154,7 +156,9 @@ const Followuprecord: React.FC = () => {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
     event.preventDefault();
+
     let updatedRecommendations = [];
     if (bleedChoice === 2) {
       updatedRecommendations.push("คุณยังมีเลือกซึมจากแผลอยู่บ้างเป็นเลือกปนน้ำลาย ควรกัดผ้าก๊อซต่ออีก30นาที และไม่บ้วนน้ำลายบ่อย")
@@ -231,6 +235,13 @@ const Followuprecord: React.FC = () => {
       postRecord();
     });
   };
+  const openScanner = () => {
+    setShowScannerPopup(true);
+  };
+
+  const closeScanner = () => {
+    setShowScannerPopup(false);
+  };
 
   return (
 
@@ -246,7 +257,7 @@ const Followuprecord: React.FC = () => {
           <div className='flex flex-col rounded-3xl h-full w-full bg-white py-3 gap-2 justify-start items-center overflow-auto'>
             <button
               className="flex flex-col items-center justify-center w-[85%] px-3 min-h-16 bg-[#25597e] rounded-[30px] text-center text-white font-medium text-base cursor-pointer  border-none"
-              onClick={() => { window.location.href = '/qrscanner' }}
+              onClick={openScanner}
             >
               <img
                 className="cursor-pointer select-none w-[25px]"
@@ -281,7 +292,7 @@ const Followuprecord: React.FC = () => {
           <div className='flex w-full text-darkslateblue-200 font-bold text-3xl text-border text-left mb-3 iphone:text-base iphone:justify-center'>
             {record?.surgicalprocedure} {record?.surgicaldate?.toLocaleDateString('en-GB')}
           </div>
-          <form onSubmit={handleSubmit} className="flex flex-col overflow-y-auto bg-white items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl h-full w-full ml-12 iphone:px-10 iphone:ml-0">
+          <form onSubmit={handleSubmit} className="flex flex-col text-left overflow-y-auto bg-white items-start justify-start gap-[2.5rem] py-5 px-12 rounded-3xl h-full w-full ml-12 iphone:px-10 iphone:ml-0">
             <section id='Blood' className="w-full h-[18.75rem] flex flex-col items-start justify-start gap-[1.187rem] text-left">
               <div className="relative font-medium text-xl">1. แผลคุณมีเลือดซึมอยู่ระดับไหน</div>
               <div className="self-stretch flex-1 flex flex-col items-start justify-start gap-[1.187rem] text-right font-inter">
@@ -333,6 +344,7 @@ const Followuprecord: React.FC = () => {
                         type="radio"
                         id={`pain_${index}`}
                         value={index}
+                        key={index}
                         className="peer hidden"
                         onChange={(e) => handlePainChange(e.target.value)}
                         required
@@ -357,13 +369,14 @@ const Followuprecord: React.FC = () => {
               :
               <div id='Pain' className="flex flex-col items-start justify-start gap-[1.187rem] text-center font-red-hat-display w-full">
                 <div className="relative font-medium text-xl">2. คุณมีความปวดระดับไหน</div>
-                <select className='w-1/2 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
-                onChange={(e) => handlePainChange(e.target.value)}>
-                {[...Array(11)].map((_, index) => (
-                    <option value={index}>
-                      {index}
-                    </option>
-                  ))}
+                <select className='w-4/5 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
+                onChange={(e) => handlePainChange(e.target.value)} required>
+                  <option value={""}>กรุณาเลือกระดับความปวด</option>
+                  {[...Array(11)].map((_, index) => (
+                      <option value={index} key={index}>
+                        {index}
+                      </option>
+                    ))}
                 </select>
               </div>
             }
@@ -460,7 +473,7 @@ const Followuprecord: React.FC = () => {
                     onChange={handleSwellingChange}
                   />
                 </label>
-                <label className='flex w-1/4 justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='swelling_4'>
+                <label className='flex w-1/4 text-left justify-between border-nonepx-5 bg-[#52B9D0] py-4 cursor-pointer select-none px-5 rounded-[25px] text-white iphone:w-4/5' htmlFor='swelling_4'>
                   <span>บวมมากและมีอาการอื่นด้วย</span>
                   <input
                     name='swelling'
@@ -492,6 +505,7 @@ const Followuprecord: React.FC = () => {
                         type="radio"
                         id={`days_${index + 1}`}
                         value={index + 1}
+                        key={index + 1}
                         className="peer hidden"
                         onChange={(e) => handleDaysChange(e.target.value)}
                         required
@@ -512,10 +526,12 @@ const Followuprecord: React.FC = () => {
               :
               <section id="Days" className="flex flex-col items-start justify-start gap-[1.187rem] text-left font-red-hat-display w-full">
                 <div className="relative font-red-hat-display font-medium text-xl">{4 + (pain_level! > 6 ? 1 : 0) + (taken_medication === true ? 1 : 0)}. คุณผ่าตัดไปแล้วกี่วัน</div>
-                <select className='w-1/2 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
-                  onChange={(e) => handleDaysChange(e.target.value)}>
+                <select className='w-4/5 h-[2.25rem] border-r-8 border-transparent px-4 outline outline-neutral-700 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block p-2.5'
+                  onChange={(e) => handleDaysChange(e.target.value)}
+                  required>
+                  <option value={""}>กรุณาเลือกจำนวนวัน</option>
                   {[...Array(7)].map((_, index) => (
-                      <option value={index + 1}>
+                      <option value={index + 1} key={index + 1}>
                         {index + 1}
                       </option>
                     ))}
@@ -649,6 +665,7 @@ const Followuprecord: React.FC = () => {
           </form>
         </div>
       </div>
+      {showScannerPopup && <Qrcodescanner closeScanner={closeScanner} />}
     </div>
   )
 }

@@ -8,6 +8,8 @@ import NavBar from '../../components/NavBar';
 import PlusIcon from '../../assets/plus-solid.svg';
 import { MdOutlinePendingActions } from "react-icons/md";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import Qrcodescanner from '../../components/Qrcodescanner';
+import { useSearchParams } from 'react-router-dom';
 
 const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate, surgicalstatus, surgicalresult}) => {
   const day: number = surgicaldate.getDate();
@@ -54,6 +56,9 @@ const Followup = () => {
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
   const [records, setRecords] = useState<RecordProp[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [showScannerPopup, setShowScannerPopup] = useState(false);
 
 
   const getRecords = async () => {
@@ -88,7 +93,20 @@ const Followup = () => {
         setAuth(false);
         window.location.href = '/';
       }
+
+      if(searchParams.get("scanner") === "true")
+        {
+          setShowScannerPopup(true)
+        }
     }, []);
+
+    const openScanner = () => {
+      setShowScannerPopup(true);
+    };
+  
+    const closeScanner = () => {
+      setShowScannerPopup(false);
+    };
 
   return (
     <div className='w-screen h-screen flex flex-col overflow-hidden'>
@@ -100,7 +118,7 @@ const Followup = () => {
       }
       <div className='flex flex-col h-full item-center justify-start px-[30px] py-[30px] overflow-hidden bg-[#EFEFEF]'>
         <div className='grid grid-cols-5 grid-rows-3 box-border rounded-xl p-2 h-full w-full justify-center items-center gap-[15px] py-[25px] px-[50px] bg-white shadow-md overflow-auto iphone:flex iphone:flex-col iphone:items-start iphone:justify-start'>
-          <button className='flex flex-col gap-5 w-full h-full iphone:max-h-32 rounded-xl bg-[#25597e] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={() => {window.location.href='/qrscanner'}}>
+          <button className='flex flex-col gap-5 w-full h-full iphone:max-h-32 rounded-xl bg-[#25597e] p-5 cursor-pointer select-none items-center justify-center border-none' onClick={openScanner}>
             <img
               className="=w-[50px] h-[50px] bg-[#25597e] iphone:w-[25px] iphone:h-[25px]"
               alt=""
@@ -130,6 +148,7 @@ const Followup = () => {
             }
         </div>
       </div>
+      {showScannerPopup && <Qrcodescanner closeScanner={closeScanner} />}
     </div>
   )
 }

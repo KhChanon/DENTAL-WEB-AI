@@ -10,6 +10,7 @@ import DefaultPP from '../../assets/Default_PP.png'
 import { RecordProp, StatusOrder } from '../../interface/RecordProp'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import Qrcodescanner from '../../components/Qrcodescanner';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -18,6 +19,7 @@ const Patientinfo = () => {
   const userID = localStorage.getItem(`userID`);
   const [user, setUser] = useState<UserProp>();
   const [records, setRecords] = useState<RecordProp[]>([]);
+  const [showScannerPopup, setShowScannerPopup] = useState(false);
   const [data, setData] = useState({
     labels: ['Pending', 'Follow Up', 'Done'],
     datasets: [
@@ -91,6 +93,14 @@ const Patientinfo = () => {
     }
   }, []);
 
+  const openScanner = () => {
+    setShowScannerPopup(true);
+  };
+
+  const closeScanner = () => {
+    setShowScannerPopup(false);
+  };
+
   return (
     <div className="relative bg-whitesmoke w-screen h-screen overflow-hidden flex flex-col items-center justify-start pt-[0rem] px-[0rem] pb-[13.81rem] box-border gap-[2.75rem] tracking-[normal">
       {!auth
@@ -133,7 +143,7 @@ const Patientinfo = () => {
             <b className="w-[25.5rem] flex items-center h-[2.94rem] shrink-0 iphone:w-[10rem]">
               ประวัติการรักษา
             </b>
-            <div className="flex w-[4.13rem] h-[2.08rem] text-center text-[1.5rem] iphone:w-[4.5rem]"onClick={() => {window.location.href = '/qrscanner'}}>
+            <div className="flex w-[4.13rem] h-[2.08rem] text-center text-[1.5rem] iphone:w-[4.5rem]"onClick={openScanner}>
               <img
                 className="cursor-pointer select-none w-[20px] h-[20px] bg-[#25597e] py-[10px] px-[25px] rounded-lg iphone:py-[7px] iphone:px-[20px]"
                 alt=""
@@ -178,6 +188,7 @@ const Patientinfo = () => {
           </div>
         </div>
       </div>
+      {showScannerPopup && <Qrcodescanner closeScanner={closeScanner} />}
     </div>
   )
 }
