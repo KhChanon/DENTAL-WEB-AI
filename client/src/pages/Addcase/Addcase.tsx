@@ -20,12 +20,9 @@ const Addcase = () => {
       console.error(error);
     }
   }
-
-  const addFollowCase = async () => {
+  const postline = async () => {
     try {
-      const res = await axios.post(config.API_URL + '/users/addrecord', {
-        surgicalprocedure: surgicalprocedure,
-        surgicalstatus: 'Pending',
+      const res = await axios.post(config.API_URL + "/followup/addline", {
         userID: userID
       });
       window.location.href = '/followup';
@@ -34,10 +31,28 @@ const Addcase = () => {
     }
   }
 
+  const addFollowCase = async () => {
+    try {
+      const res = await axios.post(config.API_URL + '/users/addrecord', {
+        surgicalprocedure: surgicalprocedure,
+        surgicalstatus: 'Pending',
+        userID: userID
+      });
+      localStorage.removeItem('scan');
+      postline()
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
-    if (localStorage.getItem(`userID`)) {
+    if (localStorage.getItem(`userID`) && localStorage.getItem(`scan`) === "QkTMN9Atbr3taS8Frqh8SNq0XrNTecsO") {
       getUser();
       setAuth(true);
+    }
+    else{
+      setAuth(false);
+      window.location.href = '/';
     }
   }, []);
 
