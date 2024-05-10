@@ -3,7 +3,18 @@ export interface RecordProp {
     surgicalprocedure: string;
     surgicaldate: Date;
     surgicalstatus: string;
-    surgicalresult: string;
+    latestresult: {
+      bleedChoice: number;
+      painLevel: number;
+      takenMedication: boolean;
+      painDecreased: boolean;
+      swellingLevel: number;
+      days: number;
+      symptoms: boolean;
+      canEat: boolean;
+      eatSoftFood: boolean;
+      canBrush: boolean;
+    };
  }
 
 export interface StatusOrder {

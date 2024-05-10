@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { RecordProp } from '../../../interface/RecordProp'
 
-const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, surgicalstatus, surgicalresult }) => {
+const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, surgicalstatus, latestresult }) => {
 
     const screenX = window.innerWidth
     const goToFollowUp = () => {
