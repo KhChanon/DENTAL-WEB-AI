@@ -302,7 +302,7 @@ const Followuprecord: React.FC = () => {
                     name='blood'
                     type='radio'
                     id='ไม่มีเลือด'
-                    value='0'
+                    value='1'
                     className='w-[20px] h-[20px]'
                     onChange={handleBleedChange}
                     required
@@ -314,7 +314,7 @@ const Followuprecord: React.FC = () => {
                     name='blood'
                     type='radio'
                     id='เลือดนิดหน่อย'
-                    value='1'
+                    value='2'
                     className='w-[20px] h-[20px]'
                     onChange={handleBleedChange}
                   />
@@ -325,7 +325,7 @@ const Followuprecord: React.FC = () => {
                     name='blood'
                     type='radio'
                     id='เลือดกรอกปาก'
-                    value='2'
+                    value='3'
                     className='w-[20px] h-[20px]'
                     onChange={handleBleedChange}
                   />
@@ -445,7 +445,7 @@ const Followuprecord: React.FC = () => {
                     name='swelling'
                     type='radio'
                     id='swelling_1'
-                    value='0'
+                    value='1'
                     className='w-[20px] h-[20px]'
                     onChange={handleSwellingChange}
                     required
@@ -457,7 +457,7 @@ const Followuprecord: React.FC = () => {
                     name='swelling'
                     type='radio'
                     id='swelling_2'
-                    value='1'
+                    value='2'
                     className='w-[20px] h-[20px]'
                     onChange={handleSwellingChange}
                   />
@@ -468,7 +468,7 @@ const Followuprecord: React.FC = () => {
                     name='swelling'
                     type='radio'
                     id='swelling_3'
-                    value='2'
+                    value='3'
                     className='w-[20px] h-[20px]'
                     onChange={handleSwellingChange}
                   />
@@ -479,7 +479,7 @@ const Followuprecord: React.FC = () => {
                     name='swelling'
                     type='radio'
                     id='swelling_4'
-                    value='3'
+                    value='4'
                     className='w-[20px] h-[20px]'
                     onChange={handleSwellingChange}
                   />
