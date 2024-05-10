@@ -41,6 +41,10 @@ const FollowUpRecordsSchema = new mongoose.Schema({
         canBrush: {
             type: String,
             required: true
+        },
+        recordDate: {
+            type: Date,
+            default: Date.now
         }
     }],
     record: {
