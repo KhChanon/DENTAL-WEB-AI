@@ -63,7 +63,7 @@ const Patientinfo = () => {
             ],
             hoverOffset: 40,
             spacing: 5,
-            radius: '90%',
+            radius: '85%',
           },
         ],
       });
@@ -123,7 +123,7 @@ const Patientinfo = () => {
             </div>
           </div>
           <div className='flex justify-self-end items-end self-end mr-6 iphone:hidden overflow-visible'>
-            <Doughnut data={data} width={450} height={250} options={
+            <Doughnut data={data} width={400} height={250} options={
               {
                 responsive: true,
                 maintainAspectRatio: false,
