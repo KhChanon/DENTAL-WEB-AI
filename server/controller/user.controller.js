@@ -109,17 +109,19 @@ const getRecordNotDone = async (req, res) => {
     try {
         const { id } = req.params;
         
-        const user = await User.findById(id);
+        const user = await User.findById(id).lean();
 
         const records = user.records;
 
-        console.log(records);
+        const result = records.filter(record => record.surgicalstatus !== "Done");
 
-        const notDoneRecords = records.filter(record => record.surgicalstatus !== "Done");
-        
-        console.log(notDoneRecords);
+        for (record of result){
+            const followup = await Followup.findOne({record:record._id});
+            record.latestresult = followup.followup[followup.followup.length-1];
+        }
 
-        res.status(201).json({sucecess:true,message:"Record Found",records:notDoneRecords});
+
+        res.status(201).json({sucecess:true,message:"Record Found",records:result});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
