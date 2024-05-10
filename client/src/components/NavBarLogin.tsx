@@ -45,7 +45,7 @@ const NavBarLogin: React.FC<UserProp> = ({ _id, lineopenid, lineusername, linepr
       </div>
       {/* <button onClick={toggleDropdown}>drop</button> */}
       {isOpen && (
-        <div className="absolute top-16 right-0 bg-opacity-80 bg-darkslateblue-200 w-auto rounded-bl-4xl">
+        <div className="z-[999] absolute top-16 right-0 bg-opacity-80 bg-darkslateblue-200 w-auto rounded-bl-4xl">
           <div className='flex flex-col gap-[15px] px-[30px] py-[15px] text-white text-center'>
             <a href="/patientinfo" className="font-bold text-white no-underline cursor-pointer">View Profile</a>
             <b className=" hover:bg-gray-100 cursor-pointer" onClick={handleLogout}>Log out</b>
