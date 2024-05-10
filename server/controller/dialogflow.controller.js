@@ -138,14 +138,13 @@ const PostRecommendation = async (req, res) => {
         
         user = await User.findOne({ "records._id": record_id })
 
+        record = user.records.find(record => record._id == record_id);
+
         if (user === null || user === undefined || user === NaN || !user || user === "") {
             agent.add("ไม่พบข้อมูลผู้ใช้งาน");
             agent.context.delete("oralbot-followup");
         }
-
-        record = user.records.find(record => record._id == record_id);
-
-        if (record.surgicalstatus === "Done") {
+        else if (record.surgicalstatus === "Done") {
             agent.add("คุณทำฟอร์มนี้ไปแล้ว");
 
             agent.context.delete("oralbot-followup");
