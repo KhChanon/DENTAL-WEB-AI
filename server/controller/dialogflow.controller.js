@@ -135,16 +135,20 @@ const PostRecommendation = async (req, res) => {
     async function handleCheckStatus(agent) {
         let record_id = agent.parameters.record_id;
         let recommendations = new Set();
+        let user;
         
-        let user = await User.findOne({ "records._id": record_id })
+        try {
+            user = await User.findOne({ "records._id": record_id })
+        }
+        catch (error) {
+            agent.add("ไม่พบข้อมูลผู้ใช้งาน");
+            agent.context.delete("oralbot-followup");
+            console.error('Error finding data in MongoDB:', error);
+        }
 
         let record = user.records.find(record => record._id == record_id);
         
-        if (user === null || user === undefined || user === NaN || !user || user === "" || record === null || record === undefined || record === NaN || !record || record === "") {
-            agent.add("ไม่พบข้อมูลผู้ใช้งาน");
-            agent.context.delete("oralbot-followup");
-        }
-        else if (record.surgicalstatus === "Done") {
+        if (record.surgicalstatus === "Done") {
             agent.add("คุณทำฟอร์มนี้ไปแล้ว");
 
             agent.context.delete("oralbot-followup");
