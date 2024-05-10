@@ -136,6 +136,13 @@ const PostRecommendation = async (req, res) => {
         let record_id = agent.parameters.record_id;
         let recommendations = new Set();
         let user;
+
+        if(mongoose.Types.ObjectId.isValid(record_id) === false) {
+            agent.add("ไม่พบข้อมูลผู้ใช้งาน");
+            agent.context.delete("oralbot-followup");
+            return;
+        }
+        
         
         try {
             user = await User.findOne({ "records._id": record_id })
