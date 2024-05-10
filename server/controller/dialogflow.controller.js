@@ -1,6 +1,7 @@
 const Followup = require('../model/FollowUpRecords');
 const User = require('../model/User');
 const { WebhookClient, Payload } = require('dialogflow-fulfillment');
+const mongoose = require('mongoose');
 
 //post recommendation
 //line dialogflow
