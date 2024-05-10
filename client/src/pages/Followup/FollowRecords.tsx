@@ -485,10 +485,6 @@ const Followuprecord: React.FC = () => {
                   />
                 </label>
               </div>
-
-              {swelling_level === null && (
-                <p className="text-red-500 text-sm">Please select one of these options</p>
-              )}
             </section>
 
             {swelling_level !== null && swelling_level >= 2 && (
