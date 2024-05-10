@@ -135,136 +135,127 @@ const PostRecommendation = async (req, res) => {
     async function handleCheckStatus(agent) {
         let record_id = agent.parameters.record_id;
         let recommendations = new Set();
-        let user;
 
         if(mongoose.Types.ObjectId.isValid(record_id) === false) {
             agent.add("ไม่พบข้อมูลผู้ใช้งาน");
             agent.context.delete("oralbot-followup");
-            return;
-        }
-        
-        
-        try {
-            user = await User.findOne({ "records._id": record_id })
-        }
-        catch (error) {
-            agent.add("ไม่พบข้อมูลผู้ใช้งาน");
-            agent.context.delete("oralbot-followup");
-            console.error('Error finding data in MongoDB:', error);
-        }
-
-        let record = user.records.find(record => record._id == record_id);
-        
-        if (record.surgicalstatus === "Done") {
-            agent.add("คุณทำฟอร์มนี้ไปแล้ว");
-
-            agent.context.delete("oralbot-followup");
-        }
-        else if (record.surgicalstatus === "Follow Up") {
-            agent.add("เดี่ยวจะมีการติดตามอีกครั้งพรุ่งนี้");
-
-            followup = await Followup.findOne({ "record": record_id });
-
-            record_score = followup.followup[followup.followup.length - 1];
-
-            if (record_score.bleedChoice === 2) {
-                recommendations.add("คุณยังมีเลือกซึมจากแผลอยู่บ้างเป็นเลือกปนน้ำลาย ควรกัดผ้าก๊อซต่ออีก30นาที และไม่บ้วนน้ำลายบ่อย");
-            } else if (record_score.bleedChoice === 3) {
-                recommendations.add("คุณยังมีเลือดซึมจากแผลเป็นสีแดงสดและ/หรือมีลิ่มเลือกปนอยู่ด้วย ควรกัดผ้าก๊อซ และพบแพทย์ผู้ดูแล");
-            }
-        
-            if (record_score.painLevel > 7) {
-                if (record_score.takenMedication === 'ใช่') {
-                    if (record_score.painDecreased === 'ไม่') {
-                        recommendations.add("คุณได้ทานยาแก้ปวดแล้วแต่อาการปวดไม่ดีขึ้น ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                        followAgain = true;
-                    } else {
-                        recommendations.add("คุณได้ทานยาแก้ปวดแล้วและอาการปวดดีขึ้น จะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                        followAgain = true;
-                    }
-                } else {
-                    recommendations.add("อาการปวดมากกว่าระดับ7 แนะนำให้ทานยาแก้ปวดเพื่อระงับความปวดเบื้องต้น และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                    followAgain = true;
-                }
-            }
-        
-            if (record_score.swellingLevel >= 1 && record_score.swellingLevel < 2) {
-                recommendations.add("ใบหน้าบริเวณแผลของคุณไม่มีอาการบวมหรือบวมเล็กน้อย ควรประคบเย็นที่ใบหน้าบริเวณแผลลดอาการบวม");
-            } else if (record_score.swellingLevel > 2) {
-                if (record_score.days <= 3) {
-                    recommendations.add("ใบหน้าของคุณยังมีอาการบวมแบบเห็นได้ชัด แต่ยังอยู่ในช่วง3วันหลังผ่าตัด ควรประคบเย็นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                    followAgain = true;
-                } else {
-                    if (record_score.symptoms === 'ใช่') {
-                        recommendations.add("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและไม่น้อยลงหรือมีอาการปวดร่วมด้วย ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                        followAgain = true;
-                    } else {
-                        recommendations.add("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและแค่อาการบวมน้อยลงและไม่มีอาการปวดร่วมด้วย ควรประคบอุ่นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                        followAgain = true;
-                    }
-                }
-            }
-        
-            if (record_score.canEat === 'ไม่') {
-                if (record_score.eatSoftFood === 'ใช่') {
-                    recommendations.add("ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการของแผล");
-                } else {
-                    recommendations.add("ควรทานอาหารอ่อน และอาหหารที่ไม่มีรสชาติจัด และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
-                    followAgain = true;
-                }
-            }
-        
-            if (record_score.canBrush === 'ไม่') {
-                recommendations.add("ควรหลีกเลี่ยงการแปรงฟันบริเวณจุดที่ทำการผ่าตัด");
-            } else {
-                recommendations.add("คุณสามารถแปรงฟันได้ตามปกติ");
-            }
-        
-            let uniqueRecommendations = Array.from(recommendations);
-        
-            agent.add("Recommendations:");
-            uniqueRecommendations.forEach((recommendation) => {
-                agent.add(recommendation);
-            });
-
-            agent.context.delete("oralbot-followup");
         }
         else {
-            const payload = {
-                "line": {
-                  "quickReply": {
-                    "items": [
-                      {
-                        "action": {
-                          "text": "1",
-                          "label": "1",
-                          "type": "message"
-                        },
-                        "type": "action"
-                      },
-                      {
-                        "type": "action",
-                        "action": {
-                          "type": "message",
-                          "text": "2",
-                          "label": "2"
-                        }
-                      },
-                      {
-                        "action": {
-                          "type": "message",
-                          "text": "3",
-                          "label": "3"
-                        },
-                        "type": "action"
-                      }
-                    ]
-                  },
-                  "type": "text",
-                  "text": "แผลคุณมีเลือดไหลซึมอยู่ที่ระดับไหน \n\t1. ไม่มีเลือกซึมจากแผล \n\t2. ยังมีเลือดซึมจากแผล เป็นเลือดปนน้ำลาย \n\t3. ยังมีเลือดซึมจากแผล เป็นเลือดสีแดงสด และ/หรือมีลิ่มเลือดปนออกมาด้วย"
+            let user = await User.findOne({ "records._id": record_id })
+
+            let record = user.records.find(record => record._id == record_id);
+            
+            if (record.surgicalstatus === "Done") {
+                agent.add("คุณทำฟอร์มนี้ไปแล้ว");
+
+                agent.context.delete("oralbot-followup");
+            }
+            else if (record.surgicalstatus === "Follow Up") {
+                agent.add("เดี่ยวจะมีการติดตามอีกครั้งพรุ่งนี้");
+
+                followup = await Followup.findOne({ "record": record_id });
+
+                record_score = followup.followup[followup.followup.length - 1];
+
+                if (record_score.bleedChoice === 2) {
+                    recommendations.add("คุณยังมีเลือกซึมจากแผลอยู่บ้างเป็นเลือกปนน้ำลาย ควรกัดผ้าก๊อซต่ออีก30นาที และไม่บ้วนน้ำลายบ่อย");
+                } else if (record_score.bleedChoice === 3) {
+                    recommendations.add("คุณยังมีเลือดซึมจากแผลเป็นสีแดงสดและ/หรือมีลิ่มเลือกปนอยู่ด้วย ควรกัดผ้าก๊อซ และพบแพทย์ผู้ดูแล");
                 }
-              }
-            agent.add(new Payload(agent.LINE, payload, { sendAsMessage: true, rawPayload: true }));
+            
+                if (record_score.painLevel > 7) {
+                    if (record_score.takenMedication === 'ใช่') {
+                        if (record_score.painDecreased === 'ไม่') {
+                            recommendations.add("คุณได้ทานยาแก้ปวดแล้วแต่อาการปวดไม่ดีขึ้น ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                            followAgain = true;
+                        } else {
+                            recommendations.add("คุณได้ทานยาแก้ปวดแล้วและอาการปวดดีขึ้น จะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                            followAgain = true;
+                        }
+                    } else {
+                        recommendations.add("อาการปวดมากกว่าระดับ7 แนะนำให้ทานยาแก้ปวดเพื่อระงับความปวดเบื้องต้น และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                        followAgain = true;
+                    }
+                }
+            
+                if (record_score.swellingLevel >= 1 && record_score.swellingLevel < 2) {
+                    recommendations.add("ใบหน้าบริเวณแผลของคุณไม่มีอาการบวมหรือบวมเล็กน้อย ควรประคบเย็นที่ใบหน้าบริเวณแผลลดอาการบวม");
+                } else if (record_score.swellingLevel > 2) {
+                    if (record_score.days <= 3) {
+                        recommendations.add("ใบหน้าของคุณยังมีอาการบวมแบบเห็นได้ชัด แต่ยังอยู่ในช่วง3วันหลังผ่าตัด ควรประคบเย็นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                        followAgain = true;
+                    } else {
+                        if (record_score.symptoms === 'ใช่') {
+                            recommendations.add("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและไม่น้อยลงหรือมีอาการปวดร่วมด้วย ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                            followAgain = true;
+                        } else {
+                            recommendations.add("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและแค่อาการบวมน้อยลงและไม่มีอาการปวดร่วมด้วย ควรประคบอุ่นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                            followAgain = true;
+                        }
+                    }
+                }
+            
+                if (record_score.canEat === 'ไม่') {
+                    if (record_score.eatSoftFood === 'ใช่') {
+                        recommendations.add("ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการของแผล");
+                    } else {
+                        recommendations.add("ควรทานอาหารอ่อน และอาหหารที่ไม่มีรสชาติจัด และจะมีการติตามอาการอีกรอบใน24ชั่วโมง");
+                        followAgain = true;
+                    }
+                }
+            
+                if (record_score.canBrush === 'ไม่') {
+                    recommendations.add("ควรหลีกเลี่ยงการแปรงฟันบริเวณจุดที่ทำการผ่าตัด");
+                } else {
+                    recommendations.add("คุณสามารถแปรงฟันได้ตามปกติ");
+                }
+            
+                let uniqueRecommendations = Array.from(recommendations);
+            
+                agent.add("Recommendations:");
+                uniqueRecommendations.forEach((recommendation) => {
+                    agent.add(recommendation);
+                });
+
+                agent.context.delete("oralbot-followup");
+            }
+            else {
+                const payload = {
+                    "line": {
+                    "quickReply": {
+                        "items": [
+                        {
+                            "action": {
+                            "text": "1",
+                            "label": "1",
+                            "type": "message"
+                            },
+                            "type": "action"
+                        },
+                        {
+                            "type": "action",
+                            "action": {
+                            "type": "message",
+                            "text": "2",
+                            "label": "2"
+                            }
+                        },
+                        {
+                            "action": {
+                            "type": "message",
+                            "text": "3",
+                            "label": "3"
+                            },
+                            "type": "action"
+                        }
+                        ]
+                    },
+                    "type": "text",
+                    "text": "แผลคุณมีเลือดไหลซึมอยู่ที่ระดับไหน \n\t1. ไม่มีเลือกซึมจากแผล \n\t2. ยังมีเลือดซึมจากแผล เป็นเลือดปนน้ำลาย \n\t3. ยังมีเลือดซึมจากแผล เป็นเลือดสีแดงสด และ/หรือมีลิ่มเลือดปนออกมาด้วย"
+                    }
+                }
+                agent.add(new Payload(agent.LINE, payload, { sendAsMessage: true, rawPayload: true }));
+            }
         }
     }
 
