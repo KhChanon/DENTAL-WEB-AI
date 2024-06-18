@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { RecordProp } from '../../../interface/RecordProp'
 
-const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, surgicalstatus, surgicalresult }) => {
+const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, surgicalstatus, latestresult }) => {
 
     const screenX = window.innerWidth
     const goToFollowUp = () => {
@@ -53,7 +53,7 @@ const InfoItem: React.FC<RecordProp> = ({ _id, surgicalprocedure, surgicaldate, 
                             disabled={surgicalstatus !== "Pending" ? true : false}
                             onClick={goToFollowUp}
                             className="cursor-pointer [border:none] pt-[0.38rem] px-[0.31rem] pb-[0.31rem] bg-darkslateblue-100 rounded-11xl shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] w-[5.63rem] overflow-hidden shrink-0 flex flex-row items-center justify-center box-border hover:bg-plum-100 disabled:hover:bg-darkslateblue-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >   <div className="select-none relative text-[1.03rem] font-semibold font-montserrat text-colors-white-white text-center flex items-center justify-center w-[4rem] shrink-0">
+>   <div className="select-none relative text-[1.03rem] font-semibold font-montserrat text-colors-white-white text-center flex items-center justify-center w-[4rem] shrink-0">
                                 ติดตาม
                             </div>
                         </button>

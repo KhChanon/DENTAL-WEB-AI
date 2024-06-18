@@ -10,8 +10,9 @@ import { MdOutlinePendingActions } from "react-icons/md";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import Qrcodescanner from '../../components/Qrcodescanner';
 import { useSearchParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
-const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate, surgicalstatus, surgicalresult}) => {
+const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate, surgicalstatus, latestresult}) => {
   const day: number = surgicaldate.getDate();
   const month: number = surgicaldate.getMonth()+1;
   const year: number = surgicaldate.getFullYear();
@@ -19,11 +20,80 @@ const RecordCard: React.FC<RecordProp> = ({_id, surgicalprocedure, surgicaldate,
  // Format the date
   const formattedDate: string = `${padZero(day)}/${padZero(month)}/${year}`;
 
+  const getRecommendation = () => {
+
+    let updatedRecommendations = [];
+    if (latestresult.bleedChoice === 2) {
+      updatedRecommendations.push("คุณยังมีเลือกซึมจากแผลอยู่บ้างเป็นเลือกปนน้ำลาย ควรกัดผ้าก๊อซต่ออีก30นาที และไม่บ้วนน้ำลายบ่อย")
+
+    } else if (latestresult.bleedChoice === 3) {
+      updatedRecommendations.push("คุณยังมีเลือดซึมจากแผลเป็นสีแดงสดและ/หรือมีลิ่มเลือกปนอยู่ด้วย ควรกัดผ้าก๊อซ และพบแพทย์ผู้ดูแล")
+    }
+
+    if (latestresult.painLevel! > 7) {
+      if (latestresult.takenMedication === true) {
+        if (latestresult.painDecreased === false) {
+          updatedRecommendations.push("คุณได้ทานยาแก้ปวดแล้วแต่อาการปวดไม่ดีขึ้น ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        }
+        else {
+          updatedRecommendations.push("คุณได้ทานยาแก้ปวดแล้วและอาการปวดดีขึ้น จะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        }
+      } else {
+        updatedRecommendations.push("อาการปวดมากกว่าระดับ7 แนะนำให้ทานยาแก้ปวดเพื่อระงับความปวดเบื้องต้น และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+      }
+    }
+
+    if (latestresult.swellingLevel! >= 1 && latestresult.swellingLevel! < 2) {
+      updatedRecommendations.push("ใบหน้าบริเวณแผลของคุณไม่มีอาการบวมหรือบวมเล็กน้อย ควรประคบเย็นที่ใบหน้าบริเวณแผลลดอาการบวม")
+    } else if (latestresult.swellingLevel! >= 2) {
+      if (latestresult.days <= 3) {
+        updatedRecommendations.push("ใบหน้าของคุณยังมีอาการบวมแบบเห็นได้ชัด แต่ยังอยู่ในช่วง3วันหลังผ่าตัด ควรประคบเย็นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+      } else {
+        if (latestresult.symptoms === true) {
+          updatedRecommendations.push("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและไม่น้อยลงหรือมีอาการปวดร่วมด้วย ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการ และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        }
+        else {
+          updatedRecommendations.push("หลังผ่าตัด3วันแล้ว ยังมีอาการบวมแบบเห็นได้ชัดและแค่อาการบวมน้อยลงและไม่มีอาการปวดร่วมด้วย ควรประคบอุ่นบริเวณที่บวมเพื่อลดอาการปวดบวม และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+        }
+      }
+    }
+
+    if (latestresult.canEat === false) {
+      if (latestresult.eatSoftFood === true) {
+        updatedRecommendations.push("ควรไปพบแพทย์ผู้ดูแลเพื่อประเมิณอาการของแผล")
+      } else {
+        updatedRecommendations.push("ควรทานอาหารอ่อน และอาหหารที่ไม่มีรสชาติจัด และจะมีการติตามอาการอีกรอบใน24ชั่วโมง")
+      }
+    }
+
+    if (latestresult.canBrush === false) {
+      updatedRecommendations.push("ควรหลีกเลี่ยงการแปรงฟันบริเวณจุดที่ทำการผ่าตัด")
+    } else {
+      updatedRecommendations.push("คุณสามารถแปรงฟันได้ตามปกติ")
+    }
+
+    showRecommendationsAlert(updatedRecommendations);
+  }
+
+  const showRecommendationsAlert = (updatedRecommendations: string[]) => {
+    const uniqueRecommendations = Array.from(new Set(updatedRecommendations));
+    // Construct the message to display
+    const message = uniqueRecommendations.length === 0
+      ? 'No recommendations available.'
+      : uniqueRecommendations.map((recommendation, index) => `${index + 1}. ${recommendation}`).join('<br><br>'); // Use <br> for line breaks and add index
+
+    // Show SweetAlert2 alert with HTML content and left-aligned text
+    Swal.fire({
+      title: 'Recommendations',
+      html: `<div style="text-align: left;">${message}</div>`,
+      confirmButtonText: 'OK'
+    })
+  };
+
   return (
-    <button className='px-0 flex flex-col w-full h-full bg-white outline-none border-none iphone:max-h-48  disabled:opacity-50 disabled:hover:opacity-50 disabled:cursor-not-allowed'
+    <button className={`px-0 flex flex-col w-full h-full bg-white outline-none border-none iphone:max-h-48  ${surgicalstatus === "Follow Up" ? "opacity-50 hover:opacity-50" : ""}`}
       id={`RecordCard${_id}`}
-      disabled={surgicalstatus === "Follow Up" ? true : false}
-      onClick={() => window.location.href = `/followup/${_id}`}
+      onClick={surgicalstatus === "Follow Up" ? getRecommendation : () => window.location.href = `/followup/${_id}`}
     >
       <img src={surgicalprocedure === "ถอนฟัน" ? "https://tu.ac.th/uploads/news-tu/news/2566/oct/66-1349r.jpg" :
         (surgicalprocedure === "ผ่าฟันคุด" ? "https://www.smiledelightclinic.com/wp-content/uploads/2023/08/wisdom-tooth-768x553.jpg" :
@@ -64,9 +134,8 @@ const Followup = () => {
   const getRecords = async () => {
     try {
         const res = await axios.get(config.API_URL + '/users/' + userID + '/records/notdone');
-
         res.data.records.forEach((record:RecordProp) => {
-        record.surgicaldate = new Date(record.surgicaldate);
+          record.surgicaldate = new Date(record.surgicaldate);
         });
         setRecords(res.data.records);
     } catch (error) {
